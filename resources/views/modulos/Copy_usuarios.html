@@ -1,0 +1,150 @@
+@extends('layouts.plantilla')
+
+@section('content')
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6 d-inline">
+            <h1 class="inline">Administrar Usuarios</h1>
+            <small> Nielsen CCA</small>
+          </div>
+
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{{route('home')}}">Inicio</a></li>
+              <li class="breadcrumb-item active">Usuario</li>
+            </ol>
+          </div>
+
+        </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Modal Agregar Usuario -->
+      <div class="card">
+        <div class="card-header">
+          <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarUsuario">
+            Agregar Usuario
+          </button>
+          
+        </div>
+        {{-- TABLA DE USUARIOS --}}
+        <div class="card-body">
+      <table id="" class="table table-bordered table-striped dataTable dtr-inline tablas">
+        <thead>
+          <tr>
+            <th style="width: 10px">#</th>
+            <th>Nombre</th>
+            <th>Usuario</th>
+            <th>Foto</th>
+            <th>Perfil</th>
+            <th>Estado</th>
+            <th>Último Login</th>
+            <th>Acciones</th>
+          </tr>
+          </thead>
+          <tbody>
+           <tr>
+              <td>1</td>
+              <td>Usuario Administrador</td>
+              <td>Admin</td>
+              <td><img src="/img/usuarios/default/anonymous.png" alt=""></td>
+              <td>Administrador</td>
+              <td><button class="btn btn-success btn-sm">Activado</button></td>
+              <td>2017-12-11 12:05:32</td>
+              <td> 
+                <div class="btn-group">
+                  <button class="btn btn-primary"><i class="fas fa-pencil-alt"></i></button>
+                  <button class="btn btn-danger"><i class="fas fa-times"></i></button>
+                </div>
+              </td>
+           </tr>
+          </tbody>
+        </table>
+
+        </div>
+        <!-- /.card-body -->
+        
+        <!-- /.card-footer-->
+      </div>
+      <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+    {{-- Modal Agregar Usuario --}}
+<!-- Modal -->
+<div class="modal fade" id="modalAgregarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form role="form" method="post" enctype="multipart/form-data">
+      <div class="modal-header" style="background: #343a40; color: white">
+        <h5 class="modal-title" id="exampleModalLongTitle">Agregar Usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="box-body">
+          {{-- Entrada para el Nombre --}}
+          <div class="form-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
+              <input class="form-control input-lg" type="text" name="nuevoNombre" placeholder="Ingresa Nombre" required>
+            </div>
+            </div>
+          {{-- Entrada para el Usuario --}}
+          <div class="form-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1"><i class="fa fa-key"></i></span>
+              <input class="form-control input-lg" type="text" name="nuevoUsuario" placeholder="Ingresa Usuario" required>
+
+            </div>
+          </div>
+           {{-- Entrada para el Password --}}
+          <div class="form-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1"><i class="fa fa-lock"></i></span>
+              <input class="form-control input-lg" type="password" name="nuevoPassword" placeholder="Ingresa Contraseña" required>
+
+            </div>
+          </div>
+            {{-- Entrada para el Perfil --}}
+          <div class="form-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1"><i class="fa fa-users"></i></span>
+              <select class="form-control input-lg" type="text" name="nuevoPerfil">
+                <option value="">Seleccionar Perfil </option>
+                <option value="Administrador">Administrador </option>
+                <option value="Especial">Especial </option>
+                <option value="Vendedor">Vendedor </option>
+              </select>
+            </div>
+          </div>
+                 {{-- Entrada para Foto --}}
+          <div class="form-group">
+            <div class="panel text-uppercase">SUBIR FOTO</div>
+            <input type="file" name="nuevaFoto" id="nuevaFoto">
+            <p class="help-block">Peso maximo de la foto 2 MB</p>
+            <img src="/img/usuarios/default/anonymous.png" class="img-thumbnail" alt="pic" width="50px">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Salir</button>
+        <button type="submit" class="btn btn-primary">Guardar Usuario</button>
+      </div>
+    </div>
+    </form>
+  </div>
+
+  
+
+</div>
+ 
+
+@endsection
