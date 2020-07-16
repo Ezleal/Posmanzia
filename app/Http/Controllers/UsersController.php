@@ -61,22 +61,24 @@ class UsersController extends Controller
     // 
    public function store(Request $request)
     {   
-        $request->validate([
-        'name' => ['required', 'string', 'max:255'],
-        'username' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        'password' => ['required', 'string', 'min:8', 'confirmed'],
-        'foto' => ['image','mimes:jpeg,jpg,png,gif','max:20000'],
-        'perfil' => ['required','numeric', 'max:3'],
-        
-        
+        $rules = array(
+                'name'    =>  'required',
+                'username'     =>  'required',
+                'email'     =>  'required',
+                'foto' => ['image','mimes:jpeg,jpg,png,gif','max:20000'],
+                'perfil' => ['required','numeric', 'max:3'],
+                'password' => ['string', 'min:8', 'confirmed'],
 
-    ]);
-//     $messages = [
-//     'required' => 'The :attribute field is required.',
-// ];
-// $validator = Validator::make($input, $validatedData);
-        $newUser = new User;
+            );
+
+        $error = Validator::make($request->all(), $rules);
+
+        if($error->fails())
+        {
+            return response()->json(['errors' => $error->errors()->all()]);
+        }
+       
+       $newUser = new User;
         $newUser->name         = $request->input('name');
         $newUser->username        = $request->input('username');
         $newUser->email        = $request->input('email');
@@ -91,11 +93,10 @@ class UsersController extends Controller
 
       
         $newUser->save();
-        /* Mensajes Flash se agrega con el metodo "with('info','Texto a mostrar')", crea un mensaje de 
-           sesion (ver vista) que solo va a durar una peticion */
-        return redirect()->route('usuarios.index')->with('info', 'Usuario creado con exito');
 
+        return response()->json(['success' => 'Data Added successfully.']);
     }
+    
 
     /**
      * Display the specified resource.
@@ -140,7 +141,8 @@ class UsersController extends Controller
             $rules = array(
                 'name'    =>  'required',
                 'username'     =>  'required',
-                'foto'         =>  'image|max:2048'
+                'foto'         =>  'image|max:2048',
+                'perfil' => 'required'
             );
             $error = Validator::make($request->all(), $rules);
             if($error->fails())
@@ -149,14 +151,18 @@ class UsersController extends Controller
             }
 
             $image_name = rand() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images'), $image_name);
+            $image->move(public_path('storage/profile_images'), $image_name);
+
         }
         else
         {
             $rules = array(
                 'name'    =>  'required',
                 'username'     =>  'required',
-                'email'     =>  'required'
+                'email'     =>  'required',
+                'foto' => ['image','mimes:jpeg,jpg,png,gif','max:20000'],
+                'perfil' => ['required','numeric', 'max:3'],
+                'password' => ['string', 'min:8', 'confirmed'],
 
             );
 
@@ -172,11 +178,14 @@ class UsersController extends Controller
             'name'       =>   $request->name,
             'username'        =>   $request->username,
             'email'        =>   $request->email,
-            'foto'            =>   $image_name
+            'foto'            =>   $image_name,
+            'perfil'  => $request->perfil,
+            'password' => Hash::make($request->password)
         );
         User::whereId($request->hidden_id)->update($form_data);
 
         return response()->json(['success' => 'Data is successfully updated']);
+         
     }
 
     /**

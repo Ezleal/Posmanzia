@@ -22,7 +22,7 @@ $("#user_table").DataTable({
             data: 'foto',
             name: 'foto', 
             render: function(data, type, full, meta){
-                return "<img style='width: 40px' src='/storage/profile_images/" + data + " 'alt=''>"
+                return "<img style='width: 40px;max-height:40px' src='/storage/profile_images/" + data + " 'alt=''>"
             }, orderable: false
         },
         {
