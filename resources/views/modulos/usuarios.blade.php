@@ -128,7 +128,7 @@
         @csrf
       <div class="modal-header" style="background: #343a40; color: white">
         <h5 class="modal-title" id="exampleModalLongTitle">Agregar Usuario</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button style="color:#ffffff" type="button" class="close btn btn-primary" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
