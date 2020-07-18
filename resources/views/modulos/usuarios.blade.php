@@ -9,16 +9,14 @@
         </script>
         {{ $errors }}
   @endif --}}
-  @if(session('info'))
+  {{-- @if(session('info'))
   <script>
     swal ( "Usuario Creado Correctamente!" ,  "Verifica en la lista de usuarios" ,  "success" )
   </script>        
-  @endif
+  @endif --}}
   
 {{-- Fin de alertas en el registro de usuario --}}
- 
-        
-          
+     
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
@@ -48,7 +46,7 @@
            <button class="btn btn-primary" data-toggle="modal" data-target="#agregarUsuario" name="create_record" id="create_record">
             Agregar Usuario
           </button>
-          
+    
         </div>
         {{-- TABLA DE USUARIOS --}}
         <div class="card-body">
@@ -67,45 +65,7 @@
           </tr>
           </thead>
           <tbody>
-           {{-- <tr>
-             @foreach($users as $user)
-              <td>{{ $user->id }}</td>
-              <td>{{ $user->name }}</td>
-              <td>{{ $user->username }}</td>
-              <td><img style="width: 40px" src="/storage/profile_images/{{ $user->foto }}" alt=""></td>
-              <td>{{ $user->email }}</td>
-              <td>
-                  @if ($user->perfil == 1)
-                       Administrador
-                  @endif
-                  @if ($user->perfil == 2)
-                        Especial
-                  @endif
-                  @if ($user->perfil == 3)
-                        Vendedor
-                  @endif
-               
-              </td>
-              <td>
-              @if (($user->estado == 1))
-              <button class="btn btn-success btn-sm">
-                Activado
-              </button></td>
-              @else
-              <button class="btn btn-danger btn-sm">
-                Desactivado
-              </button></td>
-              @endif
-              
-              <td>{{ $user->ultima_login }}</td>
-              <td> 
-                <div class="btn-group">
-                  <button class="btn btn-primary btnEditar" idUsuario="{{ $user->id }}" data-toggle="modal" data-target="#modalEditarUsuario"><i class="fas fa-pencil-alt"></i></button>
-                  <button class="btn btn-danger"><i class="fas fa-times"></i></button>
-                </div>
-              </td>
-           </tr>
-            @endforeach --}}
+          {{-- ACA DATATABLE SE ENCARGA DE LA CARGA DE DATOS --}}
           </tbody>
         </table>
 
@@ -200,10 +160,11 @@
               <span class="fas fa-lock"></span>
             </div>
           </div>
-            <input type="password" class="form-control" name="password_confirmation"  autocomplete="new-password" placeholder="Confirme Nueva Contraseña">          
+            <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" autocomplete="new-password" placeholder="Confirme Nueva Contraseña">          
         </div>
           
             {{-- Entrada para el Perfil --}}
+       <div class="mb-3">
           <div class="form-group">
             <div class="input-group-prepend">
               <div class="input-group-text">
@@ -211,12 +172,19 @@
               </div>
               <select class="form-control input-lg" type="text" name="perfil">
                 <option selected disabled>Seleccionar Perfil </option>
-                <option value="1">Administrador </option>
-                <option value="2">Especial </option>
-                <option value="3">Vendedor </option>
+     {{-- Se busca la información desde la bd prioridad para el select --}}
+                 @if (!empty($perfiles))
+                      @foreach ($perfiles as $perfil)
+                <option value="{{ $perfil->id }}">{{ $perfil->name }}</option>
+                  @endforeach
+                 @endif
               </select>
             </div>
           </div>
+          <div>
+          <span  role="alert" id="perfilError"> </span>
+        </div>
+        </div>
                  {{-- Entrada para Foto --}}
           <div class="form-group row">
             <div class="col-sm-12 col-md-6">
@@ -245,23 +213,6 @@
 </div>
 {{-- FIN MODAL AGREGAR USUARIO --}}
 
-<div id="confirmModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h2 class="modal-title">Confirmation</h2>
-            </div>
-            <div class="modal-body">
-                <h4 align="center" style="margin:0;">Are you sure you want to remove this data?</h4>
-            </div>
-            <div class="modal-footer">
-             <button type="button" name="ok_button" id="ok_button" class="btn btn-danger">OK</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
 <script>
  $('#create_record').click(function(){
   $('.modal-title').text("Add New Record");
@@ -286,7 +237,7 @@
     processData: false,
     dataType:"json",
     success:function(data)
-    {
+    {console.log(data);
      var html = '';
      if(data.errors)
      {
@@ -296,12 +247,16 @@
      let regexUsername = /(the username|el username)/i;
      let regexEmail = /(the email|el email)/i;
      let regexPassword = /(the password|el password)/i;
+     let regexPerfil = /(the perfil|el perfil)/i;
        data.errors.forEach(element => {
+         
         if(element.match(regexName)){$('#nameError').html('<strong class="invalid text-danger">'+element+'</strong>');}
         if(element.match(regexUsername)){$('#usernameError').html('<strong class="invalid text-danger">'+element+'</strong>');}
         if(element.match(regexEmail)){$('#emailError').html('<strong class="invalid text-danger">'+element+'</strong>');}
         if(element.match(regexPassword)){$('#passwordError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexPerfil)){$('#perfilError').html('<strong class="invalid text-danger">'+element+'</strong>');}
         else{
+          //  swal ( "Error al Editar Usuario!" ,  "Usuario o Email" ,  "error" )
           console.log(element);
         }
 
@@ -315,7 +270,9 @@
                 text: "Verifica en la lista de usuarios",
                 icon: "success"
             }).then(function() {
-                window.location = "/usuarios";
+                // window.location = "/usuarios";
+                    window.location.reload();
+
             });
       // html = '<div class="alert alert-success">' + data.success + '</div>';
       // $('#sample_form')[0].reset();
@@ -343,6 +300,7 @@
      let regexUsername = /(the username|el username)/i;
      let regexEmail = /(the email|el email)/i;
      let regexPassword = /(the password|el password)/i;
+     let regexPerfil = /(the perfil|el perfil)/i;
      if(data.errors)
      { 
       data.errors.forEach(element => {
@@ -350,6 +308,7 @@
         if(element.match(regexUsername)){$('#usernameError').html('<strong class="invalid text-danger">'+element+'</strong>');}
         if(element.match(regexEmail)){$('#emailError').html('<strong class="invalid text-danger">'+element+'</strong>');}
         if(element.match(regexPassword)){$('#passwordError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexPerfil)){$('#perfilError').html('<strong class="invalid text-danger">'+element+'</strong>');}
         else{
           console.log(element)
         }
@@ -367,15 +326,12 @@ swal({
     text: "Verifica en la lista de usuarios",
     icon: "success"
 }).then(function() {
-    window.location = "/usuarios";
+    window.location.reload();
 });  // html = '<div class="alert alert-success">' + data.success + '</div>';
       // $('#sample_form')[0].reset();
       // $('#store_image').html('');
       // window.location.reload();
-
-
       // window.location.href = "/usuarios";
-
      }
      $('#form_result').html(html);
     }
@@ -408,25 +364,39 @@ swal({
 
  $(document).on('click', '.delete', function(){
   user_id = $(this).attr('id');
-  $('#confirmModal').modal('show');
- });
-
- $('#ok_button').click(function(){
-  $.ajax({
+  swal({
+  title: "Estas seguro de eliminar al usuario?",
+  text: "Una vez eliminado, el usuario no se puede recuperar!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+      $.ajax({
    url:"usuarios/destroy/"+user_id,
-   beforeSend:function(){
-    $('#ok_button').text('Deleting...');
-   },
    success:function(data)
    {
-    setTimeout(function(){
-     $('#confirmModal').modal('hide');
-     $('#user_table').DataTable().ajax.reload();
-    }, 2000);
+    swal("Poof! El usuario fue eliminado con exito!", {
+      icon: "success",
+    }).then(function() {
+    // window.location = "/usuarios";
+        window.location.reload();
+
+});
+  
    }
+    
   })
- });           
-	
+  } 
+  else {
+    swal("EL USUARIO NO FUE BORRADO!");
+  }
+        
+
+});
+ });
+       
 </script>
 
 @endsection

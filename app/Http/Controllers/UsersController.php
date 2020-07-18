@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use App\User;
+use App\{User, Estado, Perfil};
+use App\Repositories\UsersRepository;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,8 +19,9 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-      public function __construct()
+      public function __construct(UsersRepository $Users)
     {
+        $this->Users = $Users;
         $this->middleware('auth');
     }
     
@@ -37,7 +39,11 @@ class UsersController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
         }
-        return view('modulos.usuarios');
+    //   $datas = $this->Users->traerUsers();
+            // var_dump($dal);   
+        $perfiles = Perfil::all();
+       
+        return view('modulos.usuarios',compact('perfiles'));
         // $users = User::all();
         // return view('modulos.usuarios',compact('users'));
     }
@@ -62,11 +68,11 @@ class UsersController extends Controller
    public function store(Request $request)
     {   
         $rules = array(
-                'name'    =>  'required',
-                'username'     =>  'required',
-                'email'     =>  'required',
+                'name'    =>  ['required', 'string', 'max:255'],
+                'username'     =>  ['required', 'string', 'max:255','unique:users'],
+                'email'     =>  ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'foto' => ['image','mimes:jpeg,jpg,png,gif','max:20000'],
-                'perfil' => ['required','numeric', 'max:3'],
+                'perfil' => ['required','numeric', 'max:10'],
                 'password' => ['string', 'min:8', 'confirmed'],
 
             );
@@ -120,9 +126,11 @@ class UsersController extends Controller
     {
         if(request()->ajax())
         {
-            $data = User::findOrFail($id);
+            // $data = User::findOrFail($id);
+            $data = $this->Users->UsersPorId($id);
             return response()->json(['data' => $data]);
         }
+      
     }
 
     /**
@@ -136,13 +144,18 @@ class UsersController extends Controller
     {
         $image_name = $request->hidden_image;
         $image = $request->file('foto');
-        if($image != '')
+        $pass = $request->password;
+        $conf = $request->password_confirmation;
+        // if($image != '')
+        if($pass != '' || $conf != '')
         {
             $rules = array(
-                'name'    =>  'required',
-                'username'     =>  'required',
-                'foto'         =>  'image|max:2048',
-                'perfil' => 'required'
+                'name'    =>  ['required', 'string', 'max:255'],
+                'username'     =>  ['required', 'string', 'max:255'],
+                'email'     =>  ['required', 'string', 'email', 'max:255'],
+                'foto' => ['image','mimes:jpeg,jpg,png,gif','max:2048'],
+                'perfil' => ['required','numeric', 'max:10'],
+                'password' => ['string', 'min:8', 'confirmed'],
             );
             $error = Validator::make($request->all(), $rules);
             if($error->fails())
@@ -157,12 +170,12 @@ class UsersController extends Controller
         else
         {
             $rules = array(
-                'name'    =>  'required',
-                'username'     =>  'required',
-                'email'     =>  'required',
-                'foto' => ['image','mimes:jpeg,jpg,png,gif','max:20000'],
-                'perfil' => ['required','numeric', 'max:3'],
-                'password' => ['string', 'min:8', 'confirmed'],
+                'name'    =>  ['required', 'string', 'max:255'],
+                'username'     =>  ['required', 'string', 'max:255'],
+                'email'     =>  ['required', 'string', 'email', 'max:255'],
+                'foto' => ['image','mimes:jpeg,jpg,png,gif','max:2048'],
+                'perfil' => ['required','numeric', 'max:10'],
+                // 'password' => ['string', 'min:8', 'confirmed'],
 
             );
 
@@ -196,7 +209,8 @@ class UsersController extends Controller
      */
      public function destroy($id)
     {
-        $data = User::findOrFail($id);
+        // $data = User::findOrFail($id);
+        $data = $this->Users->UsersPorId($id);
         $data->delete();
         // return view('modulos.usuarios');
     }
