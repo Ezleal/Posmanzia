@@ -22,7 +22,7 @@ $("#user_table").DataTable({
             data: 'foto',
             name: 'foto', 
             render: function(data, type, full, meta){
-                return "<img style='width: 40px;max-height:40px' src='/storage/profile_images/" + data + " 'alt=''>"
+                return "<img style='width: 40px;max-height:40px' src='/storage/profile_images/" + data + " 'alt='avatar'>"
             }, orderable: false
         },
         {
@@ -33,12 +33,13 @@ $("#user_table").DataTable({
             data: 'perfil',
             name: 'perfil',
              render: function (data, type, full, meta) {
-                if (data == 1)
+                if (data == 1)       
                      return "Administrador"
                 if (data == 2)
                     return "Especial"
                 if (data == 3)
                     return "Vendedor"
+                    
              }
         },
         {

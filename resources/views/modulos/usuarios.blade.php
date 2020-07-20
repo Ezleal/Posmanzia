@@ -171,8 +171,8 @@
               <span class="fa fa-users"></span>
               </div>
               <select class="form-control input-lg" type="text" name="perfil">
-                <option selected disabled>Seleccionar Perfil </option>
-     {{-- Se busca la información desde la bd prioridad para el select --}}
+                {{-- Se busca la información desde la bd prioridad para el select --}}
+                <option selected disabled id="editarPerfil">Seleccionar Perfil </option>
                  @if (!empty($perfiles))
                       @foreach ($perfiles as $perfil)
                 <option value="{{ $perfil->id }}">{{ $perfil->name }}</option>
@@ -217,6 +217,9 @@
  $('#create_record').click(function(){
   $('.modal-title').text("Add New Record");
   $('.invalid').html('');
+  $("#editarPerfil").prop('disabled', true);
+  $("#editarPerfil").val('');
+  $("#editarPerfil").html('Seleccionar Perfil');
   $('#foto').html('');
   $('#foto').html("<img src={{ URL::to('/storage') }}/profile_images/default.jpg class='img-thumbnail previzualizar' alt='pic' width='80px'/>");
      $('#action_button').val("Add");
@@ -347,11 +350,23 @@ swal({
    dataType:"json",
    success:function(html){
      console.log(html);
+    $("#editarPerfil").removeAttr('disabled');
+    // $('#username').prop('readonly', true);
     $('#name').val(html.data.name);
     $('#username').val(html.data.username);
     $('#email').val(html.data.email);
     $('#foto').html("<img src={{ URL::to('/storage') }}/profile_images/" + html.data.foto + " class='img-thumbnail previzualizar' alt='pic' width='80px'/>");
     $('#foto').append("<input type='hidden' name='hidden_image' value='"+html.data.foto+"' />");
+    $('#editarPerfil').val(html.data.perfil);
+    if (html.data.perfil == 1) {
+      $('#editarPerfil').html("Administrador");
+    }
+    if (html.data.perfil == 2) {
+      $('#editarPerfil').html("Especial");
+    };
+    if (html.data.perfil == 3) {
+      $('#editarPerfil').html("Vendedor");
+    };
     $('#hidden_id').val(html.data.id);
     $('.modal-title').text("Edit New Record");
     $('#action_button').val("Edit");

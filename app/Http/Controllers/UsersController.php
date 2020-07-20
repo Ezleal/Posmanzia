@@ -9,7 +9,7 @@ use App\{User, Estado, Perfil};
 use App\Repositories\UsersRepository;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
 {
@@ -92,8 +92,9 @@ class UsersController extends Controller
         $newUser->perfil = $request->input('perfil'); 
         
         if ($request->hasFile('foto')) {
-            $path = $request->file('foto')->store("public/profile_images");    
-            $nombreArchivo = basename($path);
+            $path = $request->file('foto')->store("public/profile_images/");    
+            $nombreArchivo = $request->username . '.' . $image->getClientOriginalExtension();
+            // $nombreArchivo = basename($path);
             $newUser->foto = $nombreArchivo;
         }
 
@@ -146,37 +147,38 @@ class UsersController extends Controller
         $image = $request->file('foto');
         $pass = $request->password;
         $conf = $request->password_confirmation;
+       
         // if($image != '')
-        if($pass != '' || $conf != '')
-        {
+        if($image != '')
+        {   
             $rules = array(
-                'name'    =>  ['required', 'string', 'max:255'],
-                'username'     =>  ['required', 'string', 'max:255'],
-                'email'     =>  ['required', 'string', 'email', 'max:255'],
-                'foto' => ['image','mimes:jpeg,jpg,png,gif','max:2048'],
-                'perfil' => ['required','numeric', 'max:10'],
-                'password' => ['string', 'min:8', 'confirmed'],
+                'name'    =>  'required', 'string', 'max:255',
+                'username'     =>  'required', 'string', 'max:255',
+                'email'     =>'required', 'string', 'email', 'max:255',
+                'foto' => 'image','mimes:jpeg,jpg,png,gif','max:2048',
+                'perfil' => 'required','numeric', 'max:10',
+                'password' => 'string', 'min:8', 'confirmed',
             );
             $error = Validator::make($request->all(), $rules);
             if($error->fails())
             {
                 return response()->json(['errors' => $error->errors()->all()]);
             }
-
-            $image_name = rand() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('storage/profile_images'), $image_name);
+            
+            // $image_name = rand() . '.' . $image->getClientOriginalExtension();
+            $image_name = $request->username . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path("storage/profile_images/"), $image_name);
 
         }
         else
         {
             $rules = array(
-                'name'    =>  ['required', 'string', 'max:255'],
-                'username'     =>  ['required', 'string', 'max:255'],
-                'email'     =>  ['required', 'string', 'email', 'max:255'],
-                'foto' => ['image','mimes:jpeg,jpg,png,gif','max:2048'],
-                'perfil' => ['required','numeric', 'max:10'],
-                // 'password' => ['string', 'min:8', 'confirmed'],
-
+                'name'    =>  'required', 'string', 'max:255',
+                'username'     =>  'required', 'string', 'max:255',
+                'email'     =>  'required', 'string', 'email', 'max:255',
+                'foto' => 'image','mimes:jpeg,jpg,png,gif','max:2048',
+                'perfil' => 'required','numeric', 'max:10',
+                'password' => ['string', 'min:8', 'confirmed'],
             );
 
             $error = Validator::make($request->all(), $rules);
@@ -195,6 +197,7 @@ class UsersController extends Controller
             'perfil'  => $request->perfil,
             'password' => Hash::make($request->password)
         );
+     
         User::whereId($request->hidden_id)->update($form_data);
 
         return response()->json(['success' => 'Data is successfully updated']);
