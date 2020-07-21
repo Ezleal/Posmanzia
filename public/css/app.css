@@ -47,6 +47,11 @@
   box-sizing: border-box;
 }
 
+/* SAMPLE_FORM INPUT EN NEGRITA */
+/* #sample_form input, option, select {
+  font-weight: bolder;
+} */
+
 html {
   font-family: sans-serif;
   line-height: 1.15;
@@ -246,6 +251,7 @@ textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+  /* font-weight: bold; */
 }
 
 button,

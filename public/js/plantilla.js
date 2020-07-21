@@ -47,9 +47,9 @@ $("#user_table").DataTable({
             name: 'estado',
             render: function (data, type, full, meta) {
             if (data == 1)
-                 return "<button class='btn btn-success btn-sm'>Activado</button>"
+                 return "<button class='btn btn-success btn-sm' id='" + data + "'>Activado</button>"
              else{
-                 return "<button class='btn btn-danger btn-sm'>Desactivado</button>"
+                return "<button class='btn btn-danger btn-sm' id='"+data+"'>Desactivado</button>"
              }
             }
         },

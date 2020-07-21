@@ -173,10 +173,10 @@
               <select class="form-control input-lg" type="text" name="perfil">
                 {{-- Se busca la información desde la bd prioridad para el select --}}
                 <option selected disabled id="editarPerfil">Seleccionar Perfil </option>
-                 @if (!empty($perfiles))
-                      @foreach ($perfiles as $perfil)
-                <option value="{{ $perfil->id }}">{{ $perfil->name }}</option>
-                  @endforeach
+              @if (!empty($perfiles))
+                  @foreach ($perfiles as $perfil)    
+          <option   value="{{ $perfil->id }}">{{ $perfil->name }}</option>      
+                @endforeach
                  @endif
               </select>
             </div>
@@ -184,6 +184,13 @@
           <div>
           <span  role="alert" id="perfilError"> </span>
         </div>
+        </div>
+        <div class="input-group">
+            <div class="input-group-append">
+            
+          </div>
+          <input class='btn btn-danger btn-sm btnActivar' name='estado' id='estado' estadousuario='0' value="Desactivado">
+          <input type="hidden" name="estado_hidden" id="estado_hidden" value="0">
         </div>
                  {{-- Entrada para Foto --}}
           <div class="form-group row">
@@ -217,6 +224,8 @@
  $('#create_record').click(function(){
   $('.modal-title').text("Add New Record");
   $('.invalid').html('');
+  $('#estado').removeClass('btn-success');
+  $('#estado').addClass('btn-danger');
   $("#editarPerfil").prop('disabled', true);
   $("#editarPerfil").val('');
   $("#editarPerfil").html('Seleccionar Perfil');
@@ -342,9 +351,12 @@ swal({
   }
  });
    $(document).on('click', '.edit', function(){
-  var id = $(this).attr('id');
-  $('#form_result').html('');
+      var id = $(this).attr('id');
+      var estadousuario = $(this).attr('estadousuario');
+      $('#form_result').html('');
       $('.invalid').html('');
+      $('#estado').removeClass('btn-success');
+      $('#estado').addClass('btn-danger');
   $.ajax({
    url:"/usuarios/"+id+"/edit",
    dataType:"json",
@@ -367,6 +379,15 @@ swal({
     if (html.data.perfil == 3) {
       $('#editarPerfil').html("Vendedor");
     };
+     if (html.data.estado == 1) 
+     {
+      $('#estado').addClass('btn-success');
+      $('#estado').removeClass('btn-danger');
+      $('#estado').val('Activado');
+    }
+    else{
+      $('#estado').val("Desactivado");
+    }
     $('#hidden_id').val(html.data.id);
     $('.modal-title').text("Edit New Record");
     $('#action_button').val("Edit");
@@ -411,6 +432,7 @@ swal({
 
 });
  });
+ 
        
 </script>
 

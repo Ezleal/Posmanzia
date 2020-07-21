@@ -13,6 +13,8 @@ use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
 {
+    public $activarId;
+    public $activarUsuario;
  
     /**
      * Display a listing of the resource.
@@ -42,8 +44,9 @@ class UsersController extends Controller
     //   $datas = $this->Users->traerUsers();
             // var_dump($dal);   
         $perfiles = Perfil::all();
+        $estados = Estado::all();
        
-        return view('modulos.usuarios',compact('perfiles'));
+        return view('modulos.usuarios',compact('perfiles', 'estados'));
         // $users = User::all();
         // return view('modulos.usuarios',compact('users'));
     }
@@ -72,6 +75,7 @@ class UsersController extends Controller
                 'username'     =>  ['required', 'string', 'max:255','unique:users'],
                 'email'     =>  ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'foto' => ['image','mimes:jpeg,jpg,png,gif','max:20000'],
+                'estado'=> ['nullable','required','string'],
                 'perfil' => ['required','numeric', 'max:10'],
                 'password' => ['string', 'min:8', 'confirmed'],
 
@@ -90,12 +94,12 @@ class UsersController extends Controller
         $newUser->email        = $request->input('email');
         $newUser->password = Hash::make($request->input('password')); 
         $newUser->perfil = $request->input('perfil'); 
-        
+        $newUser->perfil = $request->input('estado_hidden'); 
         if ($request->hasFile('foto')) {
-            $path = $request->file('foto')->store("public/profile_images/");    
-            $nombreArchivo = $request->username . '.' . $image->getClientOriginalExtension();
-            // $nombreArchivo = basename($path);
-            $newUser->foto = $nombreArchivo;
+        $path = $request->file('foto')->store("public/profile_images/");    
+        $nombreArchivo = $request->username . '.' . $image->getClientOriginalExtension();
+        // $nombreArchivo = basename($path);
+        $newUser->foto = $nombreArchivo;
         }
 
       
@@ -147,8 +151,8 @@ class UsersController extends Controller
         $image = $request->file('foto');
         $pass = $request->password;
         $conf = $request->password_confirmation;
-       
-        // if($image != '')
+        
+    if($pass != '' || $conf != ''){
         if($image != '')
         {   
             $rules = array(
@@ -157,7 +161,11 @@ class UsersController extends Controller
                 'email'     =>'required', 'string', 'email', 'max:255',
                 'foto' => 'image','mimes:jpeg,jpg,png,gif','max:2048',
                 'perfil' => 'required','numeric', 'max:10',
+                'estado' => 'required','numeric', 'max:10',
                 'password' => 'string', 'min:8', 'confirmed',
+               
+
+                
             );
             $error = Validator::make($request->all(), $rules);
             if($error->fails())
@@ -178,7 +186,9 @@ class UsersController extends Controller
                 'email'     =>  'required', 'string', 'email', 'max:255',
                 'foto' => 'image','mimes:jpeg,jpg,png,gif','max:2048',
                 'perfil' => 'required','numeric', 'max:10',
+                'estado' => 'required','numeric', 'max:10',
                 'password' => ['string', 'min:8', 'confirmed'],
+                
             );
 
             $error = Validator::make($request->all(), $rules);
@@ -195,8 +205,69 @@ class UsersController extends Controller
             'email'        =>   $request->email,
             'foto'            =>   $image_name,
             'perfil'  => $request->perfil,
+            'estado' =>  $request->estado_hidden,
             'password' => Hash::make($request->password)
         );
+
+    }
+    else{
+        if($image != '')
+        {   
+            $rules = array(
+                'name'    =>  'required', 'string', 'max:255',
+                'username'     =>  'required', 'string', 'max:255',
+                'email'     =>'required', 'string', 'email', 'max:255',
+                'foto' => 'image','mimes:jpeg,jpg,png,gif','max:2048',
+                'perfil' => 'required','numeric', 'max:10',
+                'estado' => 'required','numeric', 'max:10',
+                // 'password' => 'string', 'min:8', 'confirmed',
+               
+
+                
+            );
+            $error = Validator::make($request->all(), $rules);
+            if($error->fails())
+            {
+                return response()->json(['errors' => $error->errors()->all()]);
+            }
+            
+            // $image_name = rand() . '.' . $image->getClientOriginalExtension();
+            $image_name = $request->username . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path("storage/profile_images/"), $image_name);
+
+        }
+        else
+        {
+            $rules = array(
+                'name'    =>  'required', 'string', 'max:255',
+                'username'     =>  'required', 'string', 'max:255',
+                'email'     =>  'required', 'string', 'email', 'max:255',
+                'foto' => 'image','mimes:jpeg,jpg,png,gif','max:2048',
+                'perfil' => 'required','numeric', 'max:10',
+                'estado' => 'required','numeric', 'max:10',
+                // 'password' => ['string', 'min:8', 'confirmed'],
+                
+            );
+
+            $error = Validator::make($request->all(), $rules);
+
+            if($error->fails())
+            {
+                return response()->json(['errors' => $error->errors()->all()]);
+            }
+        }
+
+        $form_data = array(
+            'name'       =>   $request->name,
+            'username'        =>   $request->username,
+            'email'        =>   $request->email,
+            'foto'            =>   $image_name,
+            'perfil'  => $request->perfil,
+            'estado' =>  $request->estado_hidden,
+            // 'password' => $request->$pass
+        );
+
+    }
      
         User::whereId($request->hidden_id)->update($form_data);
 
@@ -217,4 +288,5 @@ class UsersController extends Controller
         $data->delete();
         // return view('modulos.usuarios');
     }
+
 }

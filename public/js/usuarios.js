@@ -29,8 +29,30 @@ var imagen = this.files[0];
 
 })
 /* +++++++++++++++++++++++++++++++++++++++++
-              INPUT PARA PASSWORD
+      ACTIVAR O DESACTIVAR USUARIO
 ++++++++++++++++++++++++++++++++++++++++++++ */
 
+$(".btnActivar").click(function () {
+    var estadoUsuario = $(this).attr('estadoUsuario');
+
+ if (estadoUsuario == 1) {
+
+     $(this).removeClass('btn-success');
+     $(this).addClass('btn-danger');
+     $(this).val('Desactivado');
+     $('#estado_hidden').val('0');
+     $(this).attr('estadousuario', 0);
+
+ } else {
+
+     $(this).addClass('btn-success');
+     $(this).removeClass('btn-danger');
+     $(this).val('Activado');
+     $('#estado_hidden').val('1');
+     $(this).attr('estadousuario', 1);
+
+ }
+
+ })
 
                             
