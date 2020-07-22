@@ -222,7 +222,7 @@
 
 <script>
  $('#create_record').click(function(){
-  $('.modal-title').text("Add New Record");
+  $('.modal-title').text("Nuevo Usuario");
   $('.invalid').html('');
   $('#estado').removeClass('btn-success');
   $('#estado').addClass('btn-danger');
@@ -389,7 +389,7 @@ swal({
       $('#estado').val("Desactivado");
     }
     $('#hidden_id').val(html.data.id);
-    $('.modal-title').text("Edit New Record");
+    $('.modal-title').text("Editar Usuario");
     $('#action_button').val("Edit");
     $('#action').val("Edit");
     $('#agregarUsuario').modal('show');

@@ -57,7 +57,9 @@ class LoginController extends Controller
        $user->save();
 }
     public function __construct()
-    {
+
+    {  
+        
         $this->middleware('guest')->except('logout');
     }
 }

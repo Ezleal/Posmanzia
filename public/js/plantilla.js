@@ -23,7 +23,10 @@ $("#user_table").DataTable({
             name: 'foto', 
             render: function(data, type, full, meta){
                 return "<img style='width: 40px;max-height:40px' src='/storage/profile_images/" + data + " 'alt='avatar'>"
-            }, orderable: false
+            }, orderable: false,
+              cache: false
+              // El Cache: false permite la actualización en el listado al editar
+
         },
         {
             data: 'email',

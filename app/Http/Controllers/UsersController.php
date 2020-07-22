@@ -10,6 +10,9 @@ use App\Repositories\UsersRepository;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Intervention\Image\ImageManagerStatic as Image;
+
+
 
 class UsersController extends Controller
 {
@@ -25,6 +28,7 @@ class UsersController extends Controller
     {
         $this->Users = $Users;
         $this->middleware('auth');
+     
     }
     
     public function index()
@@ -70,6 +74,8 @@ class UsersController extends Controller
     // 
    public function store(Request $request)
     {   
+        
+       
         $rules = array(
                 'name'    =>  ['required', 'string', 'max:255'],
                 'username'     =>  ['required', 'string', 'max:255','unique:users'],
@@ -88,19 +94,35 @@ class UsersController extends Controller
             return response()->json(['errors' => $error->errors()->all()]);
         }
        
-       $newUser = new User;
+        $newUser = new User;
         $newUser->name         = $request->input('name');
         $newUser->username        = $request->input('username');
         $newUser->email        = $request->input('email');
         $newUser->password = Hash::make($request->input('password')); 
         $newUser->perfil = $request->input('perfil'); 
-        $newUser->perfil = $request->input('estado_hidden'); 
-        if ($request->hasFile('foto')) {
-        $path = $request->file('foto')->store("public/profile_images/");    
-        $nombreArchivo = $request->username . '.' . $image->getClientOriginalExtension();
+        $newUser->estado = $request->input('estado_hidden'); 
+        // if ($request->hasFile('foto')) {
+        
+        // $image_name = $request->username . '.' . $image->getClientOriginalExtension();
+        // $image->move(public_path("storage/profile_images/"), $image_name);
+        // $path = $request->file('foto')->store("public/profile_images/");    
+        // $nombreArchivo = $request->username . '.' . $image->getClientOriginalExtension();
         // $nombreArchivo = basename($path);
-        $newUser->foto = $nombreArchivo;
-        }
+        
+        // $newUser->foto = $image_name;
+
+        // }
+        if ($request->hasFile('foto')){
+                $image = $request->file('foto');                     
+                $nombre = $request->username . '.' . $image->getClientOriginalExtension();
+                $ruta = public_path("storage/profile_images/".$nombre);
+                Image::make($image->getRealPath())
+                    ->resize(250,250, function ($constraint){ 
+                        $constraint->aspectRatio();
+                    })
+                    ->save($ruta,72);
+                    $newUser->foto = $nombre;
+            }
 
       
         $newUser->save();
@@ -172,10 +194,18 @@ class UsersController extends Controller
             {
                 return response()->json(['errors' => $error->errors()->all()]);
             }
-            
-            // $image_name = rand() . '.' . $image->getClientOriginalExtension();
-            $image_name = $request->username . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path("storage/profile_images/"), $image_name);
+
+            // ACA SE ASIGNA UN NOMBRE A LA IMAGEN, SE REDIMENSIONA Y COMPRIME (72) -> Image Intervention
+            if ($request->hasFile('foto')){
+                $image = $request->file('foto');                     
+                $image_name = $request->username . '.' . $image->getClientOriginalExtension();
+                $ruta = public_path("storage/profile_images/".$image_name);
+                Image::make($image->getRealPath())
+                    ->resize(250,250, function ($constraint){ 
+                        $constraint->aspectRatio();
+                    })
+                    ->save($ruta,72);
+            }
 
         }
         else
@@ -232,8 +262,18 @@ class UsersController extends Controller
             }
             
             // $image_name = rand() . '.' . $image->getClientOriginalExtension();
-            $image_name = $request->username . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path("storage/profile_images/"), $image_name);
+            // $image_name = $request->username . '.' . $image->getClientOriginalExtension();
+            // $image->move(public_path("storage/profile_images/"), $image_name);
+               if ($request->hasFile('foto')){
+                $image = $request->file('foto');                     
+                $image_name = $request->username . '.' . $image->getClientOriginalExtension();
+                $ruta = public_path("storage/profile_images/".$image_name);
+                Image::make($image->getRealPath())
+                    ->resize(250,250, function ($constraint){ 
+                        $constraint->aspectRatio();
+                    })
+                    ->save($ruta,72);
+            }
 
         }
         else
