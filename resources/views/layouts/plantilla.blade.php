@@ -70,7 +70,7 @@
                   Plantilla Js Custom
 ==============================================--}}
 <script src="{{ asset('/js/plantilla.js') }}"></script>
-<script src="{{ asset('/js/usuarios.js') }}"></script>
+@yield('scripts')
 
 </body>
 </html>

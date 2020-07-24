@@ -1,6 +1,10 @@
 @extends('layouts.plantilla')
 
 @section('content')
+@section('scripts')
+<script src="{{ asset('/js/usuarios.js') }}"></script>    
+@endsection
+
 
 {{-- Sweet alert el registro de usuario --}}
  {{-- @if (count($errors->all())>0)

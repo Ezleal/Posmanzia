@@ -22,15 +22,23 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+/* RUTAS DE USUARIOS */
 Route::resource('/usuarios', 'UsersController');
 Route::post('usuarios/update', 'UsersController@update')->name('usuarios.update');
 Route::get('usuarios/destroy/{id}', 'UsersController@destroy');
 Route::post('usuarios/{id}/edit', 'UsersController@edit')->name('usuarios.edit');
+/* ------ FIN DE USUARIOS ----- */
 
-// Route::get('api/users', function () {
-// return datatables()->eloquent(App\User::query())->toJson();
-// });
-// Auth::routes();
+/* RUTAS DE CATEGORIAS */
+Route::resource('/categorias', 'CategoriasController');
+Route::post('categorias/update', 'CategoriasController@update')->name('categorias.update');
+Route::get('categorias/destroy/{id}', 'CategoriasController@destroy');
+Route::post('categorias/{id}/edit', 'CategoriasController@edit')->name('categorias.edit');
+/* ------ FIN DE CATEGORIAS ----- */
+
+/* RUTAS DE PRODUCTOS */
+/* ------ FIN DE PRODUCTOS ----- */
+
 Auth::routes(["register" => false]);
 
 
