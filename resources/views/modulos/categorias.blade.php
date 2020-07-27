@@ -1,24 +1,22 @@
 @extends('layouts.plantilla')
 
 @section('content')
-@section('scripts')
-<script src="{{ asset('/js/categorias.js') }}"></script>    
-@endsection
 
-{{-- Sweet alert el registro de usuario --}}
+
+{{-- Sweet alert el registro de categoria --}}
  {{-- @if (count($errors->all())>0)
           <script>
-				  swal ( "Error al Crear Usuario!" ,  "Verifica el Formulario de registro" ,  "error" )
+				  swal ( "Error al Crear Categoria!" ,  "Verifica el Formulario de registro" ,  "error" )
         </script>
         {{ $errors }}
   @endif --}}
   {{-- @if(session('info'))
   <script>
-    swal ( "Usuario Creado Correctamente!" ,  "Verifica en la lista de usuarios" ,  "success" )
+    swal ( "Categoria Creado Correctamente!" ,  "Verifica en la lista de Categorias" ,  "success" )
   </script>        
   @endif --}}
   
-{{-- Fin de alertas en el registro de usuario --}}
+{{-- Fin de alertas en el registro de Categoria --}}
      
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -76,7 +74,7 @@
     </section>
     <!-- /.content -->
 
-{{-- Modal Agregar Usuario --}}
+{{-- Modal Agregar Categoria --}}
 <!-- Modal -->
 <div class="modal fade" id="agregarCategoria" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -154,7 +152,7 @@
          
         if(element.match(regexName)){$('#nameError').html('<strong class="invalid text-danger">'+element+'</strong>');}
         else{
-          //  swal ( "Error al Editar Usuario!" ,  "Usuario o Email" ,  "error" )
+          //  swal ( "Error al Editar Categoria!" ,  "Categoria o Email" ,  "error" )
           console.log(element);
         }
 
@@ -168,7 +166,7 @@
                 text: "Verifica en la lista de categorias",
                 icon: "success"
             }).then(function() {
-                // window.location = "/usuarios";
+                // window.location = "/categorias";
                     window.location.reload();
 
             });
@@ -218,7 +216,7 @@ swal({
       // $('#sample_form')[0].reset();
       // $('#store_image').html('');
       // window.location.reload();
-      // window.location.href = "/usuarios";
+      // window.location.href = "/categorias";
      }
      $('#form_result').html(html);
     }
@@ -285,4 +283,7 @@ swal({
        
 </script>
 
+@endsection
+@section('scripts')
+<script src="{{ asset('/js/categorias.js') }}"></script>    
 @endsection

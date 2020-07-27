@@ -54,7 +54,7 @@
             </a>
           </li>
             <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{ route('productos.index') }}" class="nav-link">
               <i class="nav-icon fab fa-product-hunt"></i>
               <p>
                 Productos
@@ -82,19 +82,19 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="../../index.html" class="nav-link">
-                  <i class="fas fa-circle nav-icon"></i>
+                  <i class="fas fa-cart-arrow-down nav-icon"></i>
                   <p>Administrar Ventas</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="../../index2.html" class="nav-link">
-                  <i class="fas fa-circle nav-icon"></i>
+                  <i class="fas fa-cash-register nav-icon"></i>
                   <p>Crear Ventas</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="../../index3.html" class="nav-link">
-                  <i class="fas fa-circle nav-icon"></i>
+                  <i class="fas fa-chart-pie nav-icon"></i>
                   <p>Reporte de Ventas</p>
                 </a>
               </li>

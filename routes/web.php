@@ -37,6 +37,10 @@ Route::post('categorias/{id}/edit', 'CategoriasController@edit')->name('categori
 /* ------ FIN DE CATEGORIAS ----- */
 
 /* RUTAS DE PRODUCTOS */
+Route::resource('/productos', 'ProductosController');
+Route::post('productos/update', 'ProductosController@update')->name('productos.update');
+Route::get('productos/destroy/{id}', 'ProductosController@destroy');
+Route::post('productos/{id}/edit', 'ProductosController@edit')->name('productos.edit');
 /* ------ FIN DE PRODUCTOS ----- */
 
 Auth::routes(["register" => false]);
