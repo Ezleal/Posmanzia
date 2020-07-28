@@ -131,7 +131,7 @@
         </div>   
       </div> 
              {{-- Entrada para la Categoria --}}
-       <div class="mb-3">
+       <div class="mb-1">
           <div class="form-group">
             <div class="input-group-prepend">
               <div class="input-group-text">
@@ -147,14 +147,15 @@
                  @endif
               </select>
             </div>
-          </div>
-          <div>
+             <div>
           <span  role="alert" id="id_categoriaError"> </span>
         </div>
+          </div>
+         
         </div> 
 
         {{-----  Precio de Compra -------}}
-    <div class="mb-3">
+    <div class="mb-1">
           <div class="input-group">
             <div class="input-group-append">
             <div class="input-group-text">
@@ -162,9 +163,7 @@
             </div>
           </div>
           <input  type="number" class="form-control @error('precio_compra') is-invalid @enderror" name="precio_compra" id="precio_compra" value="{{ old('precio_compra') }}"  autocomplete="precio_compra" autofocus placeholder="Precio de Compra">
-        <div>
-          <span  role="alert" id="precio_compraError"> </span>
-        </div>
+        
           {{-----  Precio de Venta -------}} 
             <div class="input-group-append">
             <div class="input-group-text">
@@ -172,14 +171,17 @@
             </div>
           </div>
           <input  type="number" class="form-control @error('precio_venta') is-invalid @enderror" name="precio_venta" id="precio_venta" value="{{ old('precio_venta') }}"  autocomplete="precio_venta" autofocus placeholder="Precio de Venta">
-          <div>
-            <span  role="alert" id="precio_ventaError"> </span>
-          </div>  
+          
       </div>
     </div>
-     
+     <div>
+          <span  role="alert" id="precio_compraError"> </span>
+    </div>
+     <div>
+            <span  role="alert" id="precio_ventaError"> </span>
+          </div> 
           {{-----  Check Porcentaje -------}} 
-         <label class="mr-2">     
+         <label class="mr-2 icheck-primary">     
         <input type="checkbox" class="minimal porcentaje" checked>
         Utilizar procentaje
         </label>   
@@ -192,7 +194,7 @@
               <span class="fas fa-percentage"></span>
             </div>
           </div>
-          <input  type="number" class="form-control @error('porcentaje') is-invalid @enderror" name="porcentaje" id="porcentaje" autocomplete="porcentaje" autofocus placeholder="Porcentaje" min="0" value="40" required> 
+          <input  type="number" class="form-control @error('porcentaje') is-invalid @enderror" name="porcentaje" id="porcentaje" autocomplete="porcentaje" autofocus placeholder="Porcentaje" min="0" value="40"> 
             <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-check"></span>
@@ -200,10 +202,11 @@
           </div>
           {{-----  Input Stock Disponible -------}} 
           <input  type="number" class="form-control @error('stock') is-invalid @enderror" name="stock" id="stock" value="{{ old('stock') }}"  autocomplete="stock" autofocus placeholder="Stock">
-        <div>
+     
+      </div>
+         <div>
           <span  role="alert" id="stockError"> </span>
         </div>
-      </div>
     </div>
   
                  {{-- Entrada para Foto --}}
@@ -267,18 +270,21 @@
      {
       $('.invalid').html('');
      var html = "";
-     let regexName = /(the name|el nombre)/i;
-     let regexUsername = /(the username|el username)/i;
-     let regexEmail = /(the email|el email)/i;
-     let regexPassword = /(the password|el password)/i;
-     let regexPerfil = /(the perfil|el perfil)/i;
+     let regexCodigo = /(the codigo|el codigo)/i;
+     let regexDescripcion = /(the descripcion|el descripcion)/i;
+     let regexCategoria = /(the id categoria|el id categoria)/i;
+     let regexPrecio_compra = /(the precio compra|el precio compra)/i;
+     let regexPrecio_venta = /(the precio venta|el precio venta)/i;
+     let regexStock = /(the stock|el stock)/i;
        data.errors.forEach(element => {
          
-        if(element.match(regexName)){$('#nameError').html('<strong class="invalid text-danger">'+element+'</strong>');}
-        if(element.match(regexUsername)){$('#usernameError').html('<strong class="invalid text-danger">'+element+'</strong>');}
-        if(element.match(regexEmail)){$('#emailError').html('<strong class="invalid text-danger">'+element+'</strong>');}
-        if(element.match(regexPassword)){$('#passwordError').html('<strong class="invalid text-danger">'+element+'</strong>');}
-        if(element.match(regexPerfil)){$('#perfilError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexCodigo)){$('#codigoError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexDescripcion)){$('#descripcionError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexCategoria)){$('#id_categoriaError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexPrecio_compra)){$('#precio_compraError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexPrecio_venta)){$('#precio_ventaError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexStock)){$('#stockError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+
         else{
           //  swal ( "Error al Editar Producto!" ,  "Producto o Email" ,  "error" )
           console.log(element);
@@ -319,28 +325,29 @@
     success:function(data)
     {
     $('.invalid').html('');
-     var html = "";
-     let regexName = /(the name|el nombre)/i;
-     let regexUsername = /(the username|el username)/i;
-     let regexEmail = /(the email|el email)/i;
-     let regexPassword = /(the password|el password)/i;
-     let regexPerfil = /(the perfil|el perfil)/i;
+    var html = "";
+     let regexCodigo = /(the codigo|el codigo)/i;
+     let regexDescripcion = /(the descripcion|el descripcion)/i;
+     let regexCategoria = /(the id categoria|el id categoria)/i;
+     let regexPrecio_compra = /(the precio compra|el precio compra)/i;
+     let regexPrecio_venta = /(the precio venta|el precio venta)/i;
+     let regexStock = /(the stock|el stock)/i;
      if(data.errors)
      { 
       data.errors.forEach(element => {
-        if(element.match(regexName)){$('#nameError').html('<strong class="invalid text-danger">'+element+'</strong>');}
-        if(element.match(regexUsername)){$('#usernameError').html('<strong class="invalid text-danger">'+element+'</strong>');}
-        if(element.match(regexEmail)){$('#emailError').html('<strong class="invalid text-danger">'+element+'</strong>');}
-        if(element.match(regexPassword)){$('#passwordError').html('<strong class="invalid text-danger">'+element+'</strong>');}
-        if(element.match(regexPerfil)){$('#perfilError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexCodigo)){$('#codigoError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexDescripcion)){$('#descripcionError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexCategoria)){$('#id_categoriaError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexPrecio_compra)){$('#precio_compraError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexPrecio_venta)){$('#precio_ventaError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexStock)){$('#stockError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+
         else{
-          console.log(element)
+          //  swal ( "Error al Editar Producto!" ,  "Producto o Email" ,  "error" )
+          console.log(element);
         }
-        
-       
 
          });
-    
      }
      if(data.success)
      {
@@ -364,42 +371,22 @@ swal({
  });
    $(document).on('click', '.edit', function(){
       var id = $(this).attr('id');
-      var estadoproducto = $(this).attr('estadoproducto');
       $('#form_result').html('');
       $('.invalid').html('');
-      $('#estado').removeClass('btn-success');
-      $('#estado').addClass('btn-danger');
   $.ajax({
    url:"/productos/"+id+"/edit",
    dataType:"json",
    success:function(html){
      console.log(html);
-    $("#editarPerfil").removeAttr('disabled');
     // $('#username').prop('readonly', true);
-    $('#name').val(html.data.name);
-    $('#username').val(html.data.username);
-    $('#email').val(html.data.email);
-    $('#foto').html("<img src={{ URL::to('/storage') }}/profile_images/" + html.data.foto + " class='img-thumbnail previzualizar' alt='pic' width='80px'/>");
-    $('#foto').append("<input type='hidden' name='hidden_image' value='"+html.data.foto+"' />");
-    $('#editarPerfil').val(html.data.perfil);
-    if (html.data.perfil == 1) {
-      $('#editarPerfil').html("Administrador");
-    }
-    if (html.data.perfil == 2) {
-      $('#editarPerfil').html("Especial");
-    };
-    if (html.data.perfil == 3) {
-      $('#editarPerfil').html("Vendedor");
-    };
-     if (html.data.estado == 1) 
-     {
-      $('#estado').addClass('btn-success');
-      $('#estado').removeClass('btn-danger');
-      $('#estado').val('Activado');
-    }
-    else{
-      $('#estado').val("Desactivado");
-    }
+    $('#id_categoria').val(html.data.id_categoria);
+    $('#descripcion').val(html.data.descripcion);
+    $('#codigo').val(html.data.codigo);
+    $('#stock').val(html.data.stock);
+    $('#foto').html("<img src={{ URL::to('/storage') }}/products/" + html.data.imagen + " class='img-thumbnail previzualizar' alt='pic' width='80px'/>");
+    $('#foto').append("<input type='hidden' name='hidden_image' value='"+html.data.imagen+"' />");
+    $('#precio_compra').val(html.data.precio_compra);
+    $('#precio_venta').val(html.data.precio_venta);
     $('#hidden_id').val(html.data.id);
     $('.modal-title').text("Editar Producto");
     $('#action_button').val("Edit");

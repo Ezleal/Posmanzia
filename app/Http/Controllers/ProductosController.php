@@ -21,21 +21,29 @@ class ProductosController extends Controller
      * @return \Illuminate\Http\Response
      */
      public function index(){
-                 if(request()->ajax())
-                  {
+          $productos = Producto::all();
+          $categorias = Categoria::all();
+
+                 if(request()->ajax()){
+
                       return datatables()->of(Producto::latest()->get())
+                            ->addIndexColumn()
                             ->addColumn('action', function($data){
                         $button = '<div class="btn-group"> <button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm btnEditarProducto"><i class="fas fa-pencil-alt"></i></button>';
                         $button .= '&nbsp;&nbsp;';
                         $button .= '<button type="button" name="delete" id="'.$data->id.'" class="delete btn btn-danger btn-sm"><i class="fas fa-times"></i></button></div>';
                         return $button;
                     })
-                    ->rawColumns(['action'])
+                
+                    ->addColumn('category',function($category){
+                    return $category->category->name;
+                })
+                    ->rawColumns(['action','category'])
                     ->make(true);
-        }
+            }
+        
      
-        $productos = Producto::all();
-        $categorias = Categoria::all();
+        // $productos = Producto::all();
         
         return view('modulos.productos',compact('productos', 'categorias'));
         
@@ -120,9 +128,14 @@ class ProductosController extends Controller
      * @param  \App\Producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function edit(Producto $producto)
+    public function edit($id)
     {
-        //
+        if(request()->ajax())
+        {
+            $data = Producto::findOrFail($id);
+            return response()->json(['data' => $data]);
+        }
+      
     }
 
     /**
@@ -132,9 +145,80 @@ class ProductosController extends Controller
      * @param  \App\Producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Producto $producto)
+    public function update(Request $request)
     {
-        //
+        $image_name = $request->hidden_image;
+        $image = $request->file('imagen');
+
+        if($image != '')
+        {    
+            $rules = array(
+                'descripcion'    =>  ['required', 'string', 'max:255'],
+                'codigo'     =>  ['required', 'string', 'max:255','unique:productos,codigo,'.$request->hidden_id],
+                'id_categoria' => ['required','numeric', 'max:100'],
+                'stock'     =>  ['numeric', 'max:100000','min:0', 'digits_between:0,10'],
+                'imagen' => ['image','mimes:jpeg,jpg,png,gif','max:20000'],
+                'precio_compra'     =>  ['numeric','min:0','digits_between:0,10'],
+                'precio_venta'     =>  ['numeric','min:0','digits_between:0,10'],
+            );
+           
+            $error = Validator::make($request->all(), $rules);
+            if($error->fails())
+            {
+                return response()->json(['errors' => $error->errors()->all()]);
+            }
+            
+            // $image_name = rand() . '.' . $image->getClientOriginalExtension();
+            // $image_name = $request->username . '.' . $image->getClientOriginalExtension();
+            // $image->move(public_path("storage/profile_images/"), $image_name);
+                                  
+                $image_name = $request->codigo . '.' . $image->getClientOriginalExtension();
+                $ruta = public_path("storage/products/".$image_name);
+                Image::make($image->getRealPath())
+                    ->resize(250,250, function ($constraint){ 
+                        $constraint->aspectRatio();
+                    })
+                    ->save($ruta,72);
+
+        }
+        else
+        {
+            $rules = array(
+                'descripcion'    =>  ['required', 'string', 'max:255'],
+                'codigo'     =>  ['required', 'string', 'max:255','unique:productos,codigo,'.$request->hidden_id],
+                'id_categoria' => ['required','numeric', 'max:100'],
+                'stock'     =>  ['numeric', 'max:100000','min:0', 'digits_between:0,10'],
+                'imagen' => ['image','mimes:jpeg,jpg,png,gif','max:20000'],
+                'precio_compra'     =>  ['numeric','min:0','digits_between:0,10'],
+                'precio_venta'     =>  ['numeric','min:0','digits_between:0,10'],
+            );
+
+            $error = Validator::make($request->all(), $rules);
+
+            if($error->fails())
+            {
+                return response()->json(['errors' => $error->errors()->all()]);
+            }
+        }
+
+        $form_data = array(
+            'id_categoria'       =>   $request->id_categoria,
+            'codigo'        =>   $request->codigo,
+            'descripcion'        =>   $request->descripcion,
+            'imagen'            =>   $image_name,
+            'stock'  => $request->stock,
+            'precio_compra' =>  $request->precio_compra,
+            'precio_venta' =>  $request->precio_venta,
+            'agregado' => Carbon::now()->toDateString()
+            
+        );
+
+    
+     
+        Producto::whereId($request->hidden_id)->update($form_data);
+
+        return response()->json(['success' => 'Data is successfully updated']);
+         
     }
 
     /**

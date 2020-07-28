@@ -30,8 +30,8 @@ $("#product_table").DataTable({
             name: 'descripcion'
         },
           {
-              data: 'id_categoria',
-              name: 'id_categoria'
+              data: 'category',
+              name:'category'
           },
          {
              data: 'stock',

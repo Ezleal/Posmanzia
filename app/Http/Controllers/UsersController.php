@@ -136,8 +136,8 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-       $usuarioEditar = User::findOrFail($id);
-        return view('modulos.usuarios', compact('usuarioEditar'));
+       $usuarioVer = User::findOrFail($id);
+        return view('modulos.usuarios', compact('usuarioVer'));
     }
 
     /**
