@@ -33,15 +33,19 @@ class UsersController extends Controller
          if(request()->ajax())
         {
             return datatables()->of(User::latest()->get())
+                    ->addIndexColumn()
                     ->addColumn('action', function($data){
                         $button = '<div class="btn-group"> <button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm btnEditarUsuario"><i class="fas fa-pencil-alt"></i></button>';
                         $button .= '&nbsp;&nbsp;';
                         $button .= '<button type="button" name="delete" id="'.$data->id.'" class="delete btn btn-danger btn-sm"><i class="fas fa-times"></i></button></div>';
                         return $button;
                     })
-                    ->rawColumns(['action'])
+                     ->addColumn('perfiles',function($perfiles){
+                    return $perfiles->perfiles->name;
+                })
+                    ->rawColumns(['action','perfiles'])
                     ->make(true);
-        }
+            }
     //   $datas = $this->Users->traerUsers();
             // var_dump($dal);   
         $perfiles = Perfil::all();

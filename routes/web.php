@@ -41,9 +41,17 @@ Route::resource('/productos', 'ProductosController');
 Route::post('productos/update', 'ProductosController@update')->name('productos.update');
 Route::get('productos/destroy/{id}', 'ProductosController@destroy');
 Route::post('productos/{id}/edit', 'ProductosController@edit')->name('productos.edit');
+
 /* ------ FIN DE PRODUCTOS ----- */
 
-Auth::routes(["register" => false]);
+/* RUTAS DE CLIENTES */
+Route::resource('/clientes', 'ClientesController');
+Route::post('clientes/update', 'ClientesController@update')->name('clientes.update');
+Route::get('clientes/destroy/{id}', 'ClientesController@destroy');
+Route::post('clientes/{id}/edit', 'ClientesController@edit')->name('clientes.edit');
 
+/* ------ FIN DE CLIENTES ----- */
+
+Auth::routes(["register" => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');

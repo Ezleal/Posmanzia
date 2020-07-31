@@ -100,6 +100,29 @@
       <div class="modal-body">
         <span id="form_result"></span>
         <div class="box-body">
+           {{-- Entrada para la Categoria --}}
+       <div class="mb-1">
+          <div class="form-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+              <span class="fa fa-users"></span>
+              </div>
+              <select class="form-control input-lg" type="text" name="id_categoria" id="id_categoria">
+                {{-- Se busca la información desde la bd prioridad para el select --}}
+                <option selected disabled id="editarCategoria">Seleccionar Categoria </option>
+              @if (!empty($categorias))
+                  @foreach ($categorias as $categoria)    
+          <option   value="{{ $categoria->id }}">{{ $categoria->name}}</option>      
+                @endforeach
+                 @endif
+              </select>
+            </div>
+             <div>
+          <span  role="alert" id="id_categoriaError"> </span>
+        </div>
+          </div>
+         
+        </div> 
             {{-- Entrada para Codigo del Producto --}}
        <div class="mb-3">
           <div class="input-group">
@@ -130,29 +153,7 @@
             </span>
         </div>   
       </div> 
-             {{-- Entrada para la Categoria --}}
-       <div class="mb-1">
-          <div class="form-group">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-              <span class="fa fa-users"></span>
-              </div>
-              <select class="form-control input-lg" type="text" name="id_categoria" id="id_categoria">
-                {{-- Se busca la información desde la bd prioridad para el select --}}
-                <option selected disabled id="editarCategoria">Seleccionar Categoria </option>
-              @if (!empty($categorias))
-                  @foreach ($categorias as $categoria)    
-          <option   value="{{ $categoria->id }}">{{ $categoria->name}}</option>      
-                @endforeach
-                 @endif
-              </select>
-            </div>
-             <div>
-          <span  role="alert" id="id_categoriaError"> </span>
-        </div>
-          </div>
-         
-        </div> 
+            
 
         {{-----  Precio de Compra -------}}
     <div class="mb-1">
@@ -162,7 +163,7 @@
               <span class="fas fa-dollar-sign"></span>
             </div>
           </div>
-          <input  type="number" class="form-control @error('precio_compra') is-invalid @enderror" name="precio_compra" id="precio_compra" value="{{ old('precio_compra') }}"  autocomplete="precio_compra" autofocus placeholder="Precio de Compra">
+          <input  type="text" class="form-control @error('precio_compra') is-invalid @enderror" name="precio_compra" id="precio_compra" value="{{ old('precio_compra') }}"  autocomplete="precio_compra" min="0" step="any" autofocus placeholder="Precio de Compra">
         
           {{-----  Precio de Venta -------}} 
             <div class="input-group-append">
@@ -170,7 +171,7 @@
               <span class="fas fa-hand-holding-usd"></span>
             </div>
           </div>
-          <input  type="number" class="form-control @error('precio_venta') is-invalid @enderror" name="precio_venta" id="precio_venta" value="{{ old('precio_venta') }}"  autocomplete="precio_venta" autofocus placeholder="Precio de Venta">
+          <input  type="number" class="form-control @error('precio_venta') is-invalid @enderror" name="precio_venta" id="precio_venta" value="{{ old('precio_venta') }}" min="0" step="any"autocomplete="precio_venta" autofocus placeholder="Precio de Venta">
           
       </div>
     </div>
@@ -180,12 +181,13 @@
      <div>
             <span  role="alert" id="precio_ventaError"> </span>
           </div> 
+          
           {{-----  Check Porcentaje -------}} 
-         <label class="mr-2 icheck-primary">     
-        <input type="checkbox" class="minimal porcentaje" checked>
-        Utilizar procentaje
-        </label>   
-    <div class="mb-3">
+        <label class="mr-2 icheck-danger">     
+          <input type="checkbox" class="minimal inputporcentaje" checked>
+            Utilizar porcentaje
+           </label>   
+      <div class="mb-3">
           <div class="input-group ">
         
         {{-----  Input Porcentaje -------}} 
@@ -238,7 +240,7 @@
 {{-- FIN MODAL AGREGAR Producto --}}
 
 <script>
- $('#create_record').click(function(){
+  $('#create_record').click(function(){
   $('.modal-title').text("Nuevo Producto");
   $('.invalid').html('');
   $("#editarCategoria").prop('disabled', true);
@@ -246,10 +248,11 @@
   $("#editarCategoria").html('Seleccionar Categoria');
   $('#foto').html('');
   $('#foto').html("<img src={{ URL::to('/storage') }}/products/default.jpg class='img-thumbnail previzualizar' alt='pic' width='80px'/>");
-     $('#action_button').val("Add");
-     $('#action').val("Add");
-     $('#agregarProducto').modal('show');
-     $('#sample_form')[0].reset();
+  $('#action_button').val("Add");
+  $('#action').val("Add");
+  $('#agregarProducto').modal('show');
+  // $('#precio_venta').prop('readonly', true);
+  $('#sample_form')[0].reset();
  });
   $('#sample_form').on('submit', function(event){
    event.preventDefault();
@@ -378,7 +381,6 @@ swal({
    dataType:"json",
    success:function(html){
      console.log(html);
-    // $('#username').prop('readonly', true);
     $('#id_categoria').val(html.data.id_categoria);
     $('#descripcion').val(html.data.descripcion);
     $('#codigo').val(html.data.codigo);

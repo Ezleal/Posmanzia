@@ -18,13 +18,11 @@ $("#product_table").DataTable({
             orderable: false,
             cache: false
             // El Cache: false permite la actualización en el listado al editar
-
         },
         {
             data: 'codigo',
             name: 'codigo'
         },
-     
         {
             data: 'descripcion',
             name: 'descripcion'
@@ -35,15 +33,33 @@ $("#product_table").DataTable({
           },
          {
              data: 'stock',
-             name: 'stock'
+             name: 'stock',
+             render: function (data, type, full, meta) {
+                if (data <= 10)
+                      return "<button class='btn btn-danger'>" + data + "</button>"
+                if (data >= 10 && data <= 20)
+                     return "<button class='btn btn-warning'>" + data + "</button>"
+                else{
+                    return "<button class='btn btn-success'>" + data + "</button>"
+                }
+             }
          },
         {
             data: 'precio_compra',
             name: 'precio_compra',
+             render: function (data, type, full, meta) {
+                 
+                     return "$" + data 
+             }
+             
         },
         {
             data: 'precio_venta',
             name: 'precio_venta',
+            render: function (data, type, full, meta) {
+
+                return "$" + data
+            }
         },
         {
             data: 'agregado',
@@ -70,8 +86,8 @@ $("#product_table").DataTable({
         "sLengthMenu": "Mostrar _MENU_ Registros",
         "sZeroRecords": "No se encontraron resultados",
         "sEmptyTable": "Ningún dato disponible en esta tabla",
-        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
-        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0",
+        "sInfo": "Mostrando registros del _START_ al _END_ total: _TOTAL_",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 total: 0",
         "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
         "sInfoPostFix": "",
         "sSearch": "Buscar:",
@@ -93,7 +109,7 @@ $("#product_table").DataTable({
 
 });
 /* +++++++++++++++++++++++++++++++++++++++++
-        MODIFICACION DE FOTOS DE USUARIO 
+      MODIFICACION DE IMAGEN  DE PRODUCTO
 ++++++++++++++++++++++++++++++++++++++++++++ */
 
 $(".foto").change(function(){
@@ -116,37 +132,53 @@ var imagen = this.files[0];
             var rutaImagen = event.target.result;
             
         $(".previzualizar").attr("src", rutaImagen);
-
         })
-
     }
+})
+
+/*=============================================
+      AGREGANDO EL PRECIO DE VENTA (%)
+=============================================*/
+$("#precio_compra").change(function () {
+
+    if($(".inputporcentaje").prop("checked")){
+     var valorPorcentaje = $("#porcentaje").val();
+     // ACA CAPTURAMOS EL PORCENTAJE A PONER EN PRECIO VENTA
+    var porcentaje = Number(($("#precio_compra").val() * valorPorcentaje / 100)) + Number($("#precio_compra").val());
+
+          $("#precio_venta").val(porcentaje)
+          $("#precio_venta").prop("readonly", true)
+    }
+    })
+
+/*=============================================
+CAMBIO DE PORCENTAJE
+=============================================*/
+$("#porcentaje").change(function () {
+
+    if ($(".inputporcentaje").prop("checked")) {
+
+        var valorPorcentaje = $(this).val();
+
+        var porcentaje = Number(($("#precio_compra").val() * valorPorcentaje / 100)) + Number($("#precio_compra").val());
+
+        $("#precio_venta").val(porcentaje);
+        $("#precio_venta").prop("readonly", true);
+    }
+})
+
+$(".inputporcentaje").on("ifUnchecked", function () {
+
+    $("#precio_venta").prop("readonly", false);
 
 })
-/* +++++++++++++++++++++++++++++++++++++++++
-      ACTIVAR O DESACTIVAR USUARIO
-++++++++++++++++++++++++++++++++++++++++++++ */
 
-$(".btnActivar").click(function () {
-    var estadoUsuario = $(this).attr('estadoUsuario');
+$(".inputporcentaje").on("ifChecked", function () {
 
- if (estadoUsuario == 1) {
+    $("#precio_venta").prop("readonly", true);
 
-     $(this).removeClass('btn-success');
-     $(this).addClass('btn-danger');
-     $(this).val('Desactivado');
-     $('#estado_hidden').val('0');
-     $(this).attr('estadousuario', 0);
+})
 
- } else {
-
-     $(this).addClass('btn-success');
-     $(this).removeClass('btn-danger');
-     $(this).val('Activado');
-     $('#estado_hidden').val('1');
-     $(this).attr('estadousuario', 1);
-
- }
-
- })
-
-                            
+/*=============================================
+VALIDACION DE PRECIO-COMPRA y PRECIO-VENTA
+=============================================*/

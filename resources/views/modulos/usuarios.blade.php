@@ -174,7 +174,7 @@
               <div class="input-group-text">
               <span class="fa fa-users"></span>
               </div>
-              <select class="form-control input-lg" type="text" name="perfil">
+              <select class="form-control input-lg" type="text" name="perfil" id="perfil">
                 {{-- Se busca la información desde la bd prioridad para el select --}}
                 <option selected disabled id="editarPerfil">Seleccionar Perfil </option>
               @if (!empty($perfiles))
@@ -373,16 +373,16 @@ swal({
     $('#email').val(html.data.email);
     $('#foto').html("<img src={{ URL::to('/storage') }}/profile_images/" + html.data.foto + " class='img-thumbnail previzualizar' alt='pic' width='80px'/>");
     $('#foto').append("<input type='hidden' name='hidden_image' value='"+html.data.foto+"' />");
-    $('#editarPerfil').val(html.data.perfil);
-    if (html.data.perfil == 1) {
-      $('#editarPerfil').html("Administrador");
-    }
-    if (html.data.perfil == 2) {
-      $('#editarPerfil').html("Especial");
-    };
-    if (html.data.perfil == 3) {
-      $('#editarPerfil').html("Vendedor");
-    };
+    $('#perfil').val(html.data.perfil);
+    // if (html.data.perfil == 1) {
+    //   $('#editarPerfil').html("Administrador");
+    // }
+    // if (html.data.perfil == 2) {
+    //   $('#editarPerfil').html("Especial");
+    // };
+    // if (html.data.perfil == 3) {
+    //   $('#editarPerfil').html("Vendedor");
+    // };
      if (html.data.estado == 1) 
      {
       $('#estado').addClass('btn-success');

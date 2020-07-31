@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!doctype html>
+{{-- <!doctype html> --}}
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,12 +28,17 @@
   <!-- DataTables -->
   <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
   <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
- 
+  {{-- <link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}"> --}}
+  <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css')}}">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="{{ asset('plugins/iCheck/all.css')}}">
   <!-- Fonts -->
   <link rel="dns-prefetch" href="//fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
   <!-- Styles -->
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+  <!-- iCheck 1.0.1 -->
+  <script src="{{ asset('plugins/iCheck/icheck.min.js')}}"></script>
 </head>
 <body class="hold-transition sidebar-mini sidebar-collapse layout-fixed">
 <!-- Site wrapper -->
@@ -70,6 +75,13 @@
                   Plantilla Js Custom
 ==============================================--}}
 <script src="{{ asset('/js/plantilla.js') }}"></script>
+<!-- InputMask -->
+<script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
+<script src="{{ asset('plugins/inputmask/min/jquery.inputmask.bundle.min.js') }}"></script>
+<!-- date-range-picker -->
+<script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
+<!-- bootstrap color picker -->
+<script src="{{ asset('plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') }}"></script>
 @yield('scripts')
 
 </body>

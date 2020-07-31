@@ -39,9 +39,9 @@ class User extends Authenticatable
 
 
     public function estados(){
-         return $this->belongsTo(Estado::class);
+         return $this->belongsTo(Estado::class,'estado');
     }
     public function perfiles(){
-         return $this->belongsTo(Perfil::class);
+         return $this->belongsTo(Perfil::class, 'perfil');
     }
 }

@@ -73,8 +73,8 @@ class ProductosController extends Controller
                 'id_categoria' => ['required','numeric', 'max:100'],
                 'stock'     =>  ['numeric', 'max:100000','min:0', 'digits_between:0,10'],
                 'imagen' => ['image','mimes:jpeg,jpg,png,gif','max:20000'],
-                'precio_compra'     =>  ['numeric','min:0','digits_between:0,10'],
-                'precio_venta'     =>  ['numeric','min:0','digits_between:0,10'],
+                'precio_compra'     =>  ['numeric','min:0'],
+                'precio_venta'     =>  ['numeric','min:0']
             );
 
         $error = Validator::make($request->all(), $rules);
@@ -91,7 +91,8 @@ class ProductosController extends Controller
         $newProducto->stock        = $request->input('stock');
         $newProducto->precio_compra        = $request->input('precio_compra');
         $newProducto->precio_venta       = $request->input('precio_venta');
-        $newProducto->agregado = Carbon::now()->toDateString();
+        $newProducto->agregado = Carbon::now();
+        // $newProducto->agregado = Carbon::now()->toDateString();
       
         if ($request->hasFile('imagen')){
                 $image = $request->file('imagen');                     
@@ -158,8 +159,8 @@ class ProductosController extends Controller
                 'id_categoria' => ['required','numeric', 'max:100'],
                 'stock'     =>  ['numeric', 'max:100000','min:0', 'digits_between:0,10'],
                 'imagen' => ['image','mimes:jpeg,jpg,png,gif','max:20000'],
-                'precio_compra'     =>  ['numeric','min:0','digits_between:0,10'],
-                'precio_venta'     =>  ['numeric','min:0','digits_between:0,10'],
+                'precio_compra'     =>  ['numeric','min:0'],
+                'precio_venta'     =>  ['numeric','min:0'],
             );
            
             $error = Validator::make($request->all(), $rules);
@@ -189,8 +190,8 @@ class ProductosController extends Controller
                 'id_categoria' => ['required','numeric', 'max:100'],
                 'stock'     =>  ['numeric', 'max:100000','min:0', 'digits_between:0,10'],
                 'imagen' => ['image','mimes:jpeg,jpg,png,gif','max:20000'],
-                'precio_compra'     =>  ['numeric','min:0','digits_between:0,10'],
-                'precio_venta'     =>  ['numeric','min:0','digits_between:0,10'],
+                'precio_compra'     =>  ['numeric','min:0'],
+                'precio_venta'     =>  ['numeric','min:0'],
             );
 
             $error = Validator::make($request->all(), $rules);
