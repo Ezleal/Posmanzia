@@ -15,6 +15,42 @@ $("#client_table").DataTable({
 
         },
         {
+            data: 'documento',
+            name: 'documento'
+        },
+        {
+            data: 'email',
+            name: 'email'
+        }, {
+            data: 'telefono',
+            name: 'telefono'
+
+        },
+        {
+            data: 'direccion',
+            name: 'direccion'
+        }, 
+        {
+            data: 'fecha_nacimiento',
+            name: 'fecha_nacimiento'
+
+        },
+        {
+            data: 'compras',
+            name: 'compras'
+
+        },
+        {
+            data: 'compras',
+            name: 'compras'
+
+        },
+         {
+             data: 'agregado',
+             name: 'agregado'
+
+         },
+        {
             data: 'action',
             name: 'action',
             orderable: false,

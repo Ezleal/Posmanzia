@@ -54,14 +54,14 @@
           <tr>
             <th style="width: 10px">#</th>
             <th>Cliente</th>
-            {{-- <th>Documento</th>
+            <th>Documento</th>
             <th>Email</th>
             <th>Telefono</th>
             <th>Dirección</th>
             <th>Fecha de Nacimiento</th>
             <th>Total Compras</th>
             <th>Ultima Compra</th>
-            <th>Agregado al sistema</th> --}}
+            <th>Agregado al sistema</th>
             <th>Acciones</th>
           </tr>
           </thead>

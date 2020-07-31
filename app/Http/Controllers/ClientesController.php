@@ -81,6 +81,7 @@ class ClientesController extends Controller
         $newCliente->telefono  = $request->input('telefono');
         $newCliente->fecha_nacimiento  = $request->input('fecha_nacimiento');
         $newCliente->email  = $request->input('email');
+        $newCliente->agregado  = Carbon::now();
         $newCliente->save();
 
         return response()->json(['success' => 'Data Added successfully.']);
@@ -132,6 +133,7 @@ class ClientesController extends Controller
                 'fecha_nacimiento'    =>  ['date'],
                 'email'     =>['required', 'string', 'email', 'max:255','unique:clientes,email,'.$request->hidden_id],
                 'compras'    =>  ['numeric', 'max:20'],
+
             );
 
             $error = Validator::make($request->all(), $rules);
