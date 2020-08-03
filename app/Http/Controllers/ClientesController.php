@@ -59,12 +59,12 @@ class ClientesController extends Controller
    public function store(Request $request)
     {   
         $rules = array(
-                'name'    =>  ['required', 'string', 'max:255'],           
-                // 'documento'     =>  ['required', 'string', 'max:255','unique:clientes,documento,'.$request->hidden_id],          
-                // 'direccion'     =>  ['required', 'string', 'max:255'],
-                // 'telefono'    =>  ['string', 'max:20'],
-                // 'fecha_nacimiento'    =>  ['date'],
-                // 'email'     =>['required', 'string', 'email', 'max:255','unique:clientes,email,'.$request->hidden_id],
+                'name'    =>  ['required', 'string', 'max:191'],           
+                'documento'     =>  ['required', 'string', 'max:191','unique:clientes,documento,'.$request->hidden_id],          
+                'direccion'     =>  ['required', 'string', 'max:191'],
+                'telefono'    =>  ['string', 'max:20'],
+                'fecha_nacimiento'    =>  ['date'],
+                'email'     =>['required', 'string', 'email', 'max:191','unique:clientes,email,'.$request->hidden_id],
             );
 
         $error = Validator::make($request->all(), $rules);
@@ -126,13 +126,13 @@ class ClientesController extends Controller
     {
          
             $rules = array(
-                'name'    =>  ['required', 'string', 'max:255'],           
-                'documento'     =>  ['required', 'string', 'max:255','unique:clientes,documento,'.$request->hidden_id],          
-                'direccion'     =>  ['required', 'string', 'max:255'],
+                'name'    =>  ['required', 'string', 'max:191'],           
+                'documento'     =>  ['required', 'string', 'max:191','unique:clientes,documento,'.$request->hidden_id],          
+                'direccion'     =>  ['required', 'string', 'max:191'],
                 'telefono'    =>  ['string', 'max:20'],
                 'fecha_nacimiento'    =>  ['date'],
-                'email'     =>['required', 'string', 'email', 'max:255','unique:clientes,email,'.$request->hidden_id],
-                'compras'    =>  ['numeric', 'max:20'],
+                'email'     =>['required', 'string', 'email', 'max:191','unique:clientes,email,'.$request->hidden_id],
+                // 'compras'    =>  ['numeric', 'max:20'],
 
             );
 
@@ -147,6 +147,11 @@ class ClientesController extends Controller
          $form_data = array(
 
                 'name'  => $request->name,
+                'documento'=> $request->documento,
+                'direccion'=> $request->direccion,
+                'telefono'=> $request->telefono,
+                'fecha_nacimiento'=> $request->fecha_nacimiento,
+                'email'=> $request->email,
 
             );
 

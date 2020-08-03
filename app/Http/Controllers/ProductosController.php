@@ -155,7 +155,7 @@ class ProductosController extends Controller
         {    
             $rules = array(
                 'descripcion'    =>  ['required', 'string', 'max:255'],
-                'codigo'     =>  ['required', 'string', 'max:255','unique:productos,codigo,'.$request->hidden_id],
+                'codigo'     =>  ['required', 'string', 'max:191','unique:productos,codigo,'.$request->hidden_id],
                 'id_categoria' => ['required','numeric', 'max:100'],
                 'stock'     =>  ['numeric', 'max:100000','min:0', 'digits_between:0,10'],
                 'imagen' => ['image','mimes:jpeg,jpg,png,gif','max:20000'],
@@ -186,7 +186,7 @@ class ProductosController extends Controller
         {
             $rules = array(
                 'descripcion'    =>  ['required', 'string', 'max:255'],
-                'codigo'     =>  ['required', 'string', 'max:255','unique:productos,codigo,'.$request->hidden_id],
+                'codigo'     =>  ['required', 'string', 'max:191','unique:productos,codigo,'.$request->hidden_id],
                 'id_categoria' => ['required','numeric', 'max:100'],
                 'stock'     =>  ['numeric', 'max:100000','min:0', 'digits_between:0,10'],
                 'imagen' => ['image','mimes:jpeg,jpg,png,gif','max:20000'],

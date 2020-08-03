@@ -52,6 +52,14 @@ Route::post('clientes/{id}/edit', 'ClientesController@edit')->name('clientes.edi
 
 /* ------ FIN DE CLIENTES ----- */
 
+/* RUTAS DE VENTAS */
+Route::resource('/ventas', 'VentasController');
+Route::post('ventas/update', 'VentasController@update')->name('ventas.update');
+Route::get('ventas/destroy/{id}', 'VentasController@destroy');
+Route::post('ventas/{id}/edit', 'VentasController@edit')->name('ventas.edit');
+
+/* ------ FIN DE VENTAS ----- */
+
 Auth::routes(["register" => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');

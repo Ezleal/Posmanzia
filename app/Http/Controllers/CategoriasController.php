@@ -45,7 +45,7 @@ class CategoriasController extends Controller
     public function store(Request $request)
     {   
         $rules = array(
-                'name'    =>  ['required', 'string', 'max:255','unique:categorias'],
+                'name'    =>  ['required', 'string', 'max:191','unique:categorias'],
             );
 
         $error = Validator::make($request->all(), $rules);
@@ -104,7 +104,7 @@ class CategoriasController extends Controller
     {
          
             $rules = array(
-                'name'    =>  ['required', 'string', 'max:255','unique:categorias,name,'.$request->hidden_id],           
+                'name'    =>  ['required', 'string', 'max:191','unique:categorias,name,'.$request->hidden_id],           
              );
 
             $error = Validator::make($request->all(), $rules);

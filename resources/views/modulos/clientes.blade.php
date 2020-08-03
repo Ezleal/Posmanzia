@@ -149,7 +149,7 @@
               <span class="fas fa-envelope"></span>
             </div>
           </div>
-          <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"  id="email" autocomplete="email" autofocus placeholder="Email">
+          <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"  id="email" autocomplete="email" autofocus placeholder="Email">
         </div>
         <div>
             <span id="emailError" role="alert">
@@ -225,14 +225,25 @@
     success:function(data)
     {console.log(data);
      var html = '';
+     
      if(data.errors)
      {
       $('.invalid').html('');
      var html = "";
      let regexName = /(the name|el nombre)/i;
+     let regexDocumento = /(the documento|el documento)/i;
+     let regexDireccion = /(the direccion|el direccion)/i;
+     let regexTelefono = /(the telefono|el telefono)/i;
+     let regexNacimiento = /(the fecha nacimiento|el fecha nacimiento)/i;
+     let regexEmail = /(the email|el email)/i;
        data.errors.forEach(element => {
          
         if(element.match(regexName)){$('#nameError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexDocumento)){$('#documentoError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexDireccion)){$('#direccionError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexTelefono)){$('#telefonoError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexNacimiento)){$('#fecha_nacimientoError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexEmail)){$('#emailError').html('<strong class="invalid text-danger">'+element+'</strong>');}
         else{
           //  swal ( "Error al Editar Cliente!" ,  "Cliente o Email" ,  "error" )
           console.log(element);
@@ -275,10 +286,22 @@
     $('.invalid').html('');
      var html = "";
      let regexName = /(the name|el nombre)/i;
+     let regexDocumento = /(the documento|el documento)/i;
+     let regexDireccion = /(the direccion|el direccion)/i;
+     let regexTelefono = /(the telefono|el telefono)/i;
+     let regexNacimiento = /(the fecha nacimiento|el fecha nacimiento)/i;
+     let regexEmail = /(the email|el email)/i;
+
      if(data.errors)
      { 
       data.errors.forEach(element => {
         if(element.match(regexName)){$('#nameError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexDocumento)){$('#documentoError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexDireccion)){$('#direccionError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexTelefono)){$('#telefonoError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexNacimiento)){$('#fecha_nacimientoError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexEmail)){$('#emailError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+
         else{
           console.log(element)
         }
@@ -316,7 +339,11 @@ swal({
      console.log(html);
    
     $('#name').val(html.data.name);
-
+    $('#documento').val(html.data.documento);
+    $('#fecha_nacimiento').val(html.data.fecha_nacimiento);
+    $('#email').val(html.data.email);
+    $('#telefono').val(html.data.telefono);
+    $('#direccion').val(html.data.direccion);
     $('#hidden_id').val(html.data.id);
     $('.modal-title').text("Editar Cliente");
     $('#action_button').val("Edit Cliente");
@@ -325,10 +352,10 @@ swal({
    }
   })
  });    
-  var category_id;
+  var cliente_id;
 
  $(document).on('click', '.delete', function(){
-  category_id = $(this).attr('id');
+  cliente_id = $(this).attr('id');
   swal({
   title: "Estas segure de eliminar al cliente?",
   text: "Una vez eliminade, no se puede recuperar!",
@@ -339,7 +366,7 @@ swal({
 .then((willDelete) => {
   if (willDelete) {
       $.ajax({
-   url:"clientes/destroy/"+category_id,
+   url:"clientes/destroy/"+cliente_id,
    success:function(data)
    {
     swal("Poof! Le Cliente fue eliminade con exito!", {

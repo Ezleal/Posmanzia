@@ -78,9 +78,9 @@ class UsersController extends Controller
         
        
         $rules = array(
-                'name'    =>  ['required', 'string', 'max:255'],
-                'username'     =>  ['required', 'string', 'max:255','unique:users,username'],
-                'email'     =>  ['required', 'string', 'email', 'max:255','unique:users,email'],
+                'name'    =>  ['required', 'string', 'max:191'],
+                'username'     =>  ['required', 'string', 'max:191','unique:users,username'],
+                'email'     =>  ['required', 'string', 'email', 'max:191','unique:users,email'],
                 'foto' => ['image','mimes:jpeg,jpg,png,gif','max:20000'],
                 'estado'=> ['nullable','required','string'],
                 'perfil' => ['required','numeric', 'max:10'],
@@ -179,9 +179,9 @@ class UsersController extends Controller
         if($image != '')
         {   
             $rules = array(
-                'name'    =>  'required', 'string', 'max:255',
-                'username'     =>  ['required', 'string', 'max:255','unique:users,username,'.$request->hidden_id],
-                'email'     =>['required', 'string', 'email', 'max:255','unique:users,email,'.$request->hidden_id],
+                'name'    =>  'required', 'string', 'max:191',
+                'username'     =>  ['required', 'string', 'max:191','unique:users,username,'.$request->hidden_id],
+                'email'     =>['required', 'string', 'email', 'max:191','unique:users,email,'.$request->hidden_id],
                 'foto' => 'image','mimes:jpeg,jpg,png,gif','max:2048',
                 'perfil' => 'required','numeric', 'max:10',
                 'estado' => 'required','numeric', 'max:10',
