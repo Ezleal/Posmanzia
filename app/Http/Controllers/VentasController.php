@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\{Venta, User, Cliente};
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class VentasController extends Controller
