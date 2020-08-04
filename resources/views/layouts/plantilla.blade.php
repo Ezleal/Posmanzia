@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Icon Nielsen -->
   <link rel="icon" href="{{ asset('img/plantilla/n.svg') }}">
+    <!-- Ion Icon -->
+  <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>{{ config('app.name', 'Nielsen CCA') }}</title>

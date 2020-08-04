@@ -34,11 +34,16 @@ class ProductosController extends Controller
                         $button .= '<button type="button" name="delete" id="'.$data->id.'" class="delete btn btn-danger btn-sm"><i class="fas fa-times"></i></button></div>';
                         return $button;
                     })
+                      ->addColumn('agregar',function($agregar){
+                    $button = '<div class="btn-group"> <button type="button" name="agregar" id="'.$agregar->id.'" class="edit btn btn-success btnAgregarProducto">Agregar</button></div>';
+                    return $button;
+                })
                 
                     ->addColumn('category',function($category){
                     return $category->category->name;
                 })
-                    ->rawColumns(['action','category'])
+               
+                    ->rawColumns(['action','category', 'agregar'])
                     ->make(true);
             }
         
