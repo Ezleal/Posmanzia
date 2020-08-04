@@ -42,6 +42,7 @@
                       </div>
                       </div>
                       <input type="text" class="form-control" name="vendedor" value="{{ Auth::user()->name }}"  id="vendedor" autocomplete="vendedor" autofocus placeholder="Vendedor" readonly>
+                      <input type="hidden" id="vendedor" name="vendedor" value="{{ Auth::user()->id }}">
                     </div>
                     </div>
                     {{-- ENTRADA PARA EL CODIGO --}}
@@ -53,7 +54,19 @@
                         <span class="fas fa-key"></span>
                       </div>
                       </div>
-                      <input type="text" class="form-control" name="codigo" value="1223242342"  id="codigo" autocomplete="codigo" autofocus placeholder="codigo" readonly>
+                      {{-- SE BUSCA EL ULTIMO CODIGO DE VENTA Y SE SUMA 1 AL FINAL --}}
+          
+                      @foreach ($ventas as $venta)    
+                      @endforeach
+                      @if (isset($venta)) 
+                      <input type="text" class="form-control pl-2" name="codigo" value="{{ $venta->codigo + 1 }}"  id="codigo" autocomplete="codigo" autofocus placeholder="codigo" >
+                      @else
+                      {{-- EN CASO DE QUE NO EXISTA EN VALUE SE ESTABLECE EL NRO DE INICIO DE FACTURACIÓN --}}
+                         <input type="text" class="form-control" name="codigo" value="10000"  id="codigo" autocomplete="codigo" autofocus placeholder="codigo" readonly>
+                      @endif
+                   
+                        
+                      
                     </div>
                     </div>
                      {{-- ENTRADA PARA EL CLIENTE --}}
@@ -108,7 +121,7 @@
                   </div>
   
                 <div class="row mt-2">
-                  <div class="col-md-12">
+                  <div class="col-md-12 col-md-offset-4">
                     <table class="table mb-0">
                       <thead class="p-0">
                         <tr>
@@ -118,7 +131,7 @@
                       </thead>
                       <tbody >
                         <tr>
-                          <td style="width: 50%" class="p-1">
+                          <td style="width: 40%" class="p-1">
                              <div class="form-group">
                                  <div class="input-group">
                                    <input type="text" class="form-control" name="codigo" value="1223242342"  id="codigo" autocomplete="codigo" autofocus placeholder="codigo">
@@ -131,7 +144,7 @@
                            </div>
                           
                           </td>
-                           <td style="width: 50%"  class="p-1">
+                           <td style="width: 60%"  class="p-1">
                               <div class="form-group">
                                <div class="input-group">
                                  <div class="input-group-append">

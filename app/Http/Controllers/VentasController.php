@@ -46,7 +46,7 @@ class VentasController extends Controller
      */
     public function create()
     {
-        // $ventas = Venta::all();
+        $ventas = Venta::all();
         return view('modulos.crear_ventas',compact('ventas'));
 
     }
