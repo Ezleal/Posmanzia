@@ -24,10 +24,19 @@ $("#ventas_table").DataTable({
             data: 'descripcion',
             name: 'descripcion'
         },
-        {
-            data: 'stock',
-            name: 'stock'
-        },
+       {
+           data: 'stock',
+           name: 'stock',
+           render: function (data, type, full, meta) {
+               if (data <= 10)
+                   return "<button class='btn btn-danger'>" + data + "</button>"
+               if (data >= 10 && data <= 20)
+                   return "<button class='btn btn-warning'>" + data + "</button>"
+               else {
+                   return "<button class='btn btn-success'>" + data + "</button>"
+               }
+           }
+       },
 
         {
             data: 'precio_venta',
@@ -94,4 +103,32 @@ $("#ventas_table").DataTable({
   })
   //Money Euro
   $('[data-mask]').inputmask()
+
+  /*=============================================
+        Edicion de Carga de fechas
+=============================================*/
                             
+$("#ventas_table").on('click','.btnAgregarProducto',function () {
+    
+var idProducto = $(this).attr('id');
+console.log(idProducto);
+$(this).removeClass('btnAgregarProducto');
+$(this).addClass('btn-warning disabled');
+$(this).html('Cargado');
+
+
+    $.ajax({
+url: "/productos/" + idProducto + "/edit",
+dataType: "json",
+success: function (respuesta) {
+    console.log(respuesta);
+    var descripcion = respuesta.data.descripcion;
+    var stock = respuesta.data.stock;
+    var precio_venta = respuesta.data.precio_venta;
+
+    $('.nuevoProducto').append('<div class="col-6 col-sm-6 pr-0 mt-1"> <div class="input"> <div class="input-group-append p-0"> <span><button type="button" class="btn btn-danger btn-xs"><i class="fas fa-times"></i></button></span> <input type="text" class="form-control pl-2" name="agregarProducto" id="agregarProducto" title="' + descripcion + '" value="' + descripcion + '"  autocomplete="agregarProducto" autofocus readonly> </div> </div> </div><div class="col-2 col-sm-2 pl-1 pr-1 mt-1"> <input type="number" class="form-control p-1" min="1" value="1" stock="' + stock + '" required> </div> <div class="col-4 col-sm-4 pl-0 mt-1"> <div class="input-group"> <div class="input-group-append"> <div class="input-group-text p-1">$ </div> </div> <input type="text" class="form-control pl-2" name="precio" value="' + precio_venta + '"  id="precio" autocomplete="producto" autofocus readonly> </div> </div> </div>')
+}
+})
+});
+
+

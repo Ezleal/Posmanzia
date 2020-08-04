@@ -42,7 +42,7 @@
                       </div>
                       </div>
                       <input type="text" class="form-control" name="vendedor" value="{{ Auth::user()->name }}"  id="vendedor" autocomplete="vendedor" autofocus placeholder="Vendedor" readonly>
-                      <input type="hidden" id="vendedor" name="vendedor" value="{{ Auth::user()->id }}">
+                      <input type="hidden" id="id_vendedor" name="id_vendedor" value="{{ Auth::user()->id }}">
                     </div>
                     </div>
                     {{-- ENTRADA PARA EL CODIGO --}}
@@ -78,41 +78,25 @@
                         <span class="fas fa-users"></span>
                       </div>
                       </div>
-                        <select class="form-control" name="" id="">
-                          <option value="">Seleccionar Cliente</option>
-                        </select>  
+                         <select class="form-control input-lg" type="text" name="id_cliente" id="id_cliente">
+                {{-- Se busca la información desde la bd prioridad para el select --}}
+                     <option selected disabled id="editarCliente">Seleccionar Categoria </option>
+                     @if (!empty($clientes))
+                      @foreach ($clientes as $cliente)    
+                    <option   value="{{ $cliente->id }}">{{ $cliente->name}}</option>      
+                    @endforeach
+                      @endif
+                       </select>
                         <button type="button" class="btn btn-danger ml-2" data-toggle="modal" data-target="#agregarCliente" name="create_record" id="create_record">
                                Nuevo Cliente
                         </button>                  
                       </div>
                     </div>
-                    {{-- ENTRADA PARA EL CODIGO --}}
-                     <div class="form-group row nuevoProducto">
-                    <div class="col-6 col-sm-6 pr-0">
-                      <div class="input">
-                        
-                        <div class="input-group-append p-0">
-                        <span><button type="button" class="btn btn-danger btn-xs"><i class="fas fa-times"></i></button></span>
-                        <input type="text" class="form-control pl-2" name="codigo" value="1223242342"  id="codigo" autocomplete="codigo" autofocus placeholder="codigo">
-                      </div>
-                      
+                    {{-- ENTRADA PARA AGREGAR PRODUCTO --}}
+                     <div class="form-group row nuevoProducto ">
+
                     </div>
-                    </div>
-                    <div class="col-2 col-sm-2">
-                      <input type="number" class="form-control p-1" min="1" placeholder="0" required>
-                    </div>
-                    <div class="col-4 col-sm-4 pl-0"> 
-                        <div class="input-group">
-                          <div class="input-group-append">
-                        <div class="input-group-text p-1">$
-                        </div>
-                      </div>
-                      <input type="text" class="form-control pl-2" name="codigo" value="1223242342"  id="codigo" autocomplete="codigo" autofocus placeholder="codigo">
-                          
-                    </div>
-                      
-                    </div>
-                  </div>
+                  
                 <!--=====================================
                 BOTÓN PARA AGREGAR PRODUCTO
                 ======================================-->
@@ -134,7 +118,7 @@
                           <td style="width: 40%" class="p-1">
                              <div class="form-group">
                                  <div class="input-group">
-                                   <input type="text" class="form-control" name="codigo" value="1223242342"  id="codigo" autocomplete="codigo" autofocus placeholder="codigo">
+                                   <input type="text" class="form-control" name="impuesto" value="21"  id="impuesto" autocomplete="impuesto" autofocus placeholder="Iva 21%">
                                  <div class="input-group-append">
                                    <div class="input-group-text">
                                    <span class="fas fa-percent"></span>
@@ -152,7 +136,7 @@
                                              <ion-icon name="logo-usd"></ion-icon>
                                          </div>
                                      </div>
-                                  <input type="text" class="form-control" name="codigo" value="1223242342"  id="codigo" autocomplete="codigo" autofocus placeholder="codigo">
+                                  <input type="text" class="form-control" name="total" value=""  id="total" autocomplete="total" autofocus placeholder="Total">
 
                                   </div>
                              </div>

@@ -35,7 +35,7 @@ class ProductosController extends Controller
                         return $button;
                     })
                       ->addColumn('agregar',function($agregar){
-                    $button = '<div class="btn-group"> <button type="button" name="agregar" id="'.$agregar->id.'" class="edit btn btn-success btnAgregarProducto">Agregar</button></div>';
+                    $button = '<div class="btn-group"> <button type="button" name="agregar" id="'.$agregar->id.'" class="edit btn btn-primary btnAgregarProducto recuperarBoton">Agregar</button></div>';
                     return $button;
                 })
                 
