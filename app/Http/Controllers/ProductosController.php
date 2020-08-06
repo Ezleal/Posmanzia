@@ -123,9 +123,24 @@ class ProductosController extends Controller
      * @param  \App\Producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function show(Producto $producto)
+    public function show()
     {
-        //
+        if(request()->ajax())
+        {
+            $data = Producto::All();
+            return response()->json(['data' => $data]);
+        }
+      
+    }
+     public function traerPorNombre($id)
+    {
+        if(request()->ajax())
+        {
+            $data = Producto::where('descripcion', 'LIKE', $id)->get();
+            return response()->json(['data' => $data]);
+        }
+      
+    
     }
 
     /**

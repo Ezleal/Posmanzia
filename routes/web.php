@@ -41,7 +41,8 @@ Route::resource('/productos', 'ProductosController');
 Route::post('productos/update', 'ProductosController@update')->name('productos.update');
 Route::get('productos/destroy/{id}', 'ProductosController@destroy');
 Route::post('productos/{id}/edit', 'ProductosController@edit')->name('productos.edit');
-
+Route::get('/productosTraer', 'ProductosController@show');
+Route::get('traerPorNombre/{id}', 'ProductosController@traerPorNombre');
 /* ------ FIN DE PRODUCTOS ----- */
 
 /* RUTAS DE CLIENTES */

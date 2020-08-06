@@ -1,3 +1,4 @@
+
 /*=============================================
 Data Table de Clientes
 =============================================*/
@@ -37,7 +38,6 @@ $("#ventas_table").DataTable({
                }
            }
        },
-
         {
             data: 'precio_venta',
             name: 'precio_venta',
@@ -66,7 +66,6 @@ $("#ventas_table").DataTable({
     "autoWidth": false,
     "responsive": true,
     "language": {
-
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ Registros",
         "sZeroRecords": "No se encontraron resultados",
@@ -116,7 +115,7 @@ localStorage.removeItem("agregarProducto");
 
 $("#ventas_table").on('click','.btnAgregarProducto',function () {
     var idProducto = $(this).attr('id');
-    
+
     /* Local Storage almacena id del producto */
     // if (localStorage.getItem("agregarProducto") == null) {
     //     idAgregarProducto = [];
@@ -130,7 +129,7 @@ $("#ventas_table").on('click','.btnAgregarProducto',function () {
     $(this).removeClass('btnAgregarProducto');
     $(this).addClass('btn-warning disabled');
     $(this).html('Cargado');
-
+    // $(this).parent().remove();
 
     $.ajax({
     url: "/productos/" + idProducto + "/edit",
@@ -180,12 +179,7 @@ CUANDO CARGUE LA TABLA CADA VEZ QUE NAVEGUE EN ELLA
 
 // })
 
-
-/*=============================================
-        Eliminar producto cargado
-=============================================*/
 // idQuitarProducto = [];
-
 $(".formularioVenta").on('click', '.quitarProducto', function () {
     $(this).parent().parent().parent().parent().parent().remove();
 
@@ -200,4 +194,87 @@ $(".formularioVenta").on('click', '.quitarProducto', function () {
     
 });
 
+/*=============================================
+BOTON PARA DISPOSITIVOS MOVILES AGREGAR
+=============================================*/
+$(".mbAgregarProducto").click(function () {
 
+    $.ajax({
+        url: "/productosTraer",
+        dataType: "json",
+        success: function (respuesta) {
+            console.log(respuesta.data);
+            
+         
+    $('.nuevoProducto').append('<div class="row"><div class="col-6 col-sm-6 pr-0 mt-1"> <div class="input"> <div class="input-group-append p-0"> <span><button type="button" class="btn btn-danger btn-xs quitarProducto" idProducto=""><i class="fas fa-times"></i></button></span> <select type="text" class="form-control pl-2 nuevaDescripcionProducto" name="nuevaDescipcionProducto" id="nuevaDescipcionProducto" title="" value=""  autocomplete="nuevaDescripcionProducto" autofocus required><option>Seleccionar Producto</option></select> </div> </div> </div><div class="col-2 col-sm-2 pl-1 pr-1 mt-1"> <input type="number" class="form-control p-1" min="1" value="1" name="nuevaCantidadProducto" id="nuevaCantidadProducto" stock="" required> </div> <div class="col-4 col-sm-4 pl-0 mt-1"> <div class="input-group"> <div class="input-group-append"> <div class="input-group-text p-1">$ </div> </div> <input type="text" class="form-control pl-2" name="nuevoPrecio" value=""  id="nuevoPrecio" autocomplete="producto" autofocus readonly> </div> </div> </div></div>')
+  
+            respuesta.data.forEach(element => {
+                if (element.stock != 0) {
+
+                    $("#nuevaDescipcionProducto").append(
+
+                        '<option idProducto="' + element.id + '" value="' + element.descripcion + '">' + element.descripcion + '</option>'
+                    )
+
+                }
+                    });
+
+        }
+    })
+});
+
+/*=============================================
+SELECCIONAR PRODUCTO
+=============================================*/
+
+$(".formularioVenta").on("change", "select.nuevaDescripcionProducto", function () {
+
+    var nombreProducto = $(this).val();
+    console.log(nombreProducto);
+    // var nuevaDescripcionProducto = $(this).parent().parent().parent().children().children().children(".nuevaDescripcionProducto");
+
+    $.ajax({
+        url: "/traerPorNombre/"+nombreProducto,
+        dataType: "json",
+        success: function (respuesta) {
+            resultP = respuesta.data[0];
+            // console.log(respuesta.data[0].stock);
+      	    $("#nuevaCantidadProducto").attr("stock", resultP.stock);
+            $("#nuevoPrecio").val(resultP.precio_venta);
+
+        }
+    })
+    
+    // var nuevoPrecioProducto = $(this).parent().parent().parent().children(".ingresoPrecio").children().children(".nuevoPrecioProducto");
+
+    // var nuevaCantidadProducto = $(this).parent().parent().parent().children(".ingresoCantidad").children(".nuevaCantidadProducto");
+
+    // var datos = new FormData();
+    // datos.append("nombreProducto", nombreProducto);
+
+
+    // $.ajax({
+
+    //     url: "ajax/productos.ajax.php",
+    //     method: "POST",
+    //     data: datos,
+    //     cache: false,
+    //     contentType: false,
+    //     processData: false,
+    //     dataType: "json",
+    //     success: function (respuesta) {
+
+    //         $(nuevaDescripcionProducto).attr("idProducto", respuesta["id"]);
+    //         $(nuevaCantidadProducto).attr("stock", respuesta["stock"]);
+    //         $(nuevaCantidadProducto).attr("nuevoStock", Number(respuesta["stock"]) - 1);
+    //         $(nuevoPrecioProducto).val(respuesta["precio_venta"]);
+    //         $(nuevoPrecioProducto).attr("precioReal", respuesta["precio_venta"]);
+
+    //         // AGRUPAR PRODUCTOS EN FORMATO JSON
+
+    //         listarProductos()
+
+    //     }
+
+    // })
+})

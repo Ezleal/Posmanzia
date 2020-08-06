@@ -101,7 +101,7 @@
                 BOTÓN PARA AGREGAR PRODUCTO
                 ======================================-->
                   <div class="justify-content-center">
-                <button type="button" class="d-md-none d-lg-none btn btn-primary mt-2 btnAgregarProducto">Agregar producto</button>
+                <button type="button" class="d-md-none d-lg-none btn btn-primary mt-2 mbAgregarProducto">Agregar producto</button>
                   </div>
   
                 <div class="row mt-2">
