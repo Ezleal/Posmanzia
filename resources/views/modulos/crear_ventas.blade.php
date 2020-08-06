@@ -28,7 +28,7 @@
         {{-- FORMULARIO --}}
         <div class="col-md-5 col-xs-12 col-sm-12">
             <div class="card card-primary card-outline">
-            <form action="post">
+            <form action="post" class="formularioVenta">
               <div class="card-body with-border">
                
                   <div class="box">
@@ -80,11 +80,11 @@
                       </div>
                          <select class="form-control input-lg" type="text" name="id_cliente" id="id_cliente">
                 {{-- Se busca la información desde la bd prioridad para el select --}}
-                     <option selected disabled id="editarCliente">Seleccionar Categoria </option>
+                     <option selected disabled id="editarCliente">Seleccionar Cliente </option>
                      @if (!empty($clientes))
                       @foreach ($clientes as $cliente)    
                     <option   value="{{ $cliente->id }}">{{ $cliente->name}}</option>      
-                    @endforeach
+                      @endforeach
                       @endif
                        </select>
                         <button type="button" class="btn btn-danger ml-2" data-toggle="modal" data-target="#agregarCliente" name="create_record" id="create_record">
@@ -93,7 +93,7 @@
                       </div>
                     </div>
                     {{-- ENTRADA PARA AGREGAR PRODUCTO --}}
-                     <div class="form-group row nuevoProducto ">
+                     <div class="form-group nuevoProducto ">
 
                     </div>
                   
