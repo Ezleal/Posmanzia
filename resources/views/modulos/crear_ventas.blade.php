@@ -192,12 +192,12 @@
         <thead>
           <tr>
             {{-- <th style="width: 10px">#</th> --}}
-            <th>Código</th>
+            <th>Codigo</th>
             <th>Imagen</th>
             <th>Descripción</th>
             <th>Stock</th>
             <th>Precio</th>
-            <th>Acciones</th>
+            <th>Acción</th>
           </tr>
           </thead>
           <tbody>

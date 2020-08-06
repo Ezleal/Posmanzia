@@ -51,12 +51,13 @@ $("#ventas_table").DataTable({
             data: 'agregar',
             name: 'agregar',
             orderable: false,
-            searchable: false
+            searchable: false,
+
         },
     ],
-    // "deferRender": true,
-    // "retrieve": true,
-    // "processing": true,
+    "deferRender": true,
+    "retrieve": true,
+    "processing": true,
     "paging": true,
     "lengthChange": true,
     "searching": true,
@@ -107,7 +108,6 @@ $("#ventas_table").DataTable({
   //Money Euro
   $('[data-mask]').inputmask()
 
-
 /*=============================================
         Edicion de Carga de fechas
 =============================================*/
@@ -118,13 +118,13 @@ $("#ventas_table").on('click','.btnAgregarProducto',function () {
     var idProducto = $(this).attr('id');
     
     /* Local Storage almacena id del producto */
-    if (localStorage.getItem("agregarProducto") == null) {
-        idAgregarProducto = [];
-    } else {
-        idAgregarProducto.concat(localStorage.getItem("agregarProducto"))
-    }
-    idAgregarProducto.push({ "id": idProducto });
-    localStorage.setItem("agregarProducto", JSON.stringify(idAgregarProducto));
+    // if (localStorage.getItem("agregarProducto") == null) {
+    //     idAgregarProducto = [];
+    // } else {
+    //     idAgregarProducto.concat(localStorage.getItem("agregarProducto"))
+    // }
+    // idAgregarProducto.push({ "id": idProducto });
+    // localStorage.setItem("agregarProducto", JSON.stringify(idAgregarProducto));
     /* Local Storage almacena id del producto */
    
     $(this).removeClass('btnAgregarProducto');
@@ -162,25 +162,23 @@ $("#ventas_table").on('click','.btnAgregarProducto',function () {
 CUANDO CARGUE LA TABLA CADA VEZ QUE NAVEGUE EN ELLA
 =============================================*/
 
-$("#ventas_table").on("draw.dt", function () {
+// $("#ventas_table").on("draw.dt", function () {
 
-    if (localStorage.getItem("agregarProducto") != null) {
+//     if (localStorage.getItem("agregarProducto") != null) {
 
-        var listaIdProductos = JSON.parse(localStorage.getItem("agregarProducto"));
+//         var listaIdProductos = JSON.parse(localStorage.getItem("agregarProducto"));
 
-        for (var i = 0; i < listaIdProductos.length; i++) {
+//         for (var i = 0; i < listaIdProductos.length; i++) {
 
-            $("button.recuperarBoton[id='" + listaIdProductos[i]["id"] + "']").removeClass('btn-primary btnAgregarProducto');
-            $("button.recuperarBoton[id='" + listaIdProductos[i]["id"] + "']").addClass('btn-warning disabled');
-            $("button.recuperarBoton[id='" + listaIdProductos[i]["id"] + "']").html('Cargado');
+//             $("button.recuperarBoton[id='" + listaIdProductos[i]["id"] + "']").removeClass('btn-primary btnAgregarProducto');
+//             $("button.recuperarBoton[id='" + listaIdProductos[i]["id"] + "']").addClass('btn-warning disabled');
+//             $("button.recuperarBoton[id='" + listaIdProductos[i]["id"] + "']").html('Cargado');
 
-        }
+//         }
        
-    }
-  
+//     }
 
-
-})
+// })
 
 
 /*=============================================
@@ -192,26 +190,12 @@ $(".formularioVenta").on('click', '.quitarProducto', function () {
     $(this).parent().parent().parent().parent().parent().remove();
 
     var idProducto = $(this).attr('idProducto');
-    var idProductos = $(this).attr('idProducto');
-    // var idProductos = $(this).attr('idProducto');
-    /* Local Storage almacena id del producto */
-    // if (localStorage.getItem("quitarProducto") == null) {
-    //     idQuitarProducto = [];
-    // } else {
-    //     idQuitarProducto.concat(localStorage.getItem("quitarProducto"))
-    // }
-    // agregarProducto.pull({
-    //     "id": idProducto
-    // });
-    // localStorage.setItem("quitarProducto", JSON.stringify(idQuitarProducto));
-    /* Local Storage almacena id del producto */
-
-    
+  
     $("button.recuperarBoton[id='" + idProducto + "']").removeClass('btn-warning disabled');
     $("button.recuperarBoton[id='" + idProducto + "']").addClass('btnAgregarProducto btn-primary');
     $("button.recuperarBoton[id='" + idProducto + "']").html('Agregar');
     
-    localStorage.removeItem("agregarProducto", JSON.stringify(idProductos));
+    // localStorage.removeItem("agregarProducto", JSON.stringify(idProductos));
   
     
 });
