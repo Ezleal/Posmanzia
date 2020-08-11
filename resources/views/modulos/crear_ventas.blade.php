@@ -38,7 +38,7 @@
                       <div class="input-group">
                         <div class="input-group-append">
                         <div class="input-group-text">
-                        <span class="fas fa-user"></span>
+                        <span class="fas fa-address-card"></span>
                       </div>
                       </div>
                       <input type="text" class="form-control" name="vendedor" value="{{ Auth::user()->name }}"  id="vendedor" autocomplete="vendedor" autofocus placeholder="Vendedor" readonly>
@@ -51,7 +51,7 @@
                       <div class="input-group">
                         <div class="input-group-append">
                         <div class="input-group-text">
-                        <span class="fas fa-key"></span>
+                        <span class="fas fa-barcode"></span>
                       </div>
                       </div>
                       {{-- SE BUSCA EL ULTIMO CODIGO DE VENTA Y SE SUMA 1 AL FINAL --}}
@@ -153,7 +153,7 @@
 
                 <div class="form-group row">
                   
-                  <div class="col-md-6" style="padding-right:0px">
+                  <div class="col-md-6 mr-3" style="padding-right:0px">
                     
                      <div class="input-group">
                   

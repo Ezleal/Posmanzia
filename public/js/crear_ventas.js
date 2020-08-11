@@ -108,7 +108,7 @@ $("#ventas_table").DataTable({
   $('[data-mask]').inputmask()
 
 /*=============================================
-        Edicion de Carga de fechas
+    Edicion de Carga de Productos Tabla
 =============================================*/
 idAgregarProducto = [];
 localStorage.removeItem("agregarProducto");
@@ -152,7 +152,7 @@ $("#ventas_table").on('click','.btnAgregarProducto',function () {
         }
   
 
-    $('.nuevoProducto').append('<div class="row"><div class="col-6 col-sm-6 pr-0 mt-1"> <div class="input"> <div class="input-group-append p-0"> <span><button type="button" class="btn btn-danger btn-xs quitarProducto" idProducto="'+idProducto+'"><i class="fas fa-times"></i></button></span> <input type="text" class="form-control pl-2" name="agregarProducto" id="agregarProducto" title="' + descripcion + '" value="' + descripcion + '"  autocomplete="agregarProducto" autofocus readonly> </div> </div> </div><div class="col-2 col-sm-2 pl-1 pr-1 mt-1"> <input type="number" class="form-control p-1" min="1" value="1" stock="' + stock + '" required> </div> <div class="col-4 col-sm-4 pl-0 mt-1"> <div class="input-group"> <div class="input-group-append"> <div class="input-group-text p-1">$ </div> </div> <input type="text" class="form-control pl-2" name="precio" value="' + precio_venta + '"  id="precio" autocomplete="producto" autofocus readonly> </div> </div> </div></div>')
+    $('.nuevoProducto').append('<div class="row"><div class="col-6 col-sm-6 pr-0 mt-1"> <div class="input"> <div class="input-group-append p-0"> <span><button type="button" class="btn btn-danger btn-xs quitarProducto" idProducto="' + idProducto + '"><i class="fas fa-times"></i></button></span> <input type="text" class="form-control pl-2" name="agregarProducto" id="agregarProducto" title="' + descripcion + '" value="' + descripcion + '"  autocomplete="agregarProducto" autofocus readonly> </div> </div> </div><div class="col-2 col-sm-2 pl-1 pr-1 mt-1"> <input type="number"  class="form-control p-1 nuevaCantidadProducto" min="1" value="1" stock="' + stock + '" required> </div> <div class="col-4 col-sm-4 pl-0 mt-1 divPrecioProd"> <div class="input-group"> <div class="input-group-append"> <div class="input-group-text p-1">$ </div> </div> <input type="text" class="form-control pl-2 nuevoPrecio" name="precio" value="' + precio_venta + '" precioReal="' + precio_venta + '" id="precio" autocomplete="producto" autofocus readonly> </div> </div> </div></div>')
 }
 })
 });
@@ -197,21 +197,25 @@ $(".formularioVenta").on('click', '.quitarProducto', function () {
 /*=============================================
 BOTON PARA DISPOSITIVOS MOVILES AGREGAR
 =============================================*/
+var numProducto = 0;
 $(".mbAgregarProducto").click(function () {
+    numProducto++;
 
     $.ajax({
         url: "/productosTraer",
+        cache: false,
+        contentType: false,
+        processData: false,
         dataType: "json",
         success: function (respuesta) {
             console.log(respuesta.data);
-            
-         
-    $('.nuevoProducto').append('<div class="row"><div class="col-6 col-sm-6 pr-0 mt-1"> <div class="input"> <div class="input-group-append p-0"> <span><button type="button" class="btn btn-danger btn-xs quitarProducto" idProducto=""><i class="fas fa-times"></i></button></span> <select type="text" class="form-control pl-2 nuevaDescripcionProducto" name="nuevaDescipcionProducto" id="nuevaDescipcionProducto" title="" value=""  autocomplete="nuevaDescripcionProducto" autofocus required><option>Seleccionar Producto</option></select> </div> </div> </div><div class="col-2 col-sm-2 pl-1 pr-1 mt-1"> <input type="number" class="form-control p-1" min="1" value="1" name="nuevaCantidadProducto" id="nuevaCantidadProducto" stock="" required> </div> <div class="col-4 col-sm-4 pl-0 mt-1"> <div class="input-group"> <div class="input-group-append"> <div class="input-group-text p-1">$ </div> </div> <input type="text" class="form-control pl-2" name="nuevoPrecio" value=""  id="nuevoPrecio" autocomplete="producto" autofocus readonly> </div> </div> </div></div>')
-  
+            $('.nuevoProducto').append('<div class="row"><div class="col-6 col-sm-6 pr-0 mt-1"> <div class="input"> <div class="input-group-append p-0"> <span><button type="button" class="btn btn-danger btn-xs quitarProducto" idProducto=""><i class="fas fa-times"></i></button></span> <select type="text" class="form-control pl-2 nuevaDescripcionProducto" name="nuevaDescripcionProducto" id="producto' + numProducto + '" title="" value=""  autocomplete="nuevaDescripcionProducto" autofocus required><option selected disabled>Seleccionar Producto</option></select> </div> </div> </div><div class="col-2 col-sm-2 pl-1 pr-1 mt-1"> <input type="number" class="form-control p-1 nuevaCantidadProducto ingresoCantidad" min="1" value="" name="nuevaCantidadProducto" id="nuevaCantidadProducto" stock="" required readonly> </div> <div class="col-4 col-sm-4 pl-0 mt-1"> <div class="input-group"> <div class="input-group-append divPrecioProd"> <div class="input-group-text p-1">$ </div> </div> <input type="text" class="form-control pl-2 nuevoPrecio ingresoPrecio" precioReal name="nuevoPrecio" value=""  id="nuevoPrecio" autocomplete="producto" autofocus readonly> </div> </div> </div></div>')
+
             respuesta.data.forEach(element => {
+
                 if (element.stock != 0) {
 
-                    $("#nuevaDescipcionProducto").append(
+                    $("#producto" + numProducto).append(
 
                         '<option idProducto="' + element.id + '" value="' + element.descripcion + '">' + element.descripcion + '</option>'
                     )
@@ -228,20 +232,35 @@ SELECCIONAR PRODUCTO
 =============================================*/
 
 $(".formularioVenta").on("change", "select.nuevaDescripcionProducto", function () {
-
+    
     var nombreProducto = $(this).val();
-    console.log(nombreProducto);
-    // var nuevaDescripcionProducto = $(this).parent().parent().parent().children().children().children(".nuevaDescripcionProducto");
-
+    var nuevaCantidadProducto = $(this).parent().parent().parent().parent().children().children(".nuevaCantidadProducto");
+    var nuevoPrecioProducto = $(this).parent().parent().parent().parent().children().children().children(".nuevoPrecio");
+    // console.log(nuevoPrecioProducto);
+    nuevaCantidadProducto.attr("readonly", false);
+    nuevaCantidadProducto.val(1);
     $.ajax({
         url: "/traerPorNombre/"+nombreProducto,
         dataType: "json",
         success: function (respuesta) {
+            if (nombreProducto == "Seleccionar Producto") {
+                nuevoPrecioProducto.val('');
+                nuevaCantidadProducto.val('');
+                $(nuevoPrecioProducto).attr("precioReal", 0);
+                $(nuevaCantidadProducto).attr("stock", 0);
+
+            }
             resultP = respuesta.data[0];
             // console.log(respuesta.data[0].stock);
-      	    $("#nuevaCantidadProducto").attr("stock", resultP.stock);
-            $("#nuevoPrecio").val(resultP.precio_venta);
+             if (nombreProducto != "Seleccionar Producto") {
+             $(nuevaCantidadProducto).attr("stock", resultP.stock);
+             $(nuevoPrecioProducto).val(resultP.precio_venta);
+             $(nuevoPrecioProducto).attr("precioReal", resultP.precio_venta);
+             }
+      	    
+           
 
+           
         }
     })
     
@@ -277,4 +296,59 @@ $(".formularioVenta").on("change", "select.nuevaDescripcionProducto", function (
     //     }
 
     // })
+})
+
+/*=============================================
+MODIFICAR LA CANTIDAD
+=============================================*/
+
+$(".formularioVenta").on("change", "input.nuevaCantidadProducto", function () {
+
+    var precio = $(this).parent().parent().children().children().children(".nuevoPrecio");
+
+    var precioFinal = $(this).val() * precio.attr("precioReal");
+    
+    precio.val(precioFinal);
+
+    var nuevoStock = Number($(this).attr("stock")) - $(this).val();
+
+    $(this).attr("nuevoStock", nuevoStock);
+
+    if (Number($(this).val()) > Number($(this).attr("stock"))) {
+
+/*=============================================
+SI LA CANTIDAD ES SUPERIOR AL STOCK REGRESAR VALORES INICIALES
+=============================================*/
+
+        $(this).val(1);
+
+        var precioFinal = $(this).val() * precio.attr("precioReal");
+
+        precio.val(precioFinal);
+
+            swal("La cantidad supera el Stock", "¡Sólo hay " + $(this).attr("stock") + " unidades!", "error")
+
+        // swal({
+        //     title: "La cantidad supera el Stock",
+        //     text: "¡Sólo hay " + $(this).attr("stock") + " unidades!",
+        //     type: "error",
+        //     confirmButtonText: "¡Cerrar!"
+        // });
+
+        return;
+
+    }
+
+    // SUMAR TOTAL DE PRECIOS
+
+    sumarTotalPrecios()
+
+    // AGREGAR IMPUESTO
+
+    agregarImpuesto()
+
+    // AGRUPAR PRODUCTOS EN FORMATO JSON
+
+    listarProductos()
+
 })
