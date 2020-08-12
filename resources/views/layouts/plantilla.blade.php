@@ -77,6 +77,8 @@
                   Plantilla Js Custom
 ==============================================--}}
 <script src="{{ asset('/js/plantilla.js') }}"></script>
+<!-- AutoNumeric -->
+<script src="{{ asset('plugins/numbers/autoNumeric.js') }}"></script>
 <!-- InputMask -->
 <script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
 <script src="{{ asset('plugins/inputmask/min/jquery.inputmask.bundle.min.js') }}"></script>

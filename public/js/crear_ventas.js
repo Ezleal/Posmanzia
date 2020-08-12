@@ -116,6 +116,7 @@ localStorage.removeItem("agregarProducto");
 $("#ventas_table").on('click','.btnAgregarProducto',function () {
     var idProducto = $(this).attr('id');
 
+
     /* Local Storage almacena id del producto */
     // if (localStorage.getItem("agregarProducto") == null) {
     //     idAgregarProducto = [];
@@ -152,7 +153,16 @@ $("#ventas_table").on('click','.btnAgregarProducto',function () {
         }
   
 
-    $('.nuevoProducto').append('<div class="row"><div class="col-6 col-sm-6 pr-0 mt-1"> <div class="input"> <div class="input-group-append p-0"> <span><button type="button" class="btn btn-danger btn-xs quitarProducto" idProducto="' + idProducto + '"><i class="fas fa-times"></i></button></span> <input type="text" class="form-control pl-2" name="agregarProducto" id="agregarProducto" title="' + descripcion + '" value="' + descripcion + '"  autocomplete="agregarProducto" autofocus readonly> </div> </div> </div><div class="col-2 col-sm-2 pl-1 pr-1 mt-1"> <input type="number"  class="form-control p-1 nuevaCantidadProducto" min="1" value="1" stock="' + stock + '" required> </div> <div class="col-4 col-sm-4 pl-0 mt-1 divPrecioProd"> <div class="input-group"> <div class="input-group-append"> <div class="input-group-text p-1">$ </div> </div> <input type="text" class="form-control pl-2 nuevoPrecio" name="precio" value="' + precio_venta + '" precioReal="' + precio_venta + '" id="precio" autocomplete="producto" autofocus readonly> </div> </div> </div></div>')
+    $('.nuevoProducto').append('<div class="row"><div class="col-6 col-sm-6 pr-0 mt-1"> <div class="input"> <div class="input-group-append p-0"> <span><button type="button" class="btn btn-danger btn-xs quitarProducto" idProducto="' + idProducto + '"><i class="fas fa-times"></i></button></span> <input type="text" class="form-control pl-2" name="agregarProducto" id="agregarProducto" title="' + descripcion + '" value="' + descripcion + '"  autocomplete="agregarProducto" autofocus readonly> </div> </div> </div><div class="col-2 col-sm-2 pl-1 pr-1 mt-1"> <input type="number"  class="form-control p-1 nuevaCantidadProducto" min="1" value="1" stock="' + stock + '" required> </div> <div class="col-4 col-sm-4 pl-0 mt-1 divPrecioProd"> <div class="input-group"> <div class="input-group-append"> <div class="input-group-text p-1">$ </div> </div> <input type="text" class="form-control pl-2 nuevoPrecio" name="nuevoPrecio" value="' + precio_venta + '" precioReal="' + precio_venta + '" id="nuevoPrecio" autofocus readonly> </div> </div> </div></div>')
+        
+        // SUMAR TOTAL DE PRECIOS
+        sumarTotalPrecios();
+        // AGREGAR IMPUESTO
+        agregarImpuesto();
+        
+
+       
+
 }
 })
 });
@@ -190,7 +200,20 @@ $(".formularioVenta").on('click', '.quitarProducto', function () {
     $("button.recuperarBoton[id='" + idProducto + "']").html('Agregar');
     
     // localStorage.removeItem("agregarProducto", JSON.stringify(idProductos));
-  
+    
+    //SI LO PRODUCTOS QUEDAN VACIOS SE ESTABLECE EL TOTAL EN 0 (CERO)
+    if($('.nuevoProducto').children().length == 0 ){
+        $('#nuevoTotalVenta').val(0);
+        $('#impuestoVenta').val(0);
+        $('#nuevoTotalVenta').attr('total', 0);
+    }
+    else{
+        // SUMAR TOTAL DE PRECIOS
+        sumarTotalPrecios()
+        // AGREGAR IMPUESTO
+        agregarImpuesto()
+    }
+   
     
 });
 
@@ -210,7 +233,7 @@ $(".mbAgregarProducto").click(function () {
         success: function (respuesta) {
             console.log(respuesta.data);
             $('.nuevoProducto').append('<div class="row"><div class="col-6 col-sm-6 pr-0 mt-1"> <div class="input"> <div class="input-group-append p-0"> <span><button type="button" class="btn btn-danger btn-xs quitarProducto" idProducto=""><i class="fas fa-times"></i></button></span> <select type="text" class="form-control pl-2 nuevaDescripcionProducto" name="nuevaDescripcionProducto" id="producto' + numProducto + '" title="" value=""  autocomplete="nuevaDescripcionProducto" autofocus required><option selected disabled>Seleccionar Producto</option></select> </div> </div> </div><div class="col-2 col-sm-2 pl-1 pr-1 mt-1"> <input type="number" class="form-control p-1 nuevaCantidadProducto ingresoCantidad" min="1" value="" name="nuevaCantidadProducto" id="nuevaCantidadProducto" stock="" required readonly> </div> <div class="col-4 col-sm-4 pl-0 mt-1"> <div class="input-group"> <div class="input-group-append divPrecioProd"> <div class="input-group-text p-1">$ </div> </div> <input type="text" class="form-control pl-2 nuevoPrecio ingresoPrecio" precioReal name="nuevoPrecio" value=""  id="nuevoPrecio" autocomplete="producto" autofocus readonly> </div> </div> </div></div>')
-
+            
             respuesta.data.forEach(element => {
 
                 if (element.stock != 0) {
@@ -221,9 +244,16 @@ $(".mbAgregarProducto").click(function () {
                     )
 
                 }
-                    });
+               
 
+             });
+            // SUMAR TOTAL DE PRECIOS
+            sumarTotalPrecios()
+            // AGREGAR IMPUESTO
+            agregarImpuesto()
+            
         }
+        
     })
 });
 
@@ -232,7 +262,6 @@ SELECCIONAR PRODUCTO
 =============================================*/
 
 $(".formularioVenta").on("change", "select.nuevaDescripcionProducto", function () {
-    
     var nombreProducto = $(this).val();
     var nuevaCantidadProducto = $(this).parent().parent().parent().parent().children().children(".nuevaCantidadProducto");
     var nuevoPrecioProducto = $(this).parent().parent().parent().parent().children().children().children(".nuevoPrecio");
@@ -258,8 +287,11 @@ $(".formularioVenta").on("change", "select.nuevaDescripcionProducto", function (
              $(nuevoPrecioProducto).attr("precioReal", resultP.precio_venta);
              }
       	    
-           
+            // SUMAR TOTAL DE PRECIOS
+            sumarTotalPrecios()
 
+            // AGREGAR IMPUESTO
+            agregarImpuesto()
            
         }
     })
@@ -316,9 +348,9 @@ $(".formularioVenta").on("change", "input.nuevaCantidadProducto", function () {
 
     if (Number($(this).val()) > Number($(this).attr("stock"))) {
 
-/*=============================================
+/*=================================================================
 SI LA CANTIDAD ES SUPERIOR AL STOCK REGRESAR VALORES INICIALES
-=============================================*/
+==================================================================*/
 
         $(this).val(1);
 
@@ -327,14 +359,7 @@ SI LA CANTIDAD ES SUPERIOR AL STOCK REGRESAR VALORES INICIALES
         precio.val(precioFinal);
 
             swal("La cantidad supera el Stock", "¡Sólo hay " + $(this).attr("stock") + " unidades!", "error")
-
-        // swal({
-        //     title: "La cantidad supera el Stock",
-        //     text: "¡Sólo hay " + $(this).attr("stock") + " unidades!",
-        //     type: "error",
-        //     confirmButtonText: "¡Cerrar!"
-        // });
-
+        sumarTotalPrecios()
         return;
 
     }
@@ -347,8 +372,59 @@ SI LA CANTIDAD ES SUPERIOR AL STOCK REGRESAR VALORES INICIALES
 
     agregarImpuesto()
 
+
     // AGRUPAR PRODUCTOS EN FORMATO JSON
 
     listarProductos()
 
 })
+/*=============================================
+         SUMAR TOTAL PRECIOS
+=============================================*/
+
+function sumarTotalPrecios(){
+
+    var precioItem = $('.nuevoPrecio');
+    var arraySumaPrecio = [];
+
+    for(var i = 0; i < precioItem.length; i++){
+
+        arraySumaPrecio.push(Number($(precioItem[i]).val()));
+    }
+    function sumaArrayPrecios(total, numero) {
+
+        return total + numero;
+    }
+
+    var sumaTotalPrecios = arraySumaPrecio.reduce(sumaArrayPrecios);
+
+    $('#nuevoTotalVenta').val(sumaTotalPrecios);
+    $('#nuevoTotalVenta').attr('total', sumaTotalPrecios);
+
+}
+
+/*=============================================
+         SUMAR TOTAL PRECIOS
+=============================================*/
+function agregarImpuesto() {
+
+    var impuesto = $('#impuestoVenta').val();
+    var precioTotal = $('#nuevoTotalVenta').attr("total");
+    var precioImpuesto = Number(precioTotal * impuesto / 100);
+    var totalConImpuesto = Number(precioImpuesto) + Number(precioTotal);
+
+    $('#nuevoTotalVenta').val(totalConImpuesto);
+    $('#nuevoPrecioImpuesto').val(precioImpuesto);
+    $('#nuevoPrecioNeto').val(precioTotal);
+    // FORMATO CON JQUERY NUMBER
+    new AutoNumeric('#nuevoTotalVenta', 'dotDecimalCharCommaSeparator');
+     
+}
+
+/*=============================================
+     CUANDO CAMBIE INPUT IMPUESTO 
+=============================================*/
+
+$('#impuestoVenta').change(function(){
+    agregarImpuesto()
+});

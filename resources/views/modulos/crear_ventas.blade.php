@@ -118,8 +118,12 @@
                           <td style="width: 40%" class="p-1">
                              <div class="form-group">
                                  <div class="input-group">
-                                   <input type="text" class="form-control" name="impuesto" value="21"  id="impuesto" autocomplete="impuesto" autofocus placeholder="Iva 21%">
-                                 <div class="input-group-append">
+                                   <input type="text" class="form-control" name="impuestoVenta" value="21"  id="impuestoVenta" autocomplete="impuestoVenta" autofocus placeholder="Iva 21%">
+                                  {{-- Input oculto de impuesto --}}
+                                   <input type="hidden"  name="nuevoPrecioImpuesto"  id="nuevoPrecioImpuesto" required>
+                                   <input type="hidden"  name="nuevoPrecioNeto"  id="nuevoPrecioNeto" required>      
+                                  
+                                   <div class="input-group-append">
                                    <div class="input-group-text">
                                    <span class="fas fa-percent"></span>
                                    </div>
@@ -136,7 +140,7 @@
                                              <ion-icon name="logo-usd"></ion-icon>
                                          </div>
                                      </div>
-                                  <input type="text" class="form-control" name="total" value=""  id="total" autocomplete="total" autofocus placeholder="Total">
+                                  <input type="text" class="form-control" name="nuevoTotalVenta" total="" value=""  id="nuevoTotalVenta" autocomplete="nuevoTotalVenta" autofocus placeholder="Total">
 
                                   </div>
                              </div>
