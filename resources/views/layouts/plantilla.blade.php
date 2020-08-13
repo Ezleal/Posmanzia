@@ -8,7 +8,7 @@
   <!-- Icon Nielsen -->
   <link rel="icon" href="{{ asset('img/plantilla/n.svg') }}">
     <!-- Ion Icon -->
-  <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
+  {{-- <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script> --}}
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>{{ config('app.name', 'Nielsen CCA') }}</title>
@@ -20,6 +20,7 @@
   <script src="{{ asset('plugins/jquery/jquery.min.js')}}"></script>
   <!-- Ajax -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+  
   <!-- DataTables -->
   <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
   <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
@@ -77,8 +78,6 @@
                   Plantilla Js Custom
 ==============================================--}}
 <script src="{{ asset('/js/plantilla.js') }}"></script>
-<!-- AutoNumeric -->
-<script src="{{ asset('plugins/numbers/autoNumeric.js') }}"></script>
 <!-- InputMask -->
 <script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
 <script src="{{ asset('plugins/inputmask/min/jquery.inputmask.bundle.min.js') }}"></script>

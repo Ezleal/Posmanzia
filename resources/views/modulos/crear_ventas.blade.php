@@ -118,7 +118,7 @@
                           <td style="width: 40%" class="p-1">
                              <div class="form-group">
                                  <div class="input-group">
-                                   <input type="text" class="form-control" name="impuestoVenta" value="21"  id="impuestoVenta" autocomplete="impuestoVenta" autofocus placeholder="Iva 21%">
+                                   <input type="text" class="form-control impuestoVenta" name="impuestoVenta" value="21"  id="impuestoVenta" autocomplete="impuestoVenta" autofocus placeholder="Iva 21%">
                                   {{-- Input oculto de impuesto --}}
                                    <input type="hidden"  name="nuevoPrecioImpuesto"  id="nuevoPrecioImpuesto" required>
                                    <input type="hidden"  name="nuevoPrecioNeto"  id="nuevoPrecioNeto" required>      
@@ -137,10 +137,10 @@
                                <div class="input-group">
                                  <div class="input-group-append">
                                          <div class="input-group-text">
-                                             <ion-icon name="logo-usd"></ion-icon>
+                                             <i class="fas fa-hand-holding-usd"></i>
                                          </div>
                                      </div>
-                                  <input type="text" class="form-control" name="nuevoTotalVenta" total="" value=""  id="nuevoTotalVenta" autocomplete="nuevoTotalVenta" autofocus placeholder="Total">
+                                  <input type="text" class="form-control nuevoTotalVenta" name="nuevoTotalVenta" total="" value=""  id="nuevoTotalVenta"  readonly>
 
                                   </div>
                              </div>
@@ -350,5 +350,6 @@
 
 @endsection
 @section('scripts')
-<script src="{{ asset('/js/crear_ventas.js') }}"></script>    
+<script src="{{ asset('/js/crear_ventas.js') }}"></script>
+
 @endsection
