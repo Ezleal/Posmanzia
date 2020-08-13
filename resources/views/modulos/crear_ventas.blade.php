@@ -110,7 +110,7 @@
                       <thead class="p-0">
                         <tr>
                           <th class="pb-1 p-1">Impuestos</th>
-                           <th class="pb-1 pt-1">Total</th>
+                           <th class="pb-1 pt-1">Total a Pagar</th>
                         </tr>
                       </thead>
                       <tbody >
@@ -137,7 +137,7 @@
                                <div class="input-group">
                                  <div class="input-group-append">
                                          <div class="input-group-text">
-                                             <i class="fas fa-hand-holding-usd"></i>
+                                             <i class="fas fa-money-bill"></i>
                                          </div>
                                      </div>
                                   <input type="text" class="form-control nuevoTotalVenta" name="nuevoTotalVenta" total="" value=""  id="nuevoTotalVenta"  readonly>
@@ -154,30 +154,33 @@
                <!--=====================================
                 ENTRADA MÉTODO DE PAGO
                 ======================================-->
-
-                <div class="form-group row">
-                  
-                  <div class="col-md-6 mr-3" style="padding-right:0px">
-                    
-                     <div class="input-group">
-                  
-                      <select class="form-control" id="nuevoMetodoPago" name="nuevoMetodoPago" required>
-                        <option value="">Seleccione método de pago</option>
-                        <option value="Efectivo">Efectivo</option>
-                        <option value="TC">Tarjeta Crédito</option>
-                        <option value="TD">Tarjeta Débito</option>                  
-                      </select>    
-
-                    </div>
-
-                  </div>
-
-                  <div class="cajasMetodoPago"></div>
-
-                  <input type="hidden" id="listaMetodoPago" name="listaMetodoPago">
-
-                </div>
-                  </div>
+                 <!--=====================================
+                ENTRADA MÉTODO DE PAGO
+                ======================================-->
+                {{-----  Metodo de Pago -------}}
+    <div class="mb-1">
+          <div class="input-group">
+              <select class="form-control mr-1 col-xs-2" id="nuevoMetodoPago" name="nuevoMetodoPago" required>
+                <option value="" selected disabled>Método de pago</option>
+                <option value="Efectivo">Efectivo</option>
+                <option value="TC">Tarjeta Crédito</option>
+                <option value="TD">Tarjeta Débito</option>                  
+              </select>           
+            {{-----  N° de transaccion tarjeta -------}}   
+          <input  type="hidden" class="form-control" name="nro_transaccion" id="nro_transaccion" value="" min="0" step="any"autocomplete="nro_transaccion" autofocus placeholder="N° de Transacción">
+          <div class="input-group-append  d-none divefectivo">
+            <div class="input-group-text">
+              <span class="fas fa-receipt"></span>
+            </div>
+          </div>
+      </div>
+    </div>
+    {{-----  N° de transaccion EFECTIVO -------}}   
+     <div class="mb-1 mt-2 transaccionEfectivo">
+          
+    </div>
+   <input type="hidden" id="listaMetodoPago" name="listaMetodoPago">
+            </div>
                 
               </div>
               <div class="card-footer">

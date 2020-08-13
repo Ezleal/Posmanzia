@@ -399,7 +399,17 @@ function formatearMoneda($valor) {
     var number = $($valor).val();
     number = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(number);
     $($valor).val(number);
+  
+
 }
+function formatearValor($valor) {
+    var number = $($valor).val();
+    number = new Intl.NumberFormat().format(number)
+    $($valor).val(number);
+
+
+}
+
 function sumarTotalPrecios(){
     // var descripcion = $('.nuevaDescripcionProducto').val();
     var precioItem = $('.nuevoPrecio');
@@ -407,11 +417,7 @@ function sumarTotalPrecios(){
 
     for(var i = 0; i < precioItem.length; i++){
 
-        arraySumaPrecio.push(Number($(precioItem[i]).val()));
-        // if (descripcion != "Seleccionar Producto") {
-        // new AutoNumeric(precioItem[i], 'dotDecimalCharCommaSeparator');
-        // }
-        
+        arraySumaPrecio.push(Number($(precioItem[i]).val()));  
         
     }
     function sumaArrayPrecios(total, numero) {
@@ -453,3 +459,53 @@ $('#impuestoVenta').change(function(){
 /*=============================================
         SELECCIONAR METODO DE PAGO
 =============================================*/
+$('#nuevoMetodoPago').change(function(){
+    var metodo = $(this).val();
+   
+    if(metodo == "Efectivo"){
+        $('#nro_transaccion').val('');
+        $('#nro_transaccion').attr('type', 'hidden');
+        $('.divefectivo').addClass('d-none');
+
+       $(this).parent().parent().parent().children('.transaccionEfectivo').html(
+           '<div class="input-group">'+
+        '<div class="input-group-append">'+
+            '<div class="input-group-text">'+
+                '<span class="fas fa-cash-register"></span></div></div>'+
+            '<input type="text" class="form-control nuevoEfectivo" name="nuevoEfectivo" id="nuevoEfectivo" value="" min="0" step="any" autocomplete="nuevoEfectivo" autofocus placeholder="Efectivo">'+
+            '<div class="input-group-append">'+
+                '<div class="input-group-text">'+
+                    '<span class="fas fa-hand-holding-usd"></span></div></div>'+
+           '<input type="text" class="form-control nuevoCambio" name="nuevoCambio" id="nuevoCambio" value="" min="0" step="any" autocomplete="nuevoCambio" autofocus placeholder="Cambio" readonly></div>'
+           )
+        formatearMoneda('#nuevoCambio');
+
+
+    }
+    else{
+
+        $(".transaccionEfectivo").empty();
+        $('#nro_transaccion').attr('type', 'text');
+        $('.divefectivo').removeClass('d-none');
+    }
+
+});
+
+
+/*=============================================
+            CAMBIO EN EFECTIVO
+=============================================*/
+$(".formularioVenta").on("change", "input.nuevoEfectivo", function () {
+    var impuesto = $('#nuevoPrecioImpuesto').val();
+    var precioTotal = $('#nuevoTotalVenta').attr("total");
+    var totalConImpuesto = Number(impuesto) + Number(precioTotal);
+    var efectivo = $(this).val();
+    var cambio = Number(efectivo) - Number(totalConImpuesto);
+    var nuevoCambioEfectivo = $(this).parent().children('.nuevoCambio');
+
+    nuevoCambioEfectivo.val(cambio); 
+    formatearMoneda('#nuevoCambio');
+    formatearValor('.nuevoEfectivo');
+
+})
+
