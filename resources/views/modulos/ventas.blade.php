@@ -10,11 +10,7 @@
         </script>
         {{ $errors }}
   @endif --}}
-  {{-- @if(session('info'))
-  <script>
-    swal ( "Venta Creado Correctamente!" ,  "Verifica en la lista de Ventas" ,  "success" )
-  </script>        
-  @endif --}}
+
   
 {{-- Fin de alertas en el registro de Venta --}}
      

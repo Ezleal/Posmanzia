@@ -48,8 +48,10 @@ $("#product_table").DataTable({
             data: 'precio_compra',
             name: 'precio_compra',
              render: function (data, type, full, meta) {
-                 
-                     return "$" + data 
+                 return new Intl.NumberFormat('es-AR', {
+                     style: 'currency',
+                     currency: 'ARS'
+                 }).format(data);
              }
              
         },
@@ -57,8 +59,10 @@ $("#product_table").DataTable({
             data: 'precio_venta',
             name: 'precio_venta',
             render: function (data, type, full, meta) {
-
-                return "$" + data
+                return new Intl.NumberFormat('es-AR', {
+                    style: 'currency',
+                    currency: 'ARS'
+                }).format(data);
             }
         },
         {

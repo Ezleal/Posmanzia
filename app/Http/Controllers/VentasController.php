@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\{Venta, User, Cliente};
+use App\{Venta, User, Cliente, Producto};
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
@@ -23,17 +23,26 @@ class VentasController extends Controller
                       return datatables()->of(Venta::latest()->get())
                             ->addIndexColumn()
                             ->addColumn('action', function($data){
-                        $button = '<div class="btn-group"> <button type="button" name="print" id="'.$data->id.'" class="print btn btn-primary btn-sm"><i class="fas fa-print-alt"></i></button>';
+                        $button = '<div class="btn-group"> <button type="button" name="print" id="'.$data->id.'" class="print btn btn-primary btn-sm"><i class="fas fa-print"></i></button>';
+                        $button .= '&nbsp;&nbsp;';
+                        $button .= '<div class="btn-group"> <a href="ventas/'.$data->id.'/edit"><button type="button" name="editar_venta" id="'.$data->id.'" class="print btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></button></a>';
                         $button .= '&nbsp;&nbsp;';
                         $button .= '<button type="button" name="delete" id="'.$data->id.'" class="delete btn btn-danger btn-sm"><i class="fas fa-times"></i></button></div>';
                         return $button;
                     })
-                    ->rawColumns(['action'])
+                     ->addColumn('cliente',function($cliente){
+                    return $cliente->cliente->name;
+                     })
+                    ->addColumn('vendedor',function($vendedor){
+                    return $vendedor->vendedor->name;
+                     })
+                    ->rawColumns(['action','cliente', 'vendedor'])
                     ->make(true);
             }
+              
         
      
-        // $ventas = Venta::all();
+        $ventas = Venta::all();
         
         return view('modulos.ventas',compact('ventas'));
         
@@ -58,9 +67,64 @@ class VentasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+ public function store(Request $request)
     {
-        //
+        $listaProductos = json_decode($request->input('listaProductos'), true);
+        
+        $totalProductosComprados = array();
+        
+        foreach ($listaProductos as $key => $value) {
+            /* Ingreso al array totalProductosComprado la cantidad individual */
+            array_push( $totalProductosComprados, $value["cantidad"]);
+            $item = 'id';
+            $valor = $value['id'];
+            $traerProducto = Producto::where($item, 'LIKE', $valor)->get();
+            // var_dump($traerProducto[0]["stock"]);
+            // var_dump($value["stock"]);
+            $itemStock = 'stock';
+            $cantidadVentas = $traerProducto[0]["ventas"];
+            $valorStock = $value['stock'];
+            $valorCantidad = $value['cantidad'] + $cantidadVentas;
+            
+            $productoEditar = Producto::find($value['id']);
+            $productoEditar->stock = $valorStock;
+            $productoEditar->ventas = $valorCantidad;
+            // dd($productoEditar);
+
+            //Aquí guardo mis datos tal como el usuario los modifico
+		    $productoEditar->save();
+
+        }
+    
+            $clienteEditar = Cliente::find($request->input('id_cliente'));
+            $comprasClienteActual =  $clienteEditar->compras;
+            /* Cantidades que el cliente compro */
+            $cantidadComprada = array_sum($totalProductosComprados);
+            $clienteEditar->compras = $comprasClienteActual + $cantidadComprada;
+            $clienteEditar->ultima_compra = Carbon::now();
+            // dd( $comprasClienteActual);
+            // Aquí guardo mis datos tal como el usuario los modifico
+		    $clienteEditar->save();
+
+            /* 
+                GUARDAR LA VENTA
+            */
+       
+        $newVenta = new Venta;
+        $newVenta->codigo         = $request->input('codigo');
+        $newVenta->id_cliente        = $request->input('id_cliente');
+        $newVenta->id_vendedor        = $request->input('id_vendedor');
+        $newVenta->productos        = $request->input('listaProductos');
+        $newVenta->impuesto       = $request->input('nuevoPrecioImpuesto');
+        $newVenta->neto       = $request->input('nuevoPrecioNeto');
+        $newVenta->total       = $request->input('totalVenta');
+        $newVenta->metodo_pago       = $request->input('listaMetodoPago');
+        $newVenta->fecha = Carbon::now();
+      
+        $newVenta->save();
+
+        return redirect()->route('ventas.create')->with('info','Venta creada con exito'); 
+        // return response()->json(['success' => 'Data Added successfully.']);
     }
 
     /**
@@ -71,7 +135,6 @@ class VentasController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -82,7 +145,13 @@ class VentasController extends Controller
      */
     public function edit($id)
     {
-        //
+        $ventas = Venta::findOrFail($id);
+        $clientes = Cliente::all();
+        $producto = Producto::all();
+        $listaDecode = $ventas['productos'];
+        $list = json_decode($listaDecode, true); 
+        return view('modulos.editar_ventas',compact('ventas', 'clientes', 'list', 'producto'));
+
     }
 
     /**

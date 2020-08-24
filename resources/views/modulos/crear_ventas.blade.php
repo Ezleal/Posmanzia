@@ -2,6 +2,11 @@
 
 @section('content')
 
+  @if(session('info'))
+  <script>
+    swal ( "Venta Creada Correctamente!" ,  "Verifica en la lista de Ventas" ,  "success" )
+  </script>        
+  @endif
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
@@ -28,7 +33,8 @@
         {{-- FORMULARIO --}}
         <div class="col-md-5 col-xs-12 col-sm-12">
             <div class="card card-primary card-outline">
-            <form action="post" class="formularioVenta">
+            <form method="post" action="{{ route('ventas.store') }}" class="formularioVenta">
+              @csrf
               <div class="card-body with-border">
                
                   <div class="box">
@@ -96,6 +102,9 @@
                      <div class="form-group nuevoProducto ">
 
                     </div>
+                  {{-- ENTRADA PARA AGREGAR PRODUCTO --}}
+                  <input type="hidden" id="listaProductos" name="listaProductos">
+
                   
                 <!--=====================================
                 BOTÓN PARA AGREGAR PRODUCTO
@@ -141,7 +150,7 @@
                                          </div>
                                      </div>
                                   <input type="text" class="form-control nuevoTotalVenta" name="nuevoTotalVenta" total="" value=""  id="nuevoTotalVenta"  readonly>
-
+                                     <input type="hidden" name="totalVenta" id="totalVenta">
                                   </div>
                              </div>
                           </td>
@@ -167,7 +176,7 @@
                 <option value="TD">Tarjeta Débito</option>                  
               </select>           
             {{-----  N° de transaccion tarjeta -------}}   
-          <input  type="hidden" class="form-control" name="nro_transaccion" id="nro_transaccion" value="" min="0" step="any"autocomplete="nro_transaccion" autofocus placeholder="N° de Transacción">
+          <input  type="hidden" class="form-control" name="nro_transaccion" id="nro_transaccion" value="" min="0" step="any" autocomplete="nro_transaccion" autofocus placeholder="N° de Transacción">
           <div class="input-group-append  d-none divefectivo">
             <div class="input-group-text">
               <span class="fas fa-receipt"></span>
@@ -184,7 +193,7 @@
                 
               </div>
               <div class="card-footer">
-                <input name="" id="" class="btn btn-primary float-right" type="submit" value="Guardar Venta">
+                <input name="crearVenta" id="crearVenta" class="btn btn-primary float-right" type="submit" value="Crear Venta">
               </div>
               </form>
             </div>
@@ -349,7 +358,79 @@
   </div>
 </div>
 {{-- FIN MODAL AGREGAR CLIENTES --}}
+<script>
+ $('#create_record').click(function(){
+  $('.modal-title').text("Nuevo Cliente");
+  $('.invalid').html('');
+     $('#action_button').val("Add Cliente");
+     $('#action').val("Add Cliente");
+     $('#agregarCliente').modal('show');
+     $('#sample_form')[0].reset();
+ });
+  $('#sample_form').on('submit', function(event){
+   event.preventDefault();
+  if($('#action').val() == 'Add Cliente')
+  {
+   $.ajax({
+    url:"{{ route('clientes.store') }}",
+    method:"POST",
+    data: new FormData(this),
+    contentType: false,
+    cache:false,
+    processData: false,
+    dataType:"json",
+    success:function(data)
+    {console.log(data);
+     var html = '';
+     
+     if(data.errors)
+     {
+      $('.invalid').html('');
+     var html = "";
+     let regexName = /(the name|el nombre)/i;
+     let regexDocumento = /(the documento|el documento)/i;
+     let regexDireccion = /(the direccion|el direccion)/i;
+     let regexTelefono = /(the telefono|el telefono)/i;
+     let regexNacimiento = /(the fecha nacimiento|el fecha nacimiento)/i;
+     let regexEmail = /(the email|el email)/i;
+       data.errors.forEach(element => {
+         
+        if(element.match(regexName)){$('#nameError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexDocumento)){$('#documentoError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexDireccion)){$('#direccionError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexTelefono)){$('#telefonoError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexNacimiento)){$('#fecha_nacimientoError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        if(element.match(regexEmail)){$('#emailError').html('<strong class="invalid text-danger">'+element+'</strong>');}
+        else{
+          //  swal ( "Error al Editar Cliente!" ,  "Cliente o Email" ,  "error" )
+          console.log(element);
+        }
 
+         });
+     }
+     if(data.success)
+     {
+        $('#agregarCliente').html('');
+           swal({
+                title: "Cliente Creade Correctamente!",
+                text: "Verifica en la lista de clientes",
+                icon: "success"
+            }).then(function() {
+                // window.location = "/clientes";
+                    window.location.reload();
+
+            });
+      // html = '<div class="alert alert-success">' + data.success + '</div>';
+      // $('#sample_form')[0].reset();
+      // $('#user_table').DataTable().ajax.reload();
+     }
+     $('#form_result').html(html);
+    }
+   })
+  }
+ 
+ });
+</script>
 
 @endsection
 @section('scripts')

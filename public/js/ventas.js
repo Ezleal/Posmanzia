@@ -4,52 +4,55 @@ Data Table de Clientes
 $("#ventas_table").DataTable({
     "processing": true,
     "serverSide": true,
-    "ajax": "/clientes",
+    "ajax": "/ventas",
     "columns": [{
             data: 'id',
             name: 'id'
         },
         {
-            data: 'name',
-            name: 'name'
+            data: 'codigo',
+            name: 'codigo'
 
         },
         {
-            data: 'documento',
-            name: 'documento'
+            data: 'cliente',
+            name: 'cliente'
         },
         {
-            data: 'email',
-            name: 'email'
+            data: 'vendedor',
+            name: 'vendedor'
         }, {
-            data: 'telefono',
-            name: 'telefono'
+            data: 'metodo_pago',
+            name: 'metodo_pago'
 
         },
         {
-            data: 'direccion',
-            name: 'direccion'
+            data: 'neto',
+            name: 'neto',
+             render: function (data, type, full, meta) {
+                    return new Intl.NumberFormat('es-AR', {
+                        style: 'currency',
+                        currency: 'ARS'
+                    }).format(data);
+             }
         }, 
         {
-            data: 'fecha_nacimiento',
-            name: 'fecha_nacimiento'
+            data: 'total',
+            name: 'total',
+             render: function (data, type, full, meta) {
+                return new Intl.NumberFormat('es-AR', {
+                    style: 'currency',
+                    currency: 'ARS'
+                }).format(data);
+             }
 
         },
         {
-            data: 'compras',
-            name: 'compras'
+            data: 'fecha',
+            name: 'fecha'
 
         },
-        {
-            data: 'compras',
-            name: 'compras'
 
-        },
-         {
-             data: 'agregado',
-             name: 'agregado'
-
-         },
         {
             data: 'action',
             name: 'action',

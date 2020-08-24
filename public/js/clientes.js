@@ -41,8 +41,8 @@ $("#client_table").DataTable({
 
         },
         {
-            data: 'compras',
-            name: 'compras'
+            data: 'ultima_compra',
+            name: 'ultima_compra'
 
         },
          {
