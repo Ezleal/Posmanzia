@@ -213,32 +213,31 @@ class VentasController extends Controller
         ------------- GUARDAR VENTA ACTUALIZADA Y MODIFICAR PRODUCTOS Y CLIENTES
        
    */
-    //    $listaProductosA = json_decode($request->input('listaProductos'), true);
+
+       $listaEditar = json_decode($request->input('listaProductos'), true);
         
-    //     $totalProductosCompradosA = array();
+       $totalProductosCompradosA = array();
         
-    //     foreach ($listaProductosA as $key => $value) {
-    //         /* Ingreso al array totalProductosComprado la cantidad individual */
-    //         array_push( $totalProductosCompradosA, $value["cantidad"]);
-    //         $itemA = 'id';
-    //         $valorA = $value['id'];
-    //         $traerProductoA = Producto::where($itemA, 'LIKE', $valorA)->get();
-    //         // var_dump($traerProducto[0]["stock"]);
-    //         // var_dump($value["stock"]);
-    //         $itemStockA = 'stock';
-    //         $cantidadVentasA = $traerProductoA[0]["ventas"];
-    //         $valorStockA = $value['stock'];
-    //         $valorCantidadA = $value['cantidad'] + $cantidadVentasA;
+        foreach ($listaEditar as $key => $value) {
+            /* Ingreso al array totalProductosComprado la cantidad individual */
+            array_push( $totalProductosCompradosA, $value["cantidad"]);
+            $valorA = $value['id'];
+            $traerProductoA = Producto::findOrFail($valorA);
+            // var_dump($traerProductoA->stock);
+            // $itemStockA = 'stock';
+            $cantidadVentasA = $traerProductoA->ventas;
+            $valorStockA = $value['stock'];
+            $valorCantidadA =$cantidadVentasA + $value['cantidad'];
             
-    //         $productoEditarA = Producto::find($value['id']);
-    //         $productoEditarA->stock = $valorStock;
-    //         $productoEditarA->ventas = $valorCantidad;
-    //         // dd($productoEditar);
+            $productoEditarA = Producto::find($value['id']);
+            $productoEditarA->stock = $valorStockA;
+            $productoEditarA->ventas = $valorCantidadA;
+            // dd($productoEditar);
 
-    //         //Aquí guardo mis datos tal como el usuario los modifico
-	// 	    $productoEditarA->save();
+            //Aquí guardo mis datos tal como el usuario los modifico
+		    $productoEditarA->save();
 
-    //     }
+        }
     
     //         $clienteEditarA = Cliente::find($request->input('id_cliente'));
     //         $comprasClienteActualA =  $clienteEditarA->compras;

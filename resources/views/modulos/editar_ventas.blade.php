@@ -125,7 +125,7 @@
  
                     </div>
                   {{-- ENTRADA PARA AGREGAR PRODUCTO --}}
-                  <input type="hidden" id="listaProductos" name="listaProductos" val="{{ $ventas->productos }}">
+                  <input type="hidden" id="listaProductos" name="listaProductos" value="{{ $ventas->productos }}">
 
                   
                 <!--=====================================
