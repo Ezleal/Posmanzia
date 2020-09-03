@@ -149,7 +149,13 @@ class VentasController extends Controller
         $clientes = Cliente::all();
         $producto = Producto::all();
         $listaDecode = $ventas['productos'];
-        $list = json_decode($listaDecode, true); 
+        $list = json_decode($listaDecode, true);
+
+            // foreach ($list as $key => $value) {
+            // $sol = $value['id'];
+            // $producto = Producto::select("id","stock","precio_venta")->where('id', 'LIKE', $sol)->get();
+            
+        // }        
         return view('modulos.editar_ventas',compact('ventas', 'clientes', 'list', 'producto'));
 
     }
@@ -161,9 +167,109 @@ class VentasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request)
+    {   
+        /*
+        ------------- FORMATEADA DE LA VENTA PARA SUMAR PRODUCTOS YA COMPRADOS (CLIENTE Y PRODUCTOS)
+        */
+        $traer = $request->idEditarVenta;
+        $traerVentas = Venta::findOrFail($traer);
+        $actualizarProductos = json_decode($traerVentas['productos'], true);
+        // dd($actualizarProductos);
+        $totalProductosEditados = array();
+        foreach ($actualizarProductos as $key => $value) {
+            // dd($traerProducto);
+            /* Ingreso al array totalProductosComprado la cantidad individual */
+            array_push( $totalProductosEditados, $value["cantidad"]);
+            $item = 'id';
+            $valor = $value['id'];
+            $traerProducto = Producto::findOrFail($valor);
+            /* CANTIDAD DE STOCK ACTUAL MAS REFRESH DE PRODUCTOS A EDITAR */
+            $valorStock = $traerProducto->stock + $value['cantidad'];
+            // var_dump($valorStock);
+            $valorCantidad =  $traerProducto->ventas - $value['cantidad'];
+             
+             $form_data = array(   
+            'stock'  => $valorStock,
+            'ventas' =>  $valorCantidad,
+                );
+
+            Producto::whereId($valor)->update($form_data);
+
+        }                    
+        $clienteEditar = Cliente::find($request->input('id_cliente'));
+        $comprasClienteEdit =  $clienteEditar->compras;
+        /* Cantidades que el cliente compro */
+        $cantidadComprada = array_sum($totalProductosEditados);
+        
+         $clienteEditar->compras = $comprasClienteEdit - $cantidadComprada;
+         $clienteEditar->ultima_compra = Carbon::now();
+        // dd( $comprasClienteEdit);
+        // Aquí guardo mis datos tal como el usuario los modifico
+        $clienteEditar->save();
+
+   /* 
+        
+        ------------- GUARDAR VENTA ACTUALIZADA Y MODIFICAR PRODUCTOS Y CLIENTES
+       
+   */
+    //    $listaProductosA = json_decode($request->input('listaProductos'), true);
+        
+    //     $totalProductosCompradosA = array();
+        
+    //     foreach ($listaProductosA as $key => $value) {
+    //         /* Ingreso al array totalProductosComprado la cantidad individual */
+    //         array_push( $totalProductosCompradosA, $value["cantidad"]);
+    //         $itemA = 'id';
+    //         $valorA = $value['id'];
+    //         $traerProductoA = Producto::where($itemA, 'LIKE', $valorA)->get();
+    //         // var_dump($traerProducto[0]["stock"]);
+    //         // var_dump($value["stock"]);
+    //         $itemStockA = 'stock';
+    //         $cantidadVentasA = $traerProductoA[0]["ventas"];
+    //         $valorStockA = $value['stock'];
+    //         $valorCantidadA = $value['cantidad'] + $cantidadVentasA;
+            
+    //         $productoEditarA = Producto::find($value['id']);
+    //         $productoEditarA->stock = $valorStock;
+    //         $productoEditarA->ventas = $valorCantidad;
+    //         // dd($productoEditar);
+
+    //         //Aquí guardo mis datos tal como el usuario los modifico
+	// 	    $productoEditarA->save();
+
+    //     }
+    
+    //         $clienteEditarA = Cliente::find($request->input('id_cliente'));
+    //         $comprasClienteActualA =  $clienteEditarA->compras;
+    //         /* Cantidades que el cliente compro */
+    //         $cantidadCompradaA = array_sum($totalProductosCompradosA);
+    //         $clienteEditarA->compras = $comprasClienteActualA + $cantidadCompradaA;
+    //         $clienteEditarA->ultima_compra = Carbon::now();
+    //         // dd( $comprasClienteActual);
+    //         // Aquí guardo mis datos tal como el usuario los modifico
+	// 	    $clienteEditarA->save();
+
+    //         /* 
+    //             GUARDAR LA VENTA
+    //         */
+       
+    //     $newVentaA = Venta::find($request->input('idEditarVenta'));
+    //     $newVentaA->codigo         = $request->input('codigo');
+    //     $newVentaA->id_cliente        = $request->input('id_cliente');
+    //     $newVentaA->id_vendedor        = $request->input('id_vendedor');
+    //     $newVentaA->productos        = $request->input('listaProductos');
+    //     $newVentaA->impuesto       = $request->input('nuevoPrecioImpuesto');
+    //     $newVentaA->neto       = $request->input('nuevoPrecioNeto');
+    //     $newVentaA->total       = $request->input('totalVenta');
+    //     $newVentaA->metodo_pago       = $request->input('listaMetodoPago');
+    //     $newVentaA->fecha = Carbon::now();
+    //     $newVentaA->save();
+
+
+    //     return redirect()->route('ventas.index')->with('info','Venta editada con exito'); 
+    
+        // return response()->json(['success' => 'Data is successfully updated']);
     }
 
     /**

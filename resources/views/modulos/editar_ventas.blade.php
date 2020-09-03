@@ -90,8 +90,12 @@
                      <div class="form-group nuevoProducto ">
                         @php
                         $impuestoPorcentaje = ($ventas->impuesto * 100) / $ventas->neto;
-                        foreach ($list as $key => $value) { 
-                          foreach ($producto as $prod) {
+                       
+                        // dd(count($list));
+                      
+                        foreach ($list as $value) { 
+                          foreach ($producto as $key => $prod) {
+                              
                             if ($value['id'] == $prod->id){
                                 $stockAntiguo = $prod->stock + $value['cantidad'];
                                 $stockNuevo = $prod->stock;
@@ -112,16 +116,16 @@
                                       </div> <div class="col-4 col-sm-4 pl-0 mt-1 divPrecioProd"> <div class="input-group"> <div class="input-group-append"> 
                                         <div class="input-group-text p-1">$ </div> </div> 
                                         <input type="text" class="form-control pl-2 nuevoPrecio" name="nuevoPrecio" value="'.$value['total'].'" precioReal="'.$prod['precio_venta'].'" id="nuevoPrecio" autofocus readonly>
-                                         </div> 
-                                         </div> 
-                                         </div>';
+                                    </div> 
+                                    </div> 
+                                    </div>';
                          } }   }
                         @endphp
                       
  
                     </div>
                   {{-- ENTRADA PARA AGREGAR PRODUCTO --}}
-                  <input type="hidden" id="listaProductos" name="listaProductos">
+                  <input type="hidden" id="listaProductos" name="listaProductos" val="{{ $ventas->productos }}">
 
                   
                 <!--=====================================
@@ -211,7 +215,8 @@
                 
               </div>
               <div class="card-footer">
-                <input name="crearVenta" id="crearVenta" class="btn btn-primary float-right" type="submit" value="Editar Venta">
+                <input name="idEditarVenta" id="idEditarVentA" type="hidden" value="{{ $ventas->id }}">
+                <input name="editarVenta" id="editarVenta" class="btn btn-primary float-right" type="submit" value="Editar Venta">
               </div>
               </form>
             </div>
