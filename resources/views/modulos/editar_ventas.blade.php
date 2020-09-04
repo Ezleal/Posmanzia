@@ -71,25 +71,16 @@
                         <span class="fas fa-users"></span>
                       </div>
                       </div>
-                      {{-- <input type="text" class="form-control pl-2" name="id_cliente" value="{{ $ventas->cliente->name}}"  id="id_cliente" autocomplete="id_cliente" autofocus placeholder="id_cliente" readonly> --}}
-                   <select class="form-control input-lg" type="text" name="id_cliente" id="id_cliente">
-                {{-- Se busca la información desde la bd prioridad para el select --}}
-                     <option selected value="{{ $ventas->id_cliente }}">{{ $ventas->cliente->name}}</option>
-                    @if (!empty($clientes))
-                      @foreach ($clientes as $cliente)
-                      @if ($cliente->id != $ventas->id_cliente)
-                        <option   value="{{ $cliente->id }}">{{ $cliente->name}}</option>      
-                      @endif    
-                      @endforeach
-                    @endif
-                       </select>
+                      <input type="text" class="form-control pl-2" name="nombre_cliente" value="{{$ventas->cliente->name}}"  id="nombre_cliente" autocomplete="nombre_cliente" autofocus placeholder="nombre_cliente" readonly>
+                      <input type="hidden" name="id_cliente" value="{{$ventas->cliente->id}}"  id="id_cliente" readonly>
+
                     </div>
                       </div>
                 
                     {{-- ENTRADA PARA AGREGAR PRODUCTO --}}
                      <div class="form-group nuevoProducto ">
                         @php
-                        $impuestoPorcentaje = ($ventas->impuesto * 100) / $ventas->neto;
+                        // $impuestoPorcentaje = ($ventas->impuesto * 100) / $ventas->neto;
                        
                         // dd(count($list));
                       
@@ -149,7 +140,7 @@
                           <td style="width: 40%" class="p-1">
                              <div class="form-group">
                                  <div class="input-group">
-                                   <input type="text" class="form-control impuestoVenta" name="impuestoVenta" value="{{$impuestoPorcentaje}}"  id="impuestoVenta" autocomplete="impuestoVenta" autofocus placeholder="Iva 21%">
+                                   <input type="text" class="form-control impuestoVenta" name="impuestoVenta" value="{{$ventas->porcentaje}}"  id="impuestoVenta" autocomplete="impuestoVenta" autofocus placeholder="Iva 21%">
                                   {{-- Input oculto de impuesto --}}
                                    <input type="hidden"  name="nuevoPrecioImpuesto"  id="nuevoPrecioImpuesto" value="{{ $ventas->impuesto }}" required>
                                    <input type="hidden"  name="nuevoPrecioNeto"  id="nuevoPrecioNeto" value="{{ $ventas->neto }}"  required>      

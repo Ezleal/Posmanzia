@@ -76,19 +76,19 @@ class VentasController extends Controller
         foreach ($listaProductos as $key => $value) {
             /* Ingreso al array totalProductosComprado la cantidad individual */
             array_push( $totalProductosComprados, $value["cantidad"]);
-            $item = 'id';
+            // $item = 'id';
             $valor = $value['id'];
-            $traerProducto = Producto::where($item, 'LIKE', $valor)->get();
+            $traerProducto = Producto::findOrFail($valor);
             // var_dump($traerProducto[0]["stock"]);
             // var_dump($value["stock"]);
-            $itemStock = 'stock';
-            $cantidadVentas = $traerProducto[0]["ventas"];
-            $valorStock = $value['stock'];
-            $valorCantidad = $value['cantidad'] + $cantidadVentas;
+            // $itemStock = 'stock';
+            // $cantidadVentas = $traerProducto->ventas;
+            // $valorStock = $value['stock'];
+            // $valorCantidad = $value['cantidad'] + $cantidadVentas;
             
             $productoEditar = Producto::find($value['id']);
-            $productoEditar->stock = $valorStock;
-            $productoEditar->ventas = $valorCantidad;
+            $productoEditar->stock = $productoEditar->stock - $value['cantidad'];
+            $productoEditar->ventas = $productoEditar->ventas + $value['cantidad'];
             // dd($productoEditar);
 
             //Aquí guardo mis datos tal como el usuario los modifico
@@ -116,6 +116,7 @@ class VentasController extends Controller
         $newVenta->id_vendedor        = $request->input('id_vendedor');
         $newVenta->productos        = $request->input('listaProductos');
         $newVenta->impuesto       = $request->input('nuevoPrecioImpuesto');
+        $newVenta->porcentaje       = $request->input('impuestoVenta');
         $newVenta->neto       = $request->input('nuevoPrecioNeto');
         $newVenta->total       = $request->input('totalVenta');
         $newVenta->metodo_pago       = $request->input('listaMetodoPago');
@@ -222,16 +223,16 @@ class VentasController extends Controller
             /* Ingreso al array totalProductosComprado la cantidad individual */
             array_push( $totalProductosCompradosA, $value["cantidad"]);
             $valorA = $value['id'];
-            $traerProductoA = Producto::findOrFail($valorA);
+            // $traerProductoA = Producto::findOrFail($valorA);
             // var_dump($traerProductoA->stock);
             // $itemStockA = 'stock';
-            $cantidadVentasA = $traerProductoA->ventas;
-            $valorStockA = $traerProductoA->stock - $value['cantidad'];
-            $valorCantidadA = $cantidadVentasA + $value['cantidad'];
+            // $cantidadVentasA = $traerProductoA->ventas;
+            // $valorStockA = $traerProductoA->stock - $value['cantidad'];
+            // $valorCantidadA = $cantidadVentasA + $value['cantidad'];
             
-            $productoEditarA = Producto::find($value['id']);
-            $productoEditarA->stock = $valorStockA;
-            $productoEditarA->ventas = $valorCantidadA;
+            $productoEditarA = Producto::findOrFail($value['id']);
+            $productoEditarA->stock = $productoEditarA->stock - $value['cantidad'];
+            $productoEditarA->ventas = $productoEditarA->ventas + $value['cantidad'];
             // dd($productoEditar);
 
             //Aquí guardo mis datos tal como el usuario los modifico
@@ -259,6 +260,7 @@ class VentasController extends Controller
         $newVentaA->id_vendedor        = $request->input('id_vendedor');
         $newVentaA->productos        = $request->input('listaProductos');
         $newVentaA->impuesto       = $request->input('nuevoPrecioImpuesto');
+        $newVentaA->porcentaje       = $request->input('impuestoVenta');
         $newVentaA->neto       = $request->input('nuevoPrecioNeto');
         $newVentaA->total       = $request->input('totalVenta');
         $newVentaA->metodo_pago       = $request->input('listaMetodoPago');
@@ -278,6 +280,8 @@ class VentasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = Venta::findOrFail($id);
+        $data->delete();
+     
     }
 }
