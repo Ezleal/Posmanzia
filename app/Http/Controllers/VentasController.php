@@ -226,8 +226,8 @@ class VentasController extends Controller
             // var_dump($traerProductoA->stock);
             // $itemStockA = 'stock';
             $cantidadVentasA = $traerProductoA->ventas;
-            $valorStockA = $value['stock'];
-            $valorCantidadA =$cantidadVentasA + $value['cantidad'];
+            $valorStockA = $traerProductoA->stock - $value['cantidad'];
+            $valorCantidadA = $cantidadVentasA + $value['cantidad'];
             
             $productoEditarA = Producto::find($value['id']);
             $productoEditarA->stock = $valorStockA;
@@ -239,34 +239,33 @@ class VentasController extends Controller
 
         }
     
-    //         $clienteEditarA = Cliente::find($request->input('id_cliente'));
-    //         $comprasClienteActualA =  $clienteEditarA->compras;
-    //         /* Cantidades que el cliente compro */
-    //         $cantidadCompradaA = array_sum($totalProductosCompradosA);
-    //         $clienteEditarA->compras = $comprasClienteActualA + $cantidadCompradaA;
-    //         $clienteEditarA->ultima_compra = Carbon::now();
-    //         // dd( $comprasClienteActual);
-    //         // Aquí guardo mis datos tal como el usuario los modifico
-	// 	    $clienteEditarA->save();
+            $clienteEditarA = Cliente::find($request->input('id_cliente'));
+            $comprasClienteActualA =  $clienteEditarA->compras;
+            /* Cantidades que el cliente compro */
+            $cantidadCompradaA = array_sum($totalProductosCompradosA);
+            $clienteEditarA->compras = $comprasClienteActualA + $cantidadCompradaA;
+            $clienteEditarA->ultima_compra = Carbon::now();
+            // dd( $comprasClienteActual);
+            // Aquí guardo mis datos tal como el usuario los modifico
+		    $clienteEditarA->save();
 
     //         /* 
     //             GUARDAR LA VENTA
     //         */
        
-    //     $newVentaA = Venta::find($request->input('idEditarVenta'));
-    //     $newVentaA->codigo         = $request->input('codigo');
-    //     $newVentaA->id_cliente        = $request->input('id_cliente');
-    //     $newVentaA->id_vendedor        = $request->input('id_vendedor');
-    //     $newVentaA->productos        = $request->input('listaProductos');
-    //     $newVentaA->impuesto       = $request->input('nuevoPrecioImpuesto');
-    //     $newVentaA->neto       = $request->input('nuevoPrecioNeto');
-    //     $newVentaA->total       = $request->input('totalVenta');
-    //     $newVentaA->metodo_pago       = $request->input('listaMetodoPago');
-    //     $newVentaA->fecha = Carbon::now();
-    //     $newVentaA->save();
+        $newVentaA = Venta::find($request->input('idEditarVenta'));
+        $newVentaA->codigo         = $request->input('codigo');
+        $newVentaA->id_cliente        = $request->input('id_cliente');
+        $newVentaA->id_vendedor        = $request->input('id_vendedor');
+        $newVentaA->productos        = $request->input('listaProductos');
+        $newVentaA->impuesto       = $request->input('nuevoPrecioImpuesto');
+        $newVentaA->neto       = $request->input('nuevoPrecioNeto');
+        $newVentaA->total       = $request->input('totalVenta');
+        $newVentaA->metodo_pago       = $request->input('listaMetodoPago');
+        $newVentaA->fecha = Carbon::now();
+        $newVentaA->save();
 
-
-    //     return redirect()->route('ventas.index')->with('info','Venta editada con exito'); 
+        return redirect()->route('ventas.index')->with('info','Venta editada con exito'); 
     
         // return response()->json(['success' => 'Data is successfully updated']);
     }

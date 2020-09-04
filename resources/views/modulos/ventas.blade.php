@@ -2,6 +2,11 @@
 
 @section('content')
 
+@if(session('info'))
+  <script>
+    swal ( "Venta Editada Correctamente!" ,  "Verifica en la lista de Ventas" ,  "success" )
+  </script>        
+  @endif'
 
 {{-- Sweet alert el registro de venta --}}
  {{-- @if (count($errors->all())>0)
