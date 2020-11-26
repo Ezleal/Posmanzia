@@ -281,7 +281,36 @@ class VentasController extends Controller
     public function destroy($id)
     {
         $data = Venta::findOrFail($id);
+        $num = $data->id_cliente;
+        $numFecha = $data->fecha;
         $data->delete();
-     
+        $ventas = Venta::All();
+        $arrayDeVentas = array();
+
+        foreach ($ventas as $key => $value) {
+           if ($value['id_cliente'] == $data->id_cliente) {
+              array_push($arrayDeVentas, $value['fecha']);
+           }
+        }
+
+        if(count($arrayDeVentas) >= 1){
+            if ($data->fecha > $arrayDeVentas[count($arrayDeVentas)-1]) {
+                $form_data = array(   
+                'ultima_compra'  => $arrayDeVentas[count($arrayDeVentas)-1],
+                );
+            }
+            else{
+                $form_data = array(   
+                'ultima_compra'  => $arrayDeVentas[count($arrayDeVentas)-1],
+                );
+            }
+        }
+        else{
+            $form_data = array(   
+            'ultima_compra'  => null,
+                );
+        }
+
+            Cliente::whereId($num)->update($form_data);
     }
 }
