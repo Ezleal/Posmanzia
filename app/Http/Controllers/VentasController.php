@@ -170,9 +170,9 @@ class VentasController extends Controller
      */
     public function update(Request $request)
     {   
-        /*
+        /**********************************************************************************************
         ------------- FORMATEADA DE LA VENTA PARA SUMAR PRODUCTOS YA COMPRADOS (CLIENTE Y PRODUCTOS)
-        */
+        ***********************************************************************************************/
         $traer = $request->idEditarVenta;
         $traerVentas = Venta::findOrFail($traer);
         $actualizarProductos = json_decode($traerVentas['productos'], true);
@@ -209,11 +209,11 @@ class VentasController extends Controller
         // Aquí guardo mis datos tal como el usuario los modifico
         $clienteEditar->save();
 
-   /* 
+   /****************************************************************************** 
         
         ------------- GUARDAR VENTA ACTUALIZADA Y MODIFICAR PRODUCTOS Y CLIENTES
        
-   */
+   ********************************************************************************/
 
        $listaEditar = json_decode($request->input('listaProductos'), true);
         
@@ -250,9 +250,9 @@ class VentasController extends Controller
             // Aquí guardo mis datos tal como el usuario los modifico
 		    $clienteEditarA->save();
 
-    //         /* 
+    //         /********************* 
     //             GUARDAR LA VENTA
-    //         */
+    //         **********************/
        
         $newVentaA = Venta::find($request->input('idEditarVenta'));
         $newVentaA->codigo         = $request->input('codigo');
@@ -281,19 +281,25 @@ class VentasController extends Controller
     public function destroy($id)
     {
         $data = Venta::findOrFail($id);
+        $actualizarProductos = json_decode($data['productos'], true);
         $num = $data->id_cliente;
         $numFecha = $data->fecha;
         $data->delete();
         $ventas = Venta::All();
         $arrayDeVentas = array();
-
+        $totalProductosEditados = array();
+        $totalProductosEditadosz = array();
         foreach ($ventas as $key => $value) {
            if ($value['id_cliente'] == $data->id_cliente) {
               array_push($arrayDeVentas, $value['fecha']);
            }
         }
 
-        if(count($arrayDeVentas) >= 1){
+        /**********************************************************
+        COMPARAMOS FECHAS PARA CARGAR ULTIMA COMPRA ACTUALIZADA
+        ***********************************************************/
+
+            if(count($arrayDeVentas) >= 1){
             if ($data->fecha > $arrayDeVentas[count($arrayDeVentas)-1]) {
                 $form_data = array(   
                 'ultima_compra'  => $arrayDeVentas[count($arrayDeVentas)-1],
@@ -311,6 +317,43 @@ class VentasController extends Controller
                 );
         }
 
-            Cliente::whereId($num)->update($form_data);
+
+             Cliente::whereId($num)->update($form_data);
+
+        /**********************************************************
+        FORMATEAR TABLA DE PRODUCTOS Y LA DE CLIENTES
+        ***********************************************************/
+            foreach ($actualizarProductos as $key => $value) {
+            // dd($traerProducto);
+            /* Ingreso al array totalProductosComprado la cantidad individual */
+            array_push( $totalProductosEditados, $value["cantidad"]);
+            $item = 'id';
+            $valor = $value['id'];
+            $traerProducto = Producto::findOrFail($valor);
+            /* CANTIDAD DE STOCK ACTUAL MAS REFRESH DE PRODUCTOS A EDITAR */
+            $valorStock = $traerProducto->stock + $value['cantidad'];
+            // var_dump($valorStock);
+            $valorCantidad =  $traerProducto->ventas - $value['cantidad'];
+             
+             $form_data = array(   
+            'stock'  => $valorStock,
+            'ventas' =>  $valorCantidad,
+                );
+
+            Producto::whereId($valor)->update($form_data);
+
+        }
+        $clienteEditar = Cliente::find($num);
+        $comprasClienteEdit =  $clienteEditar->compras;
+        /* Cantidades que el cliente compro */
+        $cantidadComprada = array_sum($totalProductosEditados);
+        
+         $clienteEditar->compras = $comprasClienteEdit - $cantidadComprada;
+         //$clienteEditar->ultima_compra = Carbon::now();
+        // dd( $comprasClienteEdit);
+        // Aquí guardo mis datos tal como el usuario los modifico
+        $clienteEditar->save();
+     
+        
     }
 }
