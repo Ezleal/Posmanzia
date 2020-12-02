@@ -1,21 +1,6 @@
-@extends('layouts.plantilla')
+@extends('layouts.plantillaVentas')
 
 @section('content')
-
-{{-- <?php
-if(isset($_GET["fechaInicial"])){
-
-  $fechaInicial = $_GET["fechaInicial"];
-  $fechaFinal = $_GET["fechaFinal"];
-
-}
-else {
-  $fechaInicial = null;
-  $fechaFinal = null;
-}
-    
-?> --}}
-
 
 @if(session('info'))
   <script>
@@ -65,15 +50,24 @@ else {
             Crear Venta
           </button>
           </a>
+          {{-- <div class="row input-daterange"> --}}
+                    <input type="hidden" name="from_date" id="from_date" class="form-control" placeholder="From Date" readonly />
+                    <input type="hidden" name="to_date" id="to_date" class="form-control" placeholder="To Date" readonly />
+            {{-- </div> --}}
           {{-- RANGOS DE FECHAS CON DATAPICKER PLUGIN --}}
-          <button type="button" class="btn btn-outline-primary float-right" id="daterange-btn">
+          <button type="button" class="btn btn-primary float-right" id="daterange-btn">
             <span>
         
               <i class="fas fa-calendar-alt pr-2"></i>Fechas
             </span>
             <i class="fa fa-caret-down"></i>
           </button>
-
+          <button type="button" name="filter" id="filter" class="btn btn-outline-success float-right">Filtrar</button>
+          <button type="button" name="refresh" id="refresh" class="btn btn-outline-dark float-right">Limpiar</button>
+              {{-- <div class="col-md-4">
+                    <button type="button" name="filter" id="filter" class="btn btn-primary">Filter</button>
+                    <button type="button" name="refresh" id="refresh" class="btn btn-default">Refresh</button>
+                </div> --}}
         </div>
         {{-- TABLA DE VENTAS --}}
         <div class="card-body">
@@ -133,7 +127,6 @@ else {
     }).then(function() {
     
         window.location.reload();
-
 });
   
    }
@@ -150,7 +143,6 @@ else {
  
          /* Fin de Borrado de Ventas */ 
 </script>
-
 @endsection
 @section('scripts')
 <script src="{{ asset('/js/ventas.js') }}"></script>    

@@ -1,25 +1,127 @@
 
+load_data();
 /*=============================================
 LOCAL STORAGE -- CAPTURA RANGO DE FECHAS
 =============================================*/
-if(localStorage.getItem("capturarRango") != null)
-{
+// if(localStorage.getItem("capturarRango") != null)
+// {
 
-    $("#daterange-btn span").html(localStorage.getItem("capturarRango"));
+//     $("#daterange-btn span").html(localStorage.getItem("capturarRango"));
 
-}
-else 
-{
-    $("#daterange-btn span").html('<i class="fas fa-calendar-alt pr-2"></i>Fechas');
-}
+// }
+// else 
+// {
+//     $("#daterange-btn span").html('<i class="fas fa-calendar-alt pr-2"></i>Fechas');
+// }
+/*=============================================
+        Edicion de Carga de fechas
+=============================================*/
 
+  //Datemask dd/mm/yyyy
+  $('#datemask').inputmask('dd/mm/yyyy', {
+      'placeholder': 'dd/mm/yyyy'
+  })
+  //Datemask2 mm/dd/yyyy
+  $('#datemask2').inputmask('mm/dd/yyyy', {
+      'placeholder': 'mm/dd/yyyy'
+  })
+  //Money Euro
+  $('[data-mask]').inputmask()
+                            
+/*=============================================
+Rango de fechas para la ordenacion de fechas
+=============================================*/
+
+    $('#daterange-btn').daterangepicker(
+      {
+        ranges   : {
+          'Hoy'       : [moment(), moment()],
+          'Ayer'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Ultimos 7 Dias' : [moment().subtract(6, 'days'), moment()],
+          'Ultimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+          'Este Mes'  : [moment().startOf('month'), moment().endOf('month')],
+          'Ultimo Mes'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        // startDate: moment().subtract(29, 'days'),
+        startDate: moment(),
+        endDate  : moment()
+      },
+      function (start, end) {
+        $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+      
+        var fechaInicial = start.format('YYYY-M-D');
+        var fechaFinal = end.format('YYYY-M-D');
+        $('#from_date').val(fechaInicial);
+        $('#to_date').val(fechaFinal);
+       
+        var capturarRango = $("#daterange-btn span").html();
+        
+        localStorage.setItem("capturarRango", capturarRango);
+
+        // window.location = "ventas/"+fechaInicial+"/"+fechaFinal;
+
+    }
+    )
+
+/*=============================================
+LOCAL STORAGE -- CANCELAR RANGO DE FECHAS
+=============================================*/
+ $('.drp-buttons button.applyBtn').click(function(){
+  var from_date = $('#from_date').val();
+  var to_date = $('#to_date').val();
+  if(from_date != '' &&  to_date != '')
+  {
+   $('#ventas_table').DataTable().destroy();
+   load_data(from_date, to_date);
+  }
+  else
+  {
+        swal("Debe seleccionar un rango de fechas");  }
+ });
+
+$('.drp-buttons button.cancelBtn').click(function(){
+  $('#from_date').val('');
+  $('#to_date').val('');
+  $('#ventas_table').DataTable().destroy();
+  load_data();
+  $("#daterange-btn span").html('<i class="fas fa-calendar-alt pr-2"></i>Fechas');
+
+ });
+
+  $('#filter').click(function(){
+  var from_date = $('#from_date').val();
+  var to_date = $('#to_date').val();
+  if(from_date != '' &&  to_date != '')
+  {
+   $('#ventas_table').DataTable().destroy();
+   load_data(from_date, to_date);
+  }
+  else
+  {
+   swal('Debe seleccionar un rango de fechas');
+  }
+ });
+
+ $('#refresh').click(function(){
+  $('#from_date').val('');
+  $('#to_date').val('');
+  $('#ventas_table').DataTable().destroy();
+  load_data();
+  $("#daterange-btn span").html('<i class="fas fa-calendar-alt pr-2"></i>Fechas');
+
+ });
 /*=============================================
 Data Table de Clientes
 =============================================*/
+function load_data(from_date = '', to_date = '')
+ {
 $("#ventas_table").DataTable({
     "processing": true,
     "serverSide": true,
-    "ajax": "/ventas",
+    "ajax": {
+    url:'/ventas',
+    data:{from_date:from_date, to_date:to_date}
+   },
     "columns": [{
             data: 'id',
             name: 'id'
@@ -110,72 +212,4 @@ $("#ventas_table").DataTable({
     }
 
 });
-
-/*=============================================
-        Edicion de Carga de fechas
-=============================================*/
-
-  //Datemask dd/mm/yyyy
-  $('#datemask').inputmask('dd/mm/yyyy', {
-      'placeholder': 'dd/mm/yyyy'
-  })
-  //Datemask2 mm/dd/yyyy
-  $('#datemask2').inputmask('mm/dd/yyyy', {
-      'placeholder': 'mm/dd/yyyy'
-  })
-  //Money Euro
-  $('[data-mask]').inputmask()
-                            
-/*=============================================
-Data Table de Clientes
-=============================================*/
-// $("#ventas_table").on("click", ".btn-imprimirFactura", function(){
-//     let codigoID = $(this).attr('id');
-//     console.log(codigoID);
-//    window.open("/reportes/tcpdf/pdf/images/image_demo.jpg","_blank");
-// })
-
-
-/*=============================================
-Rango de fechas para la ordenacion de fechas
-=============================================*/
-
-    $('#daterange-btn').daterangepicker(
-      {
-        ranges   : {
-          'Hoy'       : [moment(), moment()],
-          'Ayer'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          'Ultimos 7 Dias' : [moment().subtract(6, 'days'), moment()],
-          'Ultimos 30 Dias': [moment().subtract(29, 'days'), moment()],
-          'Este Mes'  : [moment().startOf('month'), moment().endOf('month')],
-          'Ultimo Mes'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        },
-        // startDate: moment().subtract(29, 'days'),
-        startDate: moment(),
-        endDate  : moment()
-      },
-      function (start, end) {
-        $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
-      
-        var fechaInicial = start.format('YYYY-M-D');
-        var fechaFinal = end.format('YYYY-M-D');
-       
-        var capturarRango = $("#daterange-btn span").html();
-        
-        localStorage.setItem("capturarRango", capturarRango);
-
-        // window.location = "ventas/"+fechaInicial+"/"+fechaFinal;
-
-    }
-    )
-
-/*=============================================
-LOCAL STORAGE -- CANCELAR RANGO DE FECHAS
-=============================================*/
-$(".drp-buttons button.cancelBtn").on("click", function(){
-
-    localStorage.removeItem("capturarRango");
-    localStorage.clear();
-    window.location = "ventas";
-
-})
+}

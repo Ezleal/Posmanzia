@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\{Venta, User, Cliente, Producto};
+use DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
@@ -14,13 +15,25 @@ class VentasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){
+    public function index(Request $request){
         //   $ventas = Venta::all();
         //   $categorias = Categoria::all();
+     
 
-                 if(request()->ajax()){
+                 if(request()->ajax())
+                        {
+                            
+                            
+                         if(!empty($request->from_date))
+                         {
+                             $data = Venta::whereBetween('fecha', array($request->from_date, $request->to_date))->get();
+                         }
+                         else
+                         {
+                           $data = Venta::all();
+                         }
 
-                      return datatables()->of(Venta::latest()->get())
+                      return datatables()->of($data)
                             ->addIndexColumn()
                             ->addColumn('action', function($data){
                         $button = '<div class="btn-group"><a href="reportes/pdf/'.$data->id.'" target="_blank"><button type="button" name="print" id="'.$data->id.'" class="print btn btn-primary btn-sm"><i class="fas fa-print"></i></button></a>';
@@ -37,6 +50,7 @@ class VentasController extends Controller
                     return $vendedor->vendedor->name;
                      })
                     ->rawColumns(['action','cliente', 'vendedor'])
+                    ->rawColumns(['action','cliente'])
                     ->make(true);
             }
               
