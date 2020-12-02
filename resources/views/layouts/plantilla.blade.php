@@ -35,6 +35,8 @@
   <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css')}}">
   <!-- iCheck for checkboxes and radio inputs -->
   <link rel="stylesheet" href="{{ asset('plugins/iCheck/all.css')}}">
+  <!-- Daterange Picker -->
+  <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css')}}">
   <!-- Fonts -->
   <link rel="dns-prefetch" href="//fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -42,6 +44,11 @@
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <!-- iCheck 1.0.1 -->
   <script src="{{ asset('plugins/iCheck/icheck.min.js')}}"></script>
+    <!-- Daterange Picker -->
+  <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/moment.min.js')}}">
+  <link rel="stylesheet" href="{{ asset('plugins/moment/moment.min.js')}}">
+  <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.js')}}">
+  
 </head>
 <body class="hold-transition sidebar-mini sidebar-collapse layout-fixed">
 <!-- Site wrapper -->

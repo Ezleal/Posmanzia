@@ -2,6 +2,21 @@
 
 @section('content')
 
+{{-- <?php
+if(isset($_GET["fechaInicial"])){
+
+  $fechaInicial = $_GET["fechaInicial"];
+  $fechaFinal = $_GET["fechaFinal"];
+
+}
+else {
+  $fechaInicial = null;
+  $fechaFinal = null;
+}
+    
+?> --}}
+
+
 @if(session('info'))
   <script>
     swal ( "Venta Editada Correctamente!" ,  "Verifica en la lista de Ventas" ,  "success" )
@@ -50,6 +65,15 @@
             Crear Venta
           </button>
           </a>
+          {{-- RANGOS DE FECHAS CON DATAPICKER PLUGIN --}}
+          <button type="button" class="btn btn-outline-primary float-right" id="daterange-btn">
+            <span>
+        
+              <i class="fas fa-calendar-alt pr-2"></i>Fechas
+            </span>
+            <i class="fa fa-caret-down"></i>
+          </button>
+
         </div>
         {{-- TABLA DE VENTAS --}}
         <div class="card-body">

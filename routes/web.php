@@ -59,8 +59,12 @@ Route::post('ventas/update', 'VentasController@update')->name('ventas.update');
 Route::get('ventas/destroy/{id}', 'VentasController@destroy');
 Route::post('ventas/{id}/edit', 'VentasController@edit')->name('ventas.edit');
 
+
 /* ------ FIN DE VENTAS ----- */
 
 Auth::routes(["register" => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+/* RUTAS DE REPORTES EN PDF */
+Route::get('reportes/pdf/{id}', 'PDFController@ReportesPDF')->name('verReporte');
