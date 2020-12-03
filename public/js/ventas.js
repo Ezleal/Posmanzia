@@ -35,12 +35,12 @@ Rango de fechas para la ordenacion de fechas
     $('#daterange-btn').daterangepicker(
       {
         ranges   : {
-          'Hoy'       : [moment(), moment()],
-          'Ayer'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          'Ultimos 7 Dias' : [moment().subtract(6, 'days'), moment()],
-          'Ultimos 30 Dias': [moment().subtract(29, 'days'), moment()],
-          'Este Mes'  : [moment().startOf('month'), moment().endOf('month')],
-          'Ultimo Mes'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          'Hoy'       : [moment().subtract(0, 'days'), moment().subtract(-1, 'days')],
+          'Ayer'   : [moment().subtract(1, 'days'), moment().subtract(0, 'days')],
+          'Ultimos 7 Dias' : [moment().subtract(6, 'days'), moment().subtract(-1, 'days')],
+          'Ultimos 30 Dias': [moment().subtract(29, 'days'), moment().subtract(-1, 'days')],
+          'Este Mes'  : [moment().startOf('month'), moment().endOf('month').subtract(-1, 'days')],
+          'Ultimo Mes'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month').subtract(-1, 'days')]
         },
         // startDate: moment().subtract(29, 'days'),
         startDate: moment(),
@@ -49,15 +49,15 @@ Rango de fechas para la ordenacion de fechas
       function (start, end) {
         $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
       
-        var fechaInicial = start.format('YYYY-M-D');
-        var fechaFinal = end.format('YYYY-M-D');
+        var fechaInicial = start.format('YYYY-MM-DD');
+        var fechaFinal = end.format('YYYY-MM-DD');
         $('#from_date').val(fechaInicial);
         $('#to_date').val(fechaFinal);
        
         var capturarRango = $("#daterange-btn span").html();
         
         localStorage.setItem("capturarRango", capturarRango);
-
+           
         // window.location = "ventas/"+fechaInicial+"/"+fechaFinal;
 
     }

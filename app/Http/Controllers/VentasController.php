@@ -18,15 +18,15 @@ class VentasController extends Controller
     public function index(Request $request){
         //   $ventas = Venta::all();
         //   $categorias = Categoria::all();
-     
+      
 
                  if(request()->ajax())
                         {
                             
-                            
+                          
                          if(!empty($request->from_date))
                          {
-                             $data = Venta::whereBetween('fecha', array($request->from_date, $request->to_date))->get();
+                             $data = Venta::whereBetween('fecha', array($request->from_date.'%', $request->to_date.'%'))->get();
                          }
                          else
                          {
@@ -54,7 +54,6 @@ class VentasController extends Controller
                     ->make(true);
             }
               
-        
      
         $ventas = Venta::all();
         
@@ -370,5 +369,9 @@ class VentasController extends Controller
         $clienteEditar->save();
      
         
+    }
+    public function reportes()
+    {
+         return view('modulos.reportes');
     }
 }
