@@ -55,6 +55,8 @@
                     <input type="hidden" name="to_date" id="to_date" class="form-control" placeholder="To Date" readonly />
             {{-- </div> --}}
           {{-- RANGOS DE FECHAS CON DATAPICKER PLUGIN --}}
+          <button type="button" name="filter" id="filter" class="btn btn-outline-success float-right">Filtrar</button>
+          <button type="button" name="refresh" id="refresh" class="btn btn-outline-dark float-right">Limpiar</button>
           <button type="button" class="btn btn-primary float-right" id="daterange-btn">
             <span>
         
@@ -62,8 +64,7 @@
             </span>
             <i class="fa fa-caret-down"></i>
           </button>
-          <button type="button" name="filter" id="filter" class="btn btn-outline-success float-right">Filtrar</button>
-          <button type="button" name="refresh" id="refresh" class="btn btn-outline-dark float-right">Limpiar</button>
+          
               {{-- <div class="col-md-4">
                     <button type="button" name="filter" id="filter" class="btn btn-primary">Filter</button>
                     <button type="button" name="refresh" id="refresh" class="btn btn-default">Refresh</button>

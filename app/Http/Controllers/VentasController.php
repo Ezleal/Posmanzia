@@ -370,8 +370,40 @@ class VentasController extends Controller
      
         
     }
-    public function reportes()
+    public function reportes(Request $request)
     {
-         return view('modulos.reportes');
+         if(!empty($request->from_date))
+                         {
+                             $todos = Venta::whereBetween('fecha', array($request->from_date.'%', $request->to_date.'%'))->get();
+                            
+                         }
+                         else
+                         {
+                           $todos = Venta::all();
+                         }
+
+         
+
+         return view('modulos.reportes',compact('todos'));
+    }
+
+    public function traerReportes($inicio, $fin)
+    {
+        if(request()->ajax())
+        {
+                         if(!empty($inicio))
+                         {
+                             $data = Venta::whereBetween('fecha', array($inicio.'%', $fin.'%'))->get();
+                            
+                         }
+                         else
+                         {
+                           $data = Venta::all();
+                         }
+   
+
+            return response()->json(['data' => $data]);
+        
+        }
     }
 }

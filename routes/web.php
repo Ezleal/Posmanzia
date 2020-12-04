@@ -59,6 +59,7 @@ Route::post('ventas/update', 'VentasController@update')->name('ventas.update');
 Route::get('ventas/destroy/{id}', 'VentasController@destroy');
 Route::post('ventas/{id}/edit', 'VentasController@edit')->name('ventas.edit');
 Route::get('/reportes', 'VentasController@reportes')->name('ventas.reportes');
+Route::get('traerReportes/{inicio}/{fin}', 'VentasController@traerReportes');
 
 
 /* ------ FIN DE VENTAS ----- */
