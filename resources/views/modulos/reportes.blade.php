@@ -62,7 +62,33 @@
        
       </div>
       <!-- /.card -->
+<?php
+        error_reporting(0);
 
+        $arrayFechas = array();
+        $arrayVentas = array();
+        $sumaTotalMes = array();
+
+        foreach ($todos as $value) {
+          // capturamos solo el año y el mes
+          $fecha = substr($value["fecha"],0,7  );
+          // Introducimos cada fecha en un array
+          array_push($arrayFechas, $fecha);
+          // capturamos solo el año y el mes
+          $arrayVentas = array($fecha => $value["total"]);
+          // Sumamos las ventas por mes
+          foreach($arrayVentas as $key => $value)
+          {
+             $sumaTotalMes[$key] += $value;
+          }
+        
+        }
+         
+        // TOMAMOS EL ARRAY DE FECHAS Y SOLO SELECCIONAMOS LAS NO REPETIDAS
+
+      $fechasSinRepetir = array_unique($arrayFechas);
+
+        ?>
     </section>
   
 
@@ -71,7 +97,7 @@
 
 @endsection
 @section('scripts')
-    <script>
+     <script>
       
        var line = new Morris.Line({
     element          : 'line-chart-ventas',
@@ -79,14 +105,20 @@
     data             : [
       // CAPTURAMOS LAS FECHAS SELECCIONADAS EN EL RANGO
       <?php
-      foreach($todos as $value)
+      if($fechasSinRepetir != null)
+      {
+        foreach($fechasSinRepetir as $key)
       {
         // capturamos solo el año y el mes
-        echo "{ y: '".$value["fecha"]."', ventas: 2122},";
-
+        echo "{ y: '".$key."', ventas: '".$sumaTotalMes[$key]."'},";
       }
-      // echo "{ y: '".$value["fecha"]."', ventas: 2122}";
-
+      }
+      // SI NO HAY VENTAS PONE EN CERO (0) EL MES
+      else
+      {
+        echo "{ y: '0', ventas: '0'},";
+      }
+      
       ?>
     ],
     xkey             : 'y',
@@ -103,7 +135,7 @@
     gridTextFamily   : 'Open Sans',
     gridTextSize     : 10
   });
-
+  
 </script>
   <script src="{{ asset('/js/reportes.js') }}"></script>  
 @endsection
