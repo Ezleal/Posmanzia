@@ -372,38 +372,52 @@ class VentasController extends Controller
     }
     public function reportes(Request $request)
     {
-         if(!empty($request->from_date))
+         $arrayFechas = array();
+        if(!empty($request->from_date))
                          {
+
                              $todos = Venta::whereBetween('fecha', array($request->from_date.'%', $request->to_date.'%'))->get();
-                            
-                         }
+                                foreach ($todos as $value) {
+                                    // capturamos solo el año y el mes
+                                    $fecha = substr($value["fecha"],0,7);
+                                    // Introducimos cada fecha en un array
+                                    array_push($arrayFechas, $fecha);
+                                }
+                             
+
+                            }
                          else
                          {
                            $todos = Venta::all();
+                            foreach ($todos as $value) {
+                            // capturamos solo el año y el mes
+                            $fecha = substr($value["fecha"],0,7);
+                            // Introducimos cada fecha en un array
+                            array_push($arrayFechas, $fecha);
+                        }
                          }
-
          
 
-         return view('modulos.reportes',compact('todos'));
+         return view('modulos.reportes',compact('todos', 'arrayFechas'));
     }
-
-    public function traerReportes($inicio, $fin)
+     public function reportesFechas($inicio, $fin)
     {
-        if(request()->ajax())
-        {
-                         if(!empty($inicio))
+        
+        if(!empty($inicio))
                          {
-                             $data = Venta::whereBetween('fecha', array($inicio.'%', $fin.'%'))->get();
-                            
-                         }
+
+                             $todos = Venta::whereBetween('fecha', array($inicio.'%', $fin.'%'))->get(); 
+
+                            }
                          else
                          {
-                           $data = Venta::all();
-                         }
-   
+                           $todos = Venta::all();
+                            
+                        }
+                         
+         
 
-            return response()->json(['data' => $data]);
-        
-        }
+         return view('modulos.reportesFechas',compact('todos'));
     }
+    
 }

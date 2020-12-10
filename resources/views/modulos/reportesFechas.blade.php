@@ -62,7 +62,17 @@
        
       </div>
       <!-- /.card -->
+        <?php
+        $arrayFechas = array();
+        $arrayVentas = array();
 
+        foreach ($todos as $value) {
+          // capturamos solo el año y el mes
+          $fecha = substr($value["fecha"],0,10);
+          // Introducimos cada fecha en un array
+          array_push($arrayFechas, $fecha);
+        }
+        ?>
     </section>
   
 
@@ -79,10 +89,10 @@
     data             : [
       // CAPTURAMOS LAS FECHAS SELECCIONADAS EN EL RANGO
       <?php
-      foreach($todos as $value)
+      foreach($arrayFechas as $value)
       {
         // capturamos solo el año y el mes
-        echo "{ y: '".$value["fecha"]."', ventas: 2122},";
+        echo "{ y: '".$value."', ventas: 2122},";
 
       }
       // echo "{ y: '".$value["fecha"]."', ventas: 2122}";
@@ -103,7 +113,7 @@
     gridTextFamily   : 'Open Sans',
     gridTextSize     : 10
   });
-
+  
 </script>
   <script src="{{ asset('/js/reportes.js') }}"></script>  
 @endsection
