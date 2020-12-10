@@ -65,6 +65,9 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+<!-- CHART JS -->
+<script src="{{ asset('plugins/chart.js/Chart.js')}}"></script>
+
 </head>
 <body class="hold-transition sidebar-mini sidebar-collapse layout-fixed">
 <!-- Site wrapper -->

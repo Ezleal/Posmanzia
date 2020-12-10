@@ -389,16 +389,15 @@ class VentasController extends Controller
                          else
                          {
                            $todos = Venta::all();
-                            foreach ($todos as $value) {
-                            // capturamos solo el año y el mes
-                            $fecha = substr($value["fecha"],0,7);
-                            // Introducimos cada fecha en un array
-                            array_push($arrayFechas, $fecha);
-                        }
+                         
                          }
+             $colores = array("red", "green","aqua","magenta","yellow","blue");
          
+          $productos = Producto::select("*")
+                        ->orderBy("ventas", "desc")
+                        ->take(6)->get();
 
-         return view('modulos.reportes',compact('todos', 'arrayFechas'));
+         return view('modulos.reportes',compact('todos', 'productos','colores'));
     }
      public function reportesFechas($inicio, $fin)
     {
@@ -415,9 +414,9 @@ class VentasController extends Controller
                             
                         }
                          
-         
-
-         return view('modulos.reportesFechas',compact('todos'));
+        $productos = Producto::all(); 
+        
+         return view('modulos.reportesFechas',compact('todos', 'productos'));
     }
     
 }
