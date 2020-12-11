@@ -391,13 +391,14 @@ class VentasController extends Controller
                            $todos = Venta::all();
                          
                          }
-             $colores = array("red", "green","aqua","magenta","yellow","blue");
-         
-          $productos = Producto::select("*")
+
+        $total = DB::table('productos')->sum('ventas');
+        $colores = array("red", "green","aqua","magenta","yellow","blue");
+        $productos = Producto::select("*")
                         ->orderBy("ventas", "desc")
                         ->take(6)->get();
 
-         return view('modulos.reportes',compact('todos', 'productos','colores'));
+         return view('modulos.reportes',compact('todos', 'productos','colores', 'total'));
     }
      public function reportesFechas($inicio, $fin)
     {
@@ -414,9 +415,13 @@ class VentasController extends Controller
                             
                         }
                          
-        $productos = Producto::all(); 
+        $total = DB::table('productos')->sum('ventas');
+        $colores = array("red", "green","aqua","magenta","yellow","blue");
+        $productos = Producto::select("*")
+                        ->orderBy("ventas", "desc")
+                        ->take(6)->get();
         
-         return view('modulos.reportesFechas',compact('todos', 'productos'));
+         return view('modulos.reportesFechas',compact('todos', 'productos','total','colores'));
     }
     
 }

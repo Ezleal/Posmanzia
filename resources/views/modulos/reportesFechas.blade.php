@@ -89,37 +89,30 @@
       $fechasSinRepetir = array_unique($arrayFechas);
 
         ?>
-      {{-- Grafico Cirular Inicio --}}
+    {{-- Grafico Cirular Inicio --}}
     <div class="col-md-6 col-xs-12">
       <div class="card">
         <div class="card-header">
-           <h3 class="card-title">Browser Usage</h3>
-
-              <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
-                  </button>
-                </div>
+           <h3 class="card-title mb-0">Productos Mas Vendidos</h3>
               </div>
               <!-- /.card-header -->
             <div class="card-body">
                 <div class="row">
-                  <div class="col-md-8">
+                  <div class="col-md-7">
                     <div class="chart-responsive">
                       <canvas id="pieChart" height="150"></canvas>
                     </div>
                     <!-- ./chart-responsive -->
               </div>
                   <!-- /.col -->
-              <div class="col-md-4">
+              <div class="col-md-5">
                     <ul class="chart-legend clearfix">
-                      <li><i class="far fa-circle text-danger"></i> Chrome</li>
-                      <li><i class="far fa-circle text-success"></i> IE</li>
-                      <li><i class="far fa-circle text-warning"></i> FireFox</li>
-                      <li><i class="far fa-circle text-info"></i> Safari</li>
-                      <li><i class="far fa-circle text-primary"></i> Opera</li>
-                      <li><i class="far fa-circle text-secondary"></i> Navigator</li>
+                    <?php
+                       for ($i = 0; $i < 6; $i++){
+
+                         echo '<li><i class="fas fa-circle-notch text-'.$colores[$i].'"></i> '.$productos[$i]["descripcion"].'</li>';
+                       }
+                    ?>
                     </ul>
               </div>
                   <!-- /.col -->
@@ -129,56 +122,58 @@
               <!-- /.card-body -->
               <div class="card-footer bg-white p-0">
                 <ul class="nav nav-pills flex-column">
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      United States of America
-                      <span class="float-right text-danger">
+                  <?php
+                   
+                       for ($i = 0; $i < 3; $i++){
+                      $porcentaje = ceil($productos[$i]["ventas"] * 100 / $total);
+                       echo '<li class="nav-item">
+                          <a href="#" class="nav-link">
+                           '.$productos[$i]["descripcion"].'
+                          <span class="float-right text-'.$colores[$i].'">
                         <i class="fas fa-arrow-down text-sm"></i>
-                        12%</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      India
-                      <span class="float-right text-success">
-                        <i class="fas fa-arrow-up text-sm"></i> 4%
-                      </span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      China
-                      <span class="float-right text-warning">
-                        <i class="fas fa-arrow-left text-sm"></i> 0%
-                      </span>
-                    </a>
-                  </li>
+                            '.$porcentaje.'%</span>
+                        </a>
+                         </li>';
+
+                       }
+                    ?>
+                  
+
                 </ul>
               </div>
               <!-- /.footer -->
             </div>
             <!-- /.card -->
     </div>
-
-    <script>
-      //-------------
+      <script>
+  //-------------
   //- PIE CHART -
   //-------------
   // Get context with jQuery - using jQuery's .get() method.
     var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
     var pieData        = {
       labels: [
-          'Chrome', 
-          'IE',
-          'FireFox', 
-          'Safari', 
-          'Opera', 
-          'Navigator', 
+        <?php
+          for ($i = 0; $i < 6; $i++)
+          {
+            echo '"'.$productos[$i]["descripcion"].'",';        
+
+          }
+          // 'Chrome', 
+          // 'IE',
+          // 'FireFox', 
+          // 'Safari', 
+          // 'Opera', 
+          // 'Navigator', 
+          ?>
       ],
       datasets: [
         {
-          data: [700,500,400,600,300,100],
-          backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+          <?php
+          
+          echo "data: [".$productos[0]["ventas"].",".$productos[1]["ventas"].",".$productos[2]["ventas"].",".$productos[3]["ventas"].",".$productos[4]["ventas"].",".$productos[5]["ventas"]."], backgroundColor : ['".$colores[0]."', '".$colores[1]."', '".$colores[2]."', '".$colores[3]."', '".$colores[4]."', '".$colores[5]."'],"
+          
+          ?>
         }
       ]
     }
@@ -200,7 +195,6 @@
   //-----------------
     </script>
         <!-- /.Grafico Circular Fin -->
-
     </section>
 
 @endsection
