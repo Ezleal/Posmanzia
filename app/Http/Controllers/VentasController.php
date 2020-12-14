@@ -36,7 +36,7 @@ class VentasController extends Controller
                       return datatables()->of($data)
                             ->addIndexColumn()
                             ->addColumn('action', function($data){
-                        $button = '<div class="btn-group"><a href="reportes/pdf/'.$data->id.'" target="_blank"><button type="button" name="print" id="'.$data->id.'" class="print btn btn-primary btn-sm"><i class="fas fa-print"></i></button></a>';
+                        $button = '<div class="btn-group"><a href="reporte/pdf/'.$data->id.'" target="_blank"><button type="button" name="print" id="'.$data->id.'" class="print btn btn-primary btn-sm"><i class="fas fa-print"></i></button></a>';
                         $button .= '&nbsp;&nbsp;';
                         $button .= '<div class="btn-group"> <a href="ventas/'.$data->id.'/edit"><button type="button" name="editar_venta" id="'.$data->id.'" class="print btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></button></a>';
                         $button .= '&nbsp;&nbsp;';

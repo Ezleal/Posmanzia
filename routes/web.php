@@ -69,4 +69,4 @@ Auth::routes(["register" => false]);
 Route::get('/home', 'HomeController@index')->name('home');
 
 /* RUTAS DE REPORTES EN PDF */
-Route::get('reportes/pdf/{id}', 'PDFController@ReportesPDF')->name('verReporte');
+Route::get('reporte/pdf/{id}', 'PDFController@ReportesPDF')->name('verReporte');
