@@ -1,3 +1,28 @@
+ <?php
+  error_reporting(0);
+  $arrayVendedores = array();
+  $arrayListaVendedores = array();
+  $sumaTotalVendedores = array();
+  foreach ($todos as $key => $valueVentas) {
+            foreach ($usuarios as $key => $valueUsuarios) {
+                if ( $valueVentas->id_vendedor == $valueUsuarios->id) {
+                    // CAPTURAMOS NOMBRE DE LOS VENDEDORES EN UN ARRAY
+                   array_push($arrayVendedores, $valueUsuarios->name);
+                 // CAPTURAMOS NOMBRE DE LOS VENDEDORES Y VALORES NETOS EN UN ARRAY
+                 $arrayListaVendedores = array($valueUsuarios->name => $valueVentas->neto);
+                }
+                
+            }
+            // Sumamos los netos de cada vendedor
+        foreach ($arrayListaVendedores as $key => $value) {
+            $sumaTotalVendedores[$key] += $value;
+        }
+        }
+        
+       
+        $nombresSinRepetir = array_unique($arrayVendedores);
+ ?>
+ 
  {{-- Grafico Vendedores Inicio --}}
       <div class="card card-danger">
         <div class="card-header">
@@ -25,9 +50,15 @@
       element: 'bar-chart-vendedores',
       resize: true,
       data: [
-        {y: 'Ezequiel', a: 12000},
-        {y: 'Roberto', a: 12332},
-        {y: 'Lautaro', a: 54333},
+
+        <?php 
+      foreach($nombresSinRepetir as $value){
+        echo "{y: '".$value."', a:".$sumaTotalVendedores[$value]."},";
+      }
+      ?>  
+        // {y: 'Ezequiel', a: 12000},
+        // {y: 'Roberto', a: 12332},
+        // {y: 'Lautaro', a: 54333},
        
       ],
       barColors: ['#f00'],

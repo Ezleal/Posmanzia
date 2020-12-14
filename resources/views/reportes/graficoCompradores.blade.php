@@ -1,3 +1,27 @@
+  <?php
+  error_reporting(0);
+  $arrayCompradores = array();
+  $arrayListaCompradores = array();
+  $sumaTotalCompradores = array();
+  foreach ($todos as $key => $valueCompras) {
+            foreach ($clientes as $key => $valueClientes) {
+                if ( $valueCompras->id_cliente == $valueClientes->id) {
+                    // CAPTURAMOS NOMBRE DE LOS CLIENTES EN UN ARRAY
+                   array_push($arrayCompradores, $valueClientes->name);
+                 // CAPTURAMOS NOMBRE DE LOS CLIENTES Y VALORES NETOS EN UN ARRAY
+                 $arrayListaCompradores = array($valueClientes->name => $valueCompras->neto);
+                }
+                
+            }
+            // Sumamos los netos de cada CLIENTE
+        foreach ($arrayListaCompradores as $key => $value) {
+            $sumaTotalCompradores[$key] += $value;
+        }
+        }
+        
+       
+        $nombresSinRepetir = array_unique($arrayCompradores);
+ ?>
  {{-- Grafico Vendedores Inicio --}}
       <div class="card card-primary">
         <div class="card-header">
@@ -25,9 +49,11 @@
       element: 'bar-chart-compradores',
       resize: true,
       data: [
-        {y: 'Ezequiel', a: 12000},
-        {y: 'Roberto', a: 12332},
-        {y: 'Lautaro', a: 54333},
+        <?php 
+      foreach($nombresSinRepetir as $value){
+        echo "{y: '".$value."', a:".$sumaTotalCompradores[$value]."},";
+      }
+      ?>   
        
       ],
       barColors: ['#0af'],

@@ -373,6 +373,7 @@ class VentasController extends Controller
     public function reportes(Request $request)
     {
          $arrayFechas = array();
+        
         if(!empty($request->from_date))
                          {
 
@@ -392,13 +393,15 @@ class VentasController extends Controller
                          
                          }
 
+        $usuarios = User::All();
+        $clientes = Cliente::All();
         $total = DB::table('productos')->sum('ventas');
         $colores = array("red", "green","aqua","magenta","yellow","blue");
         $productos = Producto::select("*")
                         ->orderBy("ventas", "desc")
                         ->take(6)->get();
 
-         return view('modulos.reportes',compact('todos', 'productos','colores', 'total'));
+         return view('modulos.reportes',compact('todos', 'productos','colores', 'total', 'usuarios', 'clientes'));
     }
      public function reportesFechas($inicio, $fin)
     {
