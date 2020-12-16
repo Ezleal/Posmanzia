@@ -15,7 +15,7 @@ class PDFController extends Controller
         //CONTADOR DE FACTURA PDF
         $contador = 1;
         
-        $pdf = \PDF::loadView('/reportes/prueba', compact('venta', 'productos','contador'));
+        $pdf = \PDF::loadView('/reportes/reportePDF', compact('venta', 'productos','contador'));
         // return $pdf->download('prueba.pdf'); --PARA DESCARGAR DIRECTAMENTE
         return $pdf->stream($cod.'.pdf');
     }

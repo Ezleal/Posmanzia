@@ -92,7 +92,8 @@
 <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
 <!-- bootstrap color picker -->
 <script src="{{ asset('plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') }}"></script>
+<!-- ION Icons -->
+{{-- <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script> --}}
 @yield('scripts')
-
 </body>
 </html>
