@@ -60,6 +60,8 @@ Route::get('ventas/destroy/{id}', 'VentasController@destroy');
 Route::post('ventas/{id}/edit', 'VentasController@edit')->name('ventas.edit');
 Route::get('/reportes', 'VentasController@reportes')->name('ventas.reportes');
 Route::get('/reportes/{inicio}/{fin}', 'VentasController@reportesFechas')->name('ventas.reportesFecha');
+Route::get('/reportesExcel', 'VentasController@reportesExcel')->name('ventas.reportesExcel');
+Route::get('/reportesExcel/{inicio}/{fin}', 'VentasController@fechasExcel')->name('ventas.fechasExcel');
 
 
 /* ------ FIN DE VENTAS ----- */

@@ -16,7 +16,16 @@
           <button type="button" name="refresh" id="refresh" class="btn btn-outline-dark float-right">Limpiar</button>
     
           </div>
+           <div class="box-tools float-right">
 
+   
+           <a href="{{route('ventas.reportesExcel') }}">
+        
+           <button class="btn btn-success" style="margin-top:5px">Descargar reporte en Excel</button>
+
+          </a>
+
+        </div>
           
         </div>
 

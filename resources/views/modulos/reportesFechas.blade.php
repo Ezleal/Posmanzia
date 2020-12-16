@@ -42,7 +42,11 @@
           <button type="button" name="refresh" id="refresh" class="btn btn-outline-dark float-right">Limpiar</button>
     
           </div>
+             <div class="box-tools float-right">
 
+           <button class="btn btn-success" style="margin-top:5px" id="descargarExcel">Descargar reporte en Excel</button>
+
+        </div>
           
         </div>
 
@@ -159,12 +163,7 @@
             echo '"'.$productos[$i]["descripcion"].'",';        
 
           }
-          // 'Chrome', 
-          // 'IE',
-          // 'FireFox', 
-          // 'Safari', 
-          // 'Opera', 
-          // 'Navigator', 
+
           ?>
       ],
       datasets: [
@@ -198,6 +197,9 @@
     </section>
 
 @endsection
+
+
+
 @section('scripts')
     <script>
       
@@ -237,7 +239,17 @@
     gridTextFamily   : 'Open Sans',
     gridTextSize     : 10
   });
+
+//  CAPTURAMOS EL BOTON DE DESCARGA EN EXCEL PARA RANGO DE FECHA 
+
+$('#descargarExcel').click(function(){
+  var from_date = $('#from_date').val();
+  var to_date = $('#to_date').val();
   
+    window.location = "/reportesExcel/"+from_date+"/"+to_date;
+  
+ });
+
 </script>
   <script src="{{ asset('/js/reportes.js') }}"></script>  
 @endsection

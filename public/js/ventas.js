@@ -110,6 +110,22 @@ $('.drp-buttons button.cancelBtn').click(function(){
   $("#daterange-btn span").html('<i class="fas fa-calendar-alt pr-2"></i>Fechas');
 
  });
+
+ /* CAPTURAMOS EL BOTON DE DESCARGA EN EXCEL PARA RANGO DE FECHA */
+$('#filter').click(function(){
+  var from_date = $('#from_date').val();
+  var to_date = $('#to_date').val();
+  if(from_date != '' &&  to_date != '')
+  {
+   $('#ventas_table').DataTable().destroy();
+   load_data(from_date, to_date);
+  }
+  else
+  {
+   swal('Debe seleccionar un rango de fechas');
+  }
+ });
+
 /*=============================================
 Data Table de Clientes
 =============================================*/

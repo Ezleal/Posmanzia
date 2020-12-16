@@ -45,6 +45,7 @@ else
    swal('Debe seleccionar un rango de fechas');
   }
  });
+
 /*=============================================
 Rango de fechas para la ordenacion de fechas
 =============================================*/

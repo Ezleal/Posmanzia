@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Exports\ReportesExcel;
+use Maatwebsite\Excel\Facades\Excel;
+
+
 
 class VentasController extends Controller
 {
@@ -425,6 +429,16 @@ class VentasController extends Controller
                         ->take(6)->get();
         
          return view('modulos.reportesFechas',compact('todos', 'productos','total','colores'));
+    }
+    
+    public function fechasExcel($inicio, $fin)
+    {
+        return Excel::download(new ReportesExcel($inicio,$fin), 'Reporte_'.$inicio.'_a_'.$fin.'.xlsx');
+    }
+     public function reportesExcel()
+    {
+        $fechaHoy = Carbon::now()->format('d-m-Y');
+        return Excel::download(new ReportesExcel("",""), 'Reporte_total_al_'.$fechaHoy.'.xlsx');
     }
     
 }
