@@ -58,6 +58,7 @@
   <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
   <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
   <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
+
 </head>
 <body class="hold-transition sidebar-mini sidebar-collapse layout-fixed">
 <!-- Site wrapper -->

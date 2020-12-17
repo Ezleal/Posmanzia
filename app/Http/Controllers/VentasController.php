@@ -22,12 +22,8 @@ class VentasController extends Controller
     public function index(Request $request){
         //   $ventas = Venta::all();
         //   $categorias = Categoria::all();
-      
-
                  if(request()->ajax())
-                        {
-                            
-                          
+                        {   
                          if(!empty($request->from_date))
                          {
                              $data = Venta::whereBetween('fecha', array($request->from_date.'%', $request->to_date.'%'))->get();
@@ -413,14 +409,15 @@ class VentasController extends Controller
         if(!empty($inicio))
                          {
 
-                             $todos = Venta::whereBetween('fecha', array($inicio.'%', $fin.'%'))->get(); 
+                        $todos = Venta::whereBetween('fecha', array($inicio.'%', $fin.'%'))->get();
 
-                            }
+                         }
                          else
                          {
+                             
                            $todos = Venta::all();
-                            
-                        }
+
+                         }
                          
         $total = DB::table('productos')->sum('ventas');
         $colores = array("red", "green","aqua","magenta","yellow","blue");

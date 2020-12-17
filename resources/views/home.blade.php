@@ -1,4 +1,4 @@
-@extends('layouts.plantilla')
+@extends('layouts.plantillaReportes')
 
 @section('content')
 
@@ -30,9 +30,30 @@
        @include('modulos/home/cajasSuperiores')
 
     </div>
+     <div class="row">
+
+       @include('modulos/home/cajasMedias')
+
+    </div>
+    <div class="row">
+      <div class="col-lg-6 col-12">
+
+        @include('reportes/graficoCircular')
+
+      </div>
+      <div class="col-lg-6 col-12">
+
+        @include('modulos/home/cajasReportes')
+
+      </div>
+    </div>
+  
 
     </section>
     <!-- /.content -->
  
 
+@endsection
+@section('scripts')
+  <script src="{{ asset('/js/reportes.js') }}"></script>  
 @endsection

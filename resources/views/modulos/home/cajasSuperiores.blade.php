@@ -1,10 +1,9 @@
 
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-info">
+            <div class="small-box bg-danger">
               <div class="inner">
-                <h3>150</h3>
-
+                <h3>${{ $totalVentas }}</h3>
                 <p>Ventas</p>
               </div>
               <div class="icon">
@@ -16,9 +15,9 @@
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-warning">
+            <div class="small-box bg-primary">
               <div class="inner">
-                <h3>44</h3>
+                <h3>{{ $totalClientes }}</h3>
 
                 <p>Clientes</p>
               </div>
@@ -33,7 +32,7 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53</h3>
+                <h3>{{ $totalProductos }}</h3>
 
                 <p>Productos</p>
               </div>
@@ -47,9 +46,9 @@
           
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-danger">
+            <div class="small-box bg-warning">
               <div class="inner">
-                <h3>65</h3>
+                <h3>{{ $totalCategorias }}</h3>
                 <p>Categorias</p>
               </div>
               <div class="icon">
