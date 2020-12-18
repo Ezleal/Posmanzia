@@ -82,11 +82,36 @@ class VentasController extends Controller
      */
  public function store(Request $request)
     {
+        //         /********************* 
+        //             VALIDAR VENTA
+        //         **********************/
+             $rules = array(
+                'codigo'    =>  ['required', 'numeric'],
+                'listaProductos'     =>  ['required'],
+                'id_cliente'     =>  ['required', 'numeric'],
+                'id_vendedor'     =>  ['required', 'numeric'],
+                'nuevoPrecioImpuesto'=> ['required','numeric'],
+                'impuestoVenta' => ['required','numeric'],
+                'nuevoPrecioNeto' => ['required','numeric'],
+                'totalVenta' => ['required','numeric'],
+                'listaMetodoPago' => ['required','string', 'min:4','unique:ventas,metodo_pago']
+
+            );
+
+        $error = Validator::make($request->all(), $rules);
+
+            
+         $this->validate($request, $rules);
+
+       
         $listaProductos = json_decode($request->input('listaProductos'), true);
         
         $totalProductosComprados = array();
-        
-        foreach ($listaProductos as $key => $value) {
+        if(!$error->fails())
+            {   
+           
+        if ($listaProductos) {
+             foreach ($listaProductos as $key => $value) {
             /* Ingreso al array totalProductosComprado la cantidad individual */
             array_push( $totalProductosComprados, $value["cantidad"]);
             // $item = 'id';
@@ -109,7 +134,12 @@ class VentasController extends Controller
 
         }
     
-            $clienteEditar = Cliente::find($request->input('id_cliente'));
+        }
+        
+        $clienteEditar = Cliente::find($request->input('id_cliente'));
+        
+        if ($clienteEditar) {
+
             $comprasClienteActual =  $clienteEditar->compras;
             /* Cantidades que el cliente compro */
             $cantidadComprada = array_sum($totalProductosComprados);
@@ -117,11 +147,12 @@ class VentasController extends Controller
             $clienteEditar->ultima_compra = Carbon::now();
             // dd( $comprasClienteActual);
             // Aquí guardo mis datos tal como el usuario los modifico
-		    $clienteEditar->save();
+            $clienteEditar->save();
+        }}
 
-            /* 
+        /* 
                 GUARDAR LA VENTA
-            */
+        */
        
         $newVenta = new Venta;
         $newVenta->codigo         = $request->input('codigo');
@@ -184,9 +215,29 @@ class VentasController extends Controller
      */
     public function update(Request $request)
     {   
+              // VALIDACIÓN DE EDICION DE VENTA
+            $rules = array(
+                'codigo'    =>  ['required', 'numeric'],
+                'listaProductos'     =>  ['required'],
+                'id_cliente'     =>  ['required', 'numeric'],
+                'id_vendedor'     =>  ['required', 'numeric'],
+                'nuevoPrecioImpuesto'=> ['required','numeric'],
+                'impuestoVenta' => ['required','numeric'],
+                'nuevoPrecioNeto' => ['required','numeric'],
+                'totalVenta' => ['required','numeric'],
+                'listaMetodoPago' => ['required','string', 'min:5']
+
+            );
+
+              $error = Validator::make($request->all(), $rules);
+
+             $this->validate($request, $rules);
         /**********************************************************************************************
         ------------- FORMATEADA DE LA VENTA PARA SUMAR PRODUCTOS YA COMPRADOS (CLIENTE Y PRODUCTOS)
         ***********************************************************************************************/
+    if(!$error->fails())
+        {
+        
         $traer = $request->idEditarVenta;
         $traerVentas = Venta::findOrFail($traer);
         $actualizarProductos = json_decode($traerVentas['productos'], true);
@@ -232,6 +283,8 @@ class VentasController extends Controller
        $listaEditar = json_decode($request->input('listaProductos'), true);
         
        $totalProductosCompradosA = array();
+
+        if ($listaEditar) {
         
         foreach ($listaEditar as $key => $value) {
             /* Ingreso al array totalProductosComprado la cantidad individual */
@@ -253,6 +306,7 @@ class VentasController extends Controller
 		    $productoEditarA->save();
 
         }
+    }
     
             $clienteEditarA = Cliente::find($request->input('id_cliente'));
             $comprasClienteActualA =  $clienteEditarA->compras;
@@ -262,7 +316,8 @@ class VentasController extends Controller
             $clienteEditarA->ultima_compra = Carbon::now();
             // dd( $comprasClienteActual);
             // Aquí guardo mis datos tal como el usuario los modifico
-		    $clienteEditarA->save();
+            $clienteEditarA->save();
+}
 
     //         /********************* 
     //             GUARDAR LA VENTA

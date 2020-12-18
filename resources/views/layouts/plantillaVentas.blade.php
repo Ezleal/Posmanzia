@@ -14,7 +14,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>{{ config('app.name', 'Nielsen CCA') }}</title>
   <!-- Scripts -->
-  {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
+  <script src="{{ asset('js/app.js') }}" defer></script>
   <!-- SweetAlert -->
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
    <!-- jQuery -->

@@ -31,8 +31,8 @@
               <div class="card-footer bg-white p-0">
                 <ul class="nav nav-pills flex-column">
                   <?php
-                   
-                       for ($i = 0; $i < 6; $i++){
+                   if ($total > 0) {
+                      for ($i = 0; $i < 6; $i++){
                       $porcentaje = ceil($productos[$i]["ventas"] * 100 / $total);
                        echo '<li class="nav-item">
                           <a href="#" class="nav-link">
@@ -44,6 +44,8 @@
                          </li>';
 
                        }
+                   }
+                     
                     ?>
                   
 
@@ -69,7 +71,8 @@
         <?php
           for ($i = 0; $i < 6; $i++)
           {
-            echo '"'.$productos[$i]["descripcion"].'",';        
+
+              echo '"'.$productos[$i]["descripcion"].'",';   
 
           }
 

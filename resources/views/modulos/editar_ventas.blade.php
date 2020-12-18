@@ -43,9 +43,12 @@
                         <span class="fas fa-address-card"></span>
                       </div>
                       </div>
-                      <input type="text" class="form-control" name="vendedor" value="{{ $ventas->vendedor->name }}"  id="vendedor" autocomplete="vendedor" autofocus placeholder="Vendedor" readonly>
+                      <input type="text" class="form-control @error('id_vendedor') is-invalid @enderror" name="vendedor" value="{{ $ventas->vendedor->name }}"  id="vendedor" autocomplete="vendedor" autofocus placeholder="Vendedor" readonly>
                       <input type="hidden" id="id_vendedor" name="id_vendedor" value="{{$ventas->id_vendedor}}">
                     </div>
+                     @error('id_vendedor')
+                          <span class="invalid text-danger" id="id_vendedorError" role="alert">{{ "Seleccione un Vendedor Valido" }}</span>
+                      @enderror
                     </div>
                     {{-- ENTRADA PARA EL CODIGO --}}
                      <div class="form-group">
@@ -58,9 +61,12 @@
                       </div>
                       {{-- SE BUSCA EL ULTIMO CODIGO DE VENTA Y SE SUMA 1 AL FINAL --}}
   
-                      <input type="text" class="form-control pl-2" name="codigo" value="{{ $ventas->codigo}}"  id="codigo" autocomplete="codigo" autofocus placeholder="codigo" readonly>
+                      <input type="text" class="form-control pl-2 @error('codigo') is-invalid @enderror" name="codigo" value="{{ $ventas->codigo}}"  id="codigo" autocomplete="codigo" autofocus placeholder="codigo" readonly>
 
                     </div>
+                     @error('codigo')
+                            <span class="invalid text-danger" id="codigoError" role="alert">{{ "El Codigo de Venta no puede estar vacio" }}</span>
+                          @enderror
                     </div>
                      {{-- ENTRADA PARA EL CLIENTE --}}
                      <div class="form-group">
@@ -71,10 +77,13 @@
                         <span class="fas fa-users"></span>
                       </div>
                       </div>
-                      <input type="text" class="form-control pl-2" name="nombre_cliente" value="{{$ventas->cliente->name}}"  id="nombre_cliente" autocomplete="nombre_cliente" autofocus placeholder="nombre_cliente" readonly>
+                      <input type="text" class="form-control pl-2 @error('id_cliente') is-invalid @enderror" name="nombre_cliente" value="{{$ventas->cliente->name}}"  id="nombre_cliente" autocomplete="nombre_cliente" autofocus placeholder="nombre_cliente" readonly>
                       <input type="hidden" name="id_cliente" value="{{$ventas->cliente->id}}"  id="id_cliente" readonly>
 
                     </div>
+                    @error('id_cliente')
+                            <span class="invalid text-danger" id="id_clienteError" role="alert">{{ "Selecciona un cliente o agrega uno nuevo" }}</span>
+                      @enderror
                       </div>
                 
                     {{-- ENTRADA PARA AGREGAR PRODUCTO --}}
@@ -202,7 +211,10 @@
           
     </div>
    <input type="hidden" id="listaMetodoPago" name="listaMetodoPago">
-            </div>
+             @error('listaMetodoPago')
+                    <span class="invalid text-danger" id="listaMetodoPagoError" role="alert">{{ "Ingrese el numero de transaccion de la venta" }}</span>
+               @enderror     
+    </div>
                 
               </div>
               <div class="card-footer">

@@ -47,9 +47,12 @@
                         <span class="fas fa-address-card"></span>
                       </div>
                       </div>
-                      <input type="text" class="form-control" name="vendedor" value="{{ Auth::user()->name }}"  id="vendedor" autocomplete="vendedor" autofocus placeholder="Vendedor" readonly>
+                      <input type="text" class="form-control  @error('id_vendedor') is-invalid @enderror" name="vendedor" value="{{ Auth::user()->name }}"  id="vendedor" autocomplete="vendedor" autofocus placeholder="Vendedor" readonly>
                       <input type="hidden" id="id_vendedor" name="id_vendedor" value="{{ Auth::user()->id }}">
                     </div>
+                       @error('id_vendedor')
+                          <span class="invalid text-danger" id="id_vendedorError" role="alert">{{ "Seleccione un Vendedor Valido" }}</span>
+                      @enderror
                     </div>
                     {{-- ENTRADA PARA EL CODIGO --}}
                      <div class="form-group">
@@ -61,20 +64,24 @@
                       </div>
                       </div>
                       {{-- SE BUSCA EL ULTIMO CODIGO DE VENTA Y SE SUMA 1 AL FINAL --}}
-          
                       @foreach ($ventas as $venta)    
                       @endforeach
                       @if (isset($venta)) 
-                      <input type="text" class="form-control pl-2" name="codigo" value="{{ $venta->codigo + 1 }}"  id="codigo" autocomplete="codigo" autofocus placeholder="codigo" >
+                      <input type="text" class="form-control pl-2 @error('codigo') is-invalid @enderror" name="codigo" value="{{ $venta->codigo + 1 }}"  id="codigo" autocomplete="codigo" autofocus placeholder="Codigo" >
+                        
                       @else
                       {{-- EN CASO DE QUE NO EXISTA EN VALUE SE ESTABLECE EL NRO DE INICIO DE FACTURACIÓN --}}
-                         <input type="text" class="form-control" name="codigo" value="10000"  id="codigo" autocomplete="codigo" autofocus placeholder="codigo" readonly>
+                         <input type="text" class="form-control @error('codigo') is-invalid @enderror" name="codigo" value="10000"  id="codigo" autocomplete="codigo" autofocus placeholder="codigo" readonly>
                       @endif
-                   
-                        
+                    
                       
                     </div>
+                          @error('codigo')
+                            <span class="invalid text-danger" id="codigoError" role="alert">{{ "El Codigo de Venta no puede estar vacio" }}</span>
+                          @enderror
                     </div>
+                   
+                        
                      {{-- ENTRADA PARA EL CLIENTE --}}
                      <div class="form-group">
                       {{-- <label for="codigo">CLIENTE</label> --}}
@@ -84,7 +91,7 @@
                         <span class="fas fa-users"></span>
                       </div>
                       </div>
-                         <select class="form-control input-lg" type="text" name="id_cliente" id="id_cliente">
+                         <select class="form-control input-lg @error('id_cliente') is-invalid @enderror" type="text" name="id_cliente" id="id_cliente">
                 {{-- Se busca la información desde la bd prioridad para el select --}}
                      <option selected disabled id="editarCliente">Seleccionar Cliente </option>
                      @if (!empty($clientes))
@@ -97,11 +104,17 @@
                                Nuevo Cliente
                         </button>                  
                       </div>
+                      @error('id_cliente')
+                            <span class="invalid text-danger" id="id_clienteError" role="alert">{{ "Selecciona un cliente o agrega uno nuevo" }}</span>
+                      @enderror
                     </div>
                     {{-- ENTRADA PARA AGREGAR PRODUCTO --}}
                      <div class="form-group nuevoProducto ">
 
                     </div>
+                      @error('listaProductos')
+                          <span class="invalid text-danger" id="listaProductosError" role="alert">{{ "No hay ningun producto en la Compra" }}</span>
+                      @enderror
                   {{-- ENTRADA PARA AGREGAR PRODUCTO --}}
                   <input type="hidden" id="listaProductos" name="listaProductos">
 
@@ -176,19 +189,25 @@
                 <option value="TD">Tarjeta Débito</option>                  
               </select>           
             {{-----  N° de transaccion tarjeta -------}}   
-          <input  type="hidden" class="form-control" name="nro_transaccion" id="nro_transaccion" value="" min="0" step="any" autocomplete="nro_transaccion" autofocus placeholder="N° de Transacción">
+          <input  type="hidden" class="form-control" name="nro_transaccion" id="nro_transaccion" value="{{old('nro_transaccion')}}" min="0" step="any" autocomplete="nro_transaccion" autofocus placeholder="N° de Transacción">
           <div class="input-group-append  d-none divefectivo">
             <div class="input-group-text">
               <span class="fas fa-receipt"></span>
             </div>
           </div>
+
       </div>
+
     </div>
     {{-----  N° de transaccion EFECTIVO -------}}   
      <div class="mb-1 mt-2 transaccionEfectivo">
           
     </div>
+     
    <input type="hidden" id="listaMetodoPago" name="listaMetodoPago">
+      @error('listaMetodoPago')
+          <span class="invalid text-danger" id="listaMetodoPagoError" role="alert">{{ "Ingrese el numero de transaccion de la venta" }}</span>
+      @enderror
             </div>
                 
               </div>

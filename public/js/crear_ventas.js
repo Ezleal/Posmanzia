@@ -489,7 +489,7 @@ $('#nuevoMetodoPago').change(function(){
             '<div class="input-group-append">'+
                 '<div class="input-group-text">'+
                     '<span class="fas fa-hand-holding-usd"></span></div></div>'+
-           '<input type="text" class="form-control nuevoCambio" name="nuevoCambio" id="nuevoCambio" value="" min="0" step="any" autocomplete="nuevoCambio" autofocus placeholder="Cambio" readonly required></div>'
+           '<input type="numeric" class="form-control nuevoCambio" name="nuevoCambio" id="nuevoCambio" value="" min="0" step="any" autocomplete="nuevoCambio" autofocus placeholder="Cambio" readonly required></div>'
            )
         formatearMoneda('#nuevoCambio');
         listarMetodos()
