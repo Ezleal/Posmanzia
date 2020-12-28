@@ -33,7 +33,7 @@
         {{-- FORMULARIO --}}
         <div class="col-md-5 col-xs-12 col-sm-12">
             <div class="card card-primary card-outline">
-            <form method="post" action="{{ route('ventas.store') }}" class="formularioVenta">
+            <form method="post" action="{{ route('ventas.store') }}" class="formularioVenta" id="formCrearVenta">
               @csrf
               <div class="card-body with-border">
                
@@ -55,7 +55,7 @@
                       @enderror
                     </div>
                     {{-- ENTRADA PARA EL CODIGO --}}
-                     <div class="form-group">
+                     <div class="form-group" id="grupo__codigo">
                       {{-- <label for="codigo">CODIGO</label> --}}
                       <div class="input-group">
                         <div class="input-group-append">
@@ -79,11 +79,13 @@
                           @error('codigo')
                             <span class="invalid text-danger" id="codigoError" role="alert">{{ "El Codigo de Venta no puede estar vacio" }}</span>
                           @enderror
+                            <p class="invalid text-danger formulario_input-error" id="codigoError" role="alert"></p>
+
                     </div>
                    
                         
                      {{-- ENTRADA PARA EL CLIENTE --}}
-                     <div class="form-group">
+                     <div class="form-group" id="grupo__cliente">
                       {{-- <label for="codigo">CLIENTE</label> --}}
                       <div class="input-group">
                         <div class="input-group-append">
@@ -93,7 +95,7 @@
                       </div>
                          <select class="form-control input-lg @error('id_cliente') is-invalid @enderror" type="text" name="id_cliente" id="id_cliente">
                 {{-- Se busca la información desde la bd prioridad para el select --}}
-                     <option selected disabled id="editarCliente">Seleccionar Cliente </option>
+                     <option selected  id="editarCliente" value="">Seleccionar Cliente </option>
                      @if (!empty($clientes))
                       @foreach ($clientes as $cliente)    
                     <option   value="{{ $cliente->id }}">{{ $cliente->name}}</option>      
@@ -107,6 +109,8 @@
                       @error('id_cliente')
                             <span class="invalid text-danger" id="id_clienteError" role="alert">{{ "Selecciona un cliente o agrega uno nuevo" }}</span>
                       @enderror
+                          <p class="invalid text-danger formulario_input-error" id="clienteError" role="alert"></p>
+
                     </div>
                     {{-- ENTRADA PARA AGREGAR PRODUCTO --}}
                      <div class="form-group nuevoProducto ">
@@ -116,7 +120,11 @@
                           <span class="invalid text-danger" id="listaProductosError" role="alert">{{ "No hay ningun producto en la Compra" }}</span>
                       @enderror
                   {{-- ENTRADA PARA AGREGAR PRODUCTO --}}
-                  <input type="hidden" id="listaProductos" name="listaProductos">
+                  <div id="grupo__listaProductos">
+                    <input type="hidden" id="listaProductos" name="listaProductos">
+                    <p class="invalid text-danger formulario_input-error" id="listaProductosError" role="alert"></p>
+
+                  </div>
 
                   
                 <!--=====================================
@@ -138,7 +146,7 @@
                       <tbody >
                         <tr>
                           <td style="width: 40%" class="p-1">
-                             <div class="form-group">
+                             <div class="form-group" id="grupo__impuestoVenta">
                                  <div class="input-group">
                                    <input type="text" class="form-control impuestoVenta" name="impuestoVenta" value="21"  id="impuestoVenta" autocomplete="impuestoVenta" autofocus placeholder="Iva 21%">
                                   {{-- Input oculto de impuesto --}}
@@ -151,6 +159,8 @@
                                    </div>
                                  </div>
                                </div>
+                         <p class="invalid text-danger formulario_input-error" id="impuestoVentaError" role="alert"></p>
+
                            </div>
                           
                           </td>
@@ -212,7 +222,7 @@
                 
               </div>
               <div class="card-footer">
-                <input name="crearVenta" id="crearVenta" class="btn btn-primary float-right" type="submit" value="Crear Venta">
+                <input name="crearVenta" id="crearVenta" class="btn btn-primary float-right" type="submit" value="Crear Venta" >
               </div>
               </form>
             </div>
@@ -454,5 +464,5 @@
 @endsection
 @section('scripts')
 <script src="{{ asset('/js/crear_ventas.js') }}"></script>
-
+<script src="{{ asset('/js/validaciones.js') }}"></script>
 @endsection

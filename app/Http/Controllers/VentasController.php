@@ -94,7 +94,7 @@ class VentasController extends Controller
                 'impuestoVenta' => ['required','numeric'],
                 'nuevoPrecioNeto' => ['required','numeric'],
                 'totalVenta' => ['required','numeric'],
-                'listaMetodoPago' => ['required','string', 'min:4','unique:ventas,metodo_pago']
+                'listaMetodoPago' => ['required','string', 'min:4']
 
             );
 

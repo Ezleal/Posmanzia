@@ -198,6 +198,16 @@ pre {
   overflow: auto;
 }
 
+/* .formulario_input-error {
+    font-size: 12px;
+    margin-bottom: 0;
+    display: none;
+}
+
+.formulario_input-error-activo {
+    display: block;
+} */
+
 figure {
   margin: 0 0 1rem;
 }
