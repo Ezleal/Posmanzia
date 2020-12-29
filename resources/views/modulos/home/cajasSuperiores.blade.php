@@ -3,7 +3,9 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>${{ $totalVentas }}</h3>
+                @isset($totalVentas)
+                    <h3>${{ $totalVentas }}</h3>
+                @endisset
                 <p>Ventas</p>
               </div>
               <div class="icon">
@@ -17,8 +19,9 @@
             <!-- small box -->
             <div class="small-box bg-primary">
               <div class="inner">
+                @isset($totalClientes)
                 <h3>{{ $totalClientes }}</h3>
-
+               @endisset
                 <p>Clientes</p>
               </div>
               <div class="icon">
@@ -32,8 +35,9 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
+                 @isset($totalProductos)
                 <h3>{{ $totalProductos }}</h3>
-
+               @endisset
                 <p>Productos</p>
               </div>
                 <div class="icon">
@@ -48,7 +52,9 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
+                @isset($totalCategorias)
                 <h3>{{ $totalCategorias }}</h3>
+                @endisset
                 <p>Categorias</p>
               </div>
               <div class="icon">

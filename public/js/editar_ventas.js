@@ -485,11 +485,11 @@ $('#nuevoMetodoPago').change(function(){
         '<div class="input-group-append">'+
             '<div class="input-group-text">'+
                 '<span class="fas fa-cash-register"></span></div></div>'+
-            '<input type="text" class="form-control nuevoEfectivo" name="nuevoEfectivo" id="nuevoEfectivo" value="" min="0" step="any" autocomplete="nuevoEfectivo" autofocus placeholder="Efectivo" required>'+
+            '<input type="number" class="form-control nuevoEfectivo" name="nuevoEfectivo" id="nuevoEfectivo" value="" min="0" step="any" autocomplete="nuevoEfectivo" autofocus placeholder="Efectivo" required>'+
             '<div class="input-group-append">'+
                 '<div class="input-group-text">'+
                     '<span class="fas fa-hand-holding-usd"></span></div></div>'+
-           '<input type="text" class="form-control nuevoCambio" name="nuevoCambio" id="nuevoCambio" value="" min="0" step="any" autocomplete="nuevoCambio" autofocus placeholder="Cambio" readonly required></div>'
+           '<input type="number" class="form-control nuevoCambio" name="nuevoCambio" id="nuevoCambio" value="" min="0" step="any" autocomplete="nuevoCambio" autofocus placeholder="Cambio" readonly required></div>'
            )
         formatearMoneda('#nuevoCambio');
         listarMetodos()
@@ -498,7 +498,7 @@ $('#nuevoMetodoPago').change(function(){
     else{
 
         $(".transaccionEfectivo").empty();
-        $('#nro_transaccion').attr('type', 'text');
+        $('#nro_transaccion').attr('type', 'number');
         $('.divefectivo').removeClass('d-none');
     }
 

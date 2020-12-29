@@ -13,7 +13,9 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>{{ config('app.name', 'Nielsen CCA') }}</title>
   <!-- Scripts -->
+  {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
   <script src="{{ asset('js/app.js') }}" defer></script>
+
   <!-- SweetAlert -->
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
    <!-- jQuery -->
@@ -30,7 +32,7 @@
   {{-- <script src="{{ asset('dist/js/adminlte.min.js')}}"></script> --}}
   <!-- DataTables -->
   <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
-  <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
+  {{-- <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}"> --}}
   {{-- <link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}"> --}}
   <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css')}}">
   <!-- iCheck for checkboxes and radio inputs -->

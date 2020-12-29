@@ -198,7 +198,7 @@
                 <option value="TD">Tarjeta Débito</option>                  
               </select>           
             {{-----  N° de transaccion tarjeta -------}}   
-          <input  type="hidden" class="form-control" name="nro_transaccion" id="nro_transaccion" value="" min="0" step="any" autocomplete="nro_transaccion" autofocus placeholder="N° de Transacción">
+          <input  type="hidden" class="form-control" name="nro_transaccion" id="nro_transaccion" value="" minlength="3" step="any" autocomplete="nro_transaccion" autofocus placeholder="N° de Transacción" required>
           <div class="input-group-append  d-none divefectivo">
             <div class="input-group-text">
               <span class="fas fa-receipt"></span>
@@ -267,5 +267,5 @@
 @endsection
 @section('scripts')
 <script src="{{ asset('/js/editar_ventas.js') }}"></script>
-
+{{-- <script src="{{ asset('/js/validaciones.js') }}"></script> --}}
 @endsection
