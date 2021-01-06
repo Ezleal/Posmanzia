@@ -1,4 +1,5 @@
 
+        
           <div class="col-lg-6 offset-lg-3 col-12">
             <!-- nueva venta -->
             <a href="{{route('ventas.create')}}">
@@ -18,8 +19,9 @@
             </button>
           
          </div>
-          <!-- ./col -->
 
+          <!-- ./col -->
+        
 
           {{-- Modal Apertura de Caja --}}
 

@@ -7,14 +7,15 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 use App\Cliente;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class ClientesController extends Controller
 {
      public function __construct()
     {
-        $this->middleware('auth');
-     
+        $this->middleware(['auth']);     
     }
     /**
      * Display a listing of the resource.
@@ -23,6 +24,8 @@ class ClientesController extends Controller
      */
     public function index()
     {
+         if(Auth::user()->perfil === 1)
+        {
          if(request()->ajax())
         {
             return datatables()->of(Cliente::latest()->get())
@@ -35,6 +38,39 @@ class ClientesController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
         }
+        }
+        else if(Auth::user()->perfil === 2)
+        {
+               if(request()->ajax())
+        {
+            return datatables()->of(Cliente::latest()->get())
+                    ->addColumn('action', function($data){
+                        $button = '<div class="btn-group ml-3"> <button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm btnEditarCliente"><i class="fas fa-pencil-alt"></i></button>';
+                        
+                        return $button;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+        }
+        else
+        {
+             if(request()->ajax())
+        {
+            return datatables()->of(Cliente::latest()->get())
+                    ->addColumn('action', function($data){
+                        $button = '<div class="btn-group ml-3"> <button type="button" name="none" id="none" class="none btn btn-danger btn-sm"><i class="fas fa-times-circle"></i></button>';
+                        
+                        return $button;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+        }
+
+
+
+
         return view('modulos.clientes');
         // $users = User::all();
         // return view('modulos.usuarios',compact('users'));

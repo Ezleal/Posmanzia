@@ -39,7 +39,6 @@
       <div class="col-lg-6 col-12">
 
         @include('reportes/graficoCircular')
-
       </div>
       <div class="col-lg-6 col-12">
 

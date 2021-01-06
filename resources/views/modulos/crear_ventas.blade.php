@@ -221,9 +221,15 @@
             </div>
                 
               </div>
-              <div class="card-footer">
-                <input name="crearVenta" id="crearVenta" class="btn btn-primary float-right" type="submit" value="Crear Venta" >
+              <div class="card-footer ">
+                <input name="crearVenta" id="crearVenta" class="btn btn-primary float-right mt-2" type="submit" value="Crear Venta" >
+                <a class="btn">
+                  <img src="/img/qr/QRMODAL.jpg" class="float-left" id="qr" name="qr" alt="QR MercadoPago" width="50" height="50"  data-toggle="modal" data-target="#modalQr">
+                </a>
+                  
+
               </div>
+             
               </form>
             </div>
 
@@ -387,6 +393,19 @@
   </div>
 </div>
 {{-- FIN MODAL AGREGAR CLIENTES --}}
+
+          {{-- Modal QR --}}
+
+<div class="modal fade" id="modalQr" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+         <img src="/img/qr/QR.png" class="" id="qr" name="qr" alt="QR MercadoPago" width="500" height="500" >
+
+  </div>
+</div>
+{{-- FIN MODAL QR --}}
+
+
 <script>
  $('#create_record').click(function(){
   $('.modal-title').text("Nuevo Cliente");

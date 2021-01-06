@@ -17,7 +17,7 @@
         </div>
         <div class="info">
         {{-- <a href="#" class="d-block">{{Auth::user()->name}}</a> --}}
-         <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+         <a href="/home" class="d-block">{{ Auth::user()->name }}</a>
 
         </div>
       </div>
@@ -36,6 +36,7 @@
             </a>
             
           </li>
+          @if (Auth::user()->perfil === 1 || Auth::user()->perfil === 2 )
           <li class="nav-item">
             <a href="{{ route('usuarios.index') }}" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
@@ -44,6 +45,9 @@
               </p>
             </a>
           </li>
+
+         
+          
     
           <li class="nav-item has-treeview">
             <a href="{{ route('categorias.index') }}" class="nav-link">
@@ -53,6 +57,7 @@
               </p>
             </a>
           </li>
+           @endif
             <li class="nav-item">
             <a href="{{ route('productos.index') }}" class="nav-link">
               <i class="nav-icon fab fa-product-hunt"></i>
@@ -92,12 +97,14 @@
                   <p>Crear Venta</p>
                 </a>
               </li>
+          @if (Auth::user()->perfil === 1)
               <li class="nav-item">
                 <a href="{{ route('ventas.reportes') }}" class="nav-link">
                   <i class="fas fa-chart-pie nav-icon"></i>
                   <p>Reporte de Ventas</p>
                 </a>
               </li>
+          @endif
             </ul>
           </li>
           {{-- Fin de Menu en arbol --}}

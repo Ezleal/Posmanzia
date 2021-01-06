@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -24,13 +25,15 @@ class UsersController extends Controller
       public function __construct(UsersRepository $Users)
     {
         $this->Users = $Users;
-        $this->middleware('auth');
+        $this->middleware(['auth', 'roles']);
      
     }
     
     public function index()
     {
-         if(request()->ajax())
+    if(Auth::user()->perfil === 1)
+    {
+    if(request()->ajax())
         {
             return datatables()->of(User::latest()->get())
                     ->addIndexColumn()
@@ -46,6 +49,26 @@ class UsersController extends Controller
                     ->rawColumns(['action','perfiles'])
                     ->make(true);
             }
+
+    }
+    else
+    {
+         if(request()->ajax())
+        {
+            return datatables()->of(User::latest()->get())
+                    ->addIndexColumn()
+                    ->addColumn('action', function($data){
+                        $button = '<div class="btn-group ml-4"> <button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm btnEditarUsuario"><i class="fas fa-pencil-alt"></i></button>';
+                        return $button;
+                    })
+                     ->addColumn('perfiles',function($perfiles){
+                    return $perfiles->perfiles->name;
+                })
+                    ->rawColumns(['action','perfiles'])
+                    ->make(true);
+            }
+    }
+        
     //   $datas = $this->Users->traerUsers();
             // var_dump($dal);   
         $perfiles = Perfil::all();

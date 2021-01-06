@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Intervention\Image\ImageManagerStatic as Image;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+
+
 class ProductosController extends Controller
 {
      public function __construct()
@@ -24,6 +27,8 @@ class ProductosController extends Controller
           $productos = Producto::all();
           $categorias = Categoria::all();
 
+            if(Auth::user()->perfil === 1)
+        {
                  if(request()->ajax()){
 
                       return datatables()->of(Producto::latest()->get())
@@ -47,7 +52,55 @@ class ProductosController extends Controller
                     ->make(true);
             }
         
-     
+        }
+        else if(Auth::user()->perfil === 2)
+        {
+             if(request()->ajax()){
+
+                      return datatables()->of(Producto::latest()->get())
+                            ->addIndexColumn()
+                            ->addColumn('action', function($data){
+                        $button = '<div class="btn-group ml-2"> <button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm btnEditarProducto"><i class="fas fa-pencil-alt"></i></button>';
+                        
+                        return $button;
+                    })
+                      ->addColumn('agregar',function($agregar){
+                    $button = '<div class="btn-group"> <button type="button" name="agregar" id="'.$agregar->id.'" class="edit btn btn-primary btnAgregarProducto recuperarBoton">Agregar</button></div>';
+                    return $button;
+                })
+                
+                    ->addColumn('category',function($category){
+                    return $category->category->name;
+                })
+               
+                    ->rawColumns(['action','category', 'agregar'])
+                    ->make(true);
+            }
+        }
+        else
+        {
+             if(request()->ajax()){
+
+                      return datatables()->of(Producto::latest()->get())
+                            ->addIndexColumn()
+                            ->addColumn('action', function($data){
+                        $button = '<div class="btn-group ml-3"> <button type="button" name="none" id="none" class="none btn btn-danger btn-sm"><i class="fas fa-times-circle"></i></button>';
+                        return $button;
+                    })
+                      ->addColumn('agregar',function($agregar){
+                        $button = '<div class="btn-group"> <button type="button" name="agregar" id="'.$agregar->id.'" class="edit btn btn-primary btnAgregarProducto recuperarBoton">Agregar</button></div>';
+                    return $button;
+                })
+                
+                    ->addColumn('category',function($category){
+                    return $category->category->name;
+                })
+               
+                    ->rawColumns(['action','category', 'agregar'])
+                    ->make(true);
+            }
+        }
+        
         // $productos = Producto::all();
         
         return view('modulos.productos',compact('productos', 'categorias'));

@@ -19,6 +19,7 @@ class VentasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index(Request $request){
         //   $ventas = Venta::all();
         //   $categorias = Categoria::all();

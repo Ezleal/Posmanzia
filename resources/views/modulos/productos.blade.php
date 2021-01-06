@@ -46,12 +46,16 @@
 
       <!-- Modal Agregar Producto -->
       <div class="card">
+       @if (Auth::user()->perfil === 1)
+
         <div class="card-header">
            <button class="btn btn-primary" data-toggle="modal" data-target="#agregarProducto" name="create_record" id="create_record">
             Agregar Producto
           </button>
-    
+
         </div>
+
+      @endif
         {{-- TABLA DE PRODUCTOS --}}
         <div class="card-body">
       <table id="product_table" class="table table-bordered table-striped dataTable dtr-inline tablas">
@@ -67,6 +71,7 @@
             <th>Precio de Venta</th>
             <th>Agregado</th>
             <th>Acciones</th>
+  
           </tr>
           </thead>
           <tbody>
@@ -372,6 +377,7 @@ swal({
    });
   }
  });
+ 
    $(document).on('click', '.edit', function(){
       var id = $(this).attr('id');
       $('#form_result').html('');

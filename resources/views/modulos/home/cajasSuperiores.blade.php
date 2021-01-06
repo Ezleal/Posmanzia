@@ -1,4 +1,4 @@
-
+    @if (Auth::user()->perfil === 1)
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-danger">
@@ -63,5 +63,18 @@
               <a href="/categorias" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
+{{-- @else 
+        <div class="col-lg-4 col-6 mx-auto">
+            <!-- small box -->
+            <div class="small-box d-flex justify-content-center">
+              <div class="inner">
+                
+                <img src="/img/qr/QR.png" alt="QR MercadoPago" width="" height="">
+
+              </div>
+              
+            </div>
+          </div> --}}
             
           <!-- ./col -->
+@endif
