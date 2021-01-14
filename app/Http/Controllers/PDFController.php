@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 class PDFController extends Controller
 {
+     public function __construct()
+    {
+        $this->middleware('auth');
+     
+    }
     public function ReportesPDF($id){
         $venta = Venta::find($id);
         //DECODIFICAMOS LA LISTA DE PRODUCTOS JSON DE LA BASE DE DATOS

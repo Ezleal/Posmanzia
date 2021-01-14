@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Exports\ReportesExcel;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -19,10 +20,17 @@ class VentasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+       public function __construct()
+    {
+        $this->middleware('auth');
+     
+    }
 
     public function index(Request $request){
         //   $ventas = Venta::all();
         //   $categorias = Categoria::all();
+           if(Auth::user()->perfil === 1)
+        {
                  if(request()->ajax())
                         {   
                          if(!empty($request->from_date))
@@ -55,7 +63,71 @@ class VentasController extends Controller
                     ->make(true);
             }
               
-     
+        }
+        else if(Auth::user()->perfil === 2)
+        {
+                 if(request()->ajax())
+                        {   
+                         if(!empty($request->from_date))
+                         {
+                             $data = Venta::whereBetween('fecha', array($request->from_date.'%', $request->to_date.'%'))->get();
+                         }
+                         else
+                         {
+                           $data = Venta::all();
+                         }
+
+                      return datatables()->of($data)
+                            ->addIndexColumn()
+                            ->addColumn('action', function($data){
+                        $button = '<div class="btn-group"><a href="reporte/pdf/'.$data->id.'" target="_blank"><button type="button" name="print" id="'.$data->id.'" class="print btn btn-primary btn-sm"><i class="fas fa-print"></i></button></a>';
+                        $button .= '&nbsp;&nbsp;';
+                        $button .= '<div class="btn-group"> <a href="ventas/'.$data->id.'/edit"><button type="button" name="editar_venta" id="'.$data->id.'" class="print btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></button></a>';
+                        return $button;
+                    })
+                     ->addColumn('cliente',function($cliente){
+                    return $cliente->cliente->name;
+                     })
+                    ->addColumn('vendedor',function($vendedor){
+                    return $vendedor->vendedor->name;
+                     })
+                    ->rawColumns(['action','cliente', 'vendedor'])
+                    ->rawColumns(['action','cliente'])
+                    ->make(true);
+            }
+
+        }
+        else
+        {
+             if(request()->ajax())
+                        {   
+                         if(!empty($request->from_date))
+                         {
+                             $data = Venta::whereBetween('fecha', array($request->from_date.'%', $request->to_date.'%'))->get();
+                         }
+                         else
+                         {
+                           $data = Venta::all();
+                         }
+
+                      return datatables()->of($data)
+                            ->addIndexColumn()
+                            ->addColumn('action', function($data){
+                        $button = '<div class="btn-group ml-3"><a href="reporte/pdf/'.$data->id.'" target="_blank"><button type="button" name="print" id="'.$data->id.'" class="print btn btn-primary btn-sm"><i class="fas fa-print"></i></button></a>';
+                        return $button;
+                    })
+                     ->addColumn('cliente',function($cliente){
+                    return $cliente->cliente->name;
+                     })
+                    ->addColumn('vendedor',function($vendedor){
+                    return $vendedor->vendedor->name;
+                     })
+                    ->rawColumns(['action','cliente', 'vendedor'])
+                    ->rawColumns(['action','cliente'])
+                    ->make(true);
+            }
+        } 
+
         $ventas = Venta::all();
         
         return view('modulos.ventas',compact('ventas'));

@@ -1,7 +1,16 @@
 @extends('layouts.plantillaReportes')
 
 @section('content')
-
+@if(session('role'))
+  <script>
+    swal ( "Acceso Restringido!" ,  "Solicite acceso al administrador" ,  "error" )
+  </script>        
+@endif
+@if(session('notActive'))
+  <script>
+    swal ( "Usuario Desactivado!" ,  "Solicite acceso al administrador" ,  "error" )
+  </script>        
+@endif
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">

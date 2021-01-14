@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\{Venta, User, Cliente, Producto, Perfil, Estado};
+use Illuminate\Support\Facades\Auth;
  /* |--------------------------------------------------------------------------
     |  SE UTILIZAN ESTAS LIBRERIAS PARA ESTABLECER LA FECHA DE ULTIMO LOGIN
     |  use Carbon\Carbon;
@@ -59,7 +61,8 @@ class LoginController extends Controller
     public function __construct()
 
     {  
-        
-        $this->middleware('guest')->except('logout');
+     
+        $this->middleware(['guest'])->except('logout');
+
     }
 }

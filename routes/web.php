@@ -13,31 +13,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->middleware('auth');
+Route::get('/', 'HomeController@index')->middleware('auth');
 
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 
 /* RUTAS DE USUARIOS */
-Route::resource('/usuarios', 'UsersController');
-Route::post('usuarios/update', 'UsersController@update')->name('usuarios.update');
-Route::get('usuarios/destroy/{id}', 'UsersController@destroy');
-Route::post('usuarios/{id}/edit', 'UsersController@edit')->name('usuarios.edit');
+Route::resource('/usuarios', 'UsersController')->middleware(['auth', 'notActive']);
+Route::post('usuarios/update', 'UsersController@update')->name('usuarios.update')->middleware(['auth', 'notActive']);
+Route::get('usuarios/destroy/{id}', 'UsersController@destroy')->middleware(['auth', 'notActive']);
+Route::post('usuarios/{id}/edit', 'UsersController@edit')->name('usuarios.edit')->middleware(['auth', 'notActive']);
 /* ------ FIN DE USUARIOS ----- */
 
 /* RUTAS DE CATEGORIAS */
-Route::resource('/categorias', 'CategoriasController');
+Route::resource('/categorias', 'CategoriasController')->middleware(['auth', 'notActive']);
 Route::post('categorias/update', 'CategoriasController@update')->name('categorias.update');
 Route::get('categorias/destroy/{id}', 'CategoriasController@destroy');
 Route::post('categorias/{id}/edit', 'CategoriasController@edit')->name('categorias.edit');
 /* ------ FIN DE CATEGORIAS ----- */
 
 /* RUTAS DE PRODUCTOS */
-Route::resource('/productos', 'ProductosController');
+Route::resource('/productos', 'ProductosController')->middleware(['auth', 'notActive']);
 Route::post('productos/update', 'ProductosController@update')->name('productos.update');
 Route::get('productos/destroy/{id}', 'ProductosController@destroy');
 Route::post('productos/{id}/edit', 'ProductosController@edit')->name('productos.edit');
@@ -46,7 +44,7 @@ Route::get('traerPorNombre/{id}', 'ProductosController@traerPorNombre');
 /* ------ FIN DE PRODUCTOS ----- */
 
 /* RUTAS DE CLIENTES */
-Route::resource('/clientes', 'ClientesController');
+Route::resource('/clientes', 'ClientesController')->middleware(['auth', 'notActive']);
 Route::post('clientes/update', 'ClientesController@update')->name('clientes.update');
 Route::get('clientes/destroy/{id}', 'ClientesController@destroy');
 Route::post('clientes/{id}/edit', 'ClientesController@edit')->name('clientes.edit');
@@ -54,7 +52,7 @@ Route::post('clientes/{id}/edit', 'ClientesController@edit')->name('clientes.edi
 /* ------ FIN DE CLIENTES ----- */
 
 /* RUTAS DE VENTAS */
-Route::resource('/ventas', 'VentasController');
+Route::resource('/ventas', 'VentasController')->middleware(['auth', 'notActive']);
 Route::post('ventas/update', 'VentasController@update')->name('ventas.update');
 Route::get('ventas/destroy/{id}', 'VentasController@destroy');
 Route::post('ventas/{id}/edit', 'VentasController@edit')->name('ventas.edit');
@@ -71,4 +69,4 @@ Auth::routes(["register" => false]);
 Route::get('/home', 'HomeController@index')->name('home');
 
 /* RUTAS DE REPORTES EN PDF */
-Route::get('reporte/pdf/{id}', 'PDFController@ReportesPDF')->name('verReporte');
+Route::get('reporte/pdf/{id}', 'PDFController@ReportesPDF')->name('verReporte')->middleware(['auth', 'notActive']);

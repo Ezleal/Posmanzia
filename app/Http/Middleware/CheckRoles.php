@@ -25,6 +25,6 @@ class CheckRoles
             return $next($request);
 
         }
-        return redirect('/home');
+        return redirect('/home')->with('role','Restricción de acceso');
     }
 }

@@ -4,9 +4,10 @@ namespace App\Http\Middleware;
 use App\{User, Estado, Perfil};
 use Illuminate\Support\Facades\Auth;
 
+
 use Closure;
 
-class isAdmin
+class notActive
 {
     /**
      * Handle an incoming request.
@@ -17,13 +18,17 @@ class isAdmin
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->perfil === 1)
+
+         if(Auth::user()->estado === 0)
         {
             
-            return $next($request);
+            
+            return redirect('/home')->with('notActive','Usuario Desactivado');
 
         }
-        return redirect('/home')->with('isAdmin','Restricción de acceso');
-        
+        return $next($request);
     }
+
+
+
 }
