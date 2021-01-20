@@ -22,8 +22,10 @@ class VentasController extends Controller
      */
        public function __construct()
     {
-        $this->middleware('auth');
-     
+        $this->middleware('isCashOpen', ['except' => [
+            'index', 'edit', 'update','destroy', 'reportes'
+        ]]);
+    
     }
 
     public function index(Request $request){

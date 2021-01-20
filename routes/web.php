@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 | Web Routes
 |--------------------------------------------------------------------------
 |
+
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
@@ -56,13 +57,17 @@ Route::resource('/ventas', 'VentasController')->middleware(['auth', 'notActive']
 Route::post('ventas/update', 'VentasController@update')->name('ventas.update');
 Route::get('ventas/destroy/{id}', 'VentasController@destroy');
 Route::post('ventas/{id}/edit', 'VentasController@edit')->name('ventas.edit');
-Route::get('/reportes', 'VentasController@reportes')->name('ventas.reportes');
-Route::get('/reportes/{inicio}/{fin}', 'VentasController@reportesFechas')->name('ventas.reportesFecha');
-Route::get('/reportesExcel', 'VentasController@reportesExcel')->name('ventas.reportesExcel');
-Route::get('/reportesExcel/{inicio}/{fin}', 'VentasController@fechasExcel')->name('ventas.fechasExcel');
-
+Route::get('/reportes', 'VentasController@reportes')->name('ventas.reportes')->middleware(['auth', 'notActive','isAdmin']);
+Route::get('/reportes/{inicio}/{fin}', 'VentasController@reportesFechas')->name('ventas.reportesFecha')->middleware(['auth', 'notActive' ,'isAdmin']);
+Route::get('/reportesExcel', 'VentasController@reportesExcel')->name('ventas.reportesExcel')->middleware(['auth', 'notActive','isAdmin']);
+Route::get('/reportesExcel/{inicio}/{fin}', 'VentasController@fechasExcel')->name('ventas.fechasExcel')->middleware(['auth', 'notActive','isAdmin']);
 
 /* ------ FIN DE VENTAS ----- */
+
+/* RUTAS DE VENTAS */
+// Route::post('/arqueos/store', 'ArqueoController@store')->middleware(['auth', 'notActive']);
+Route::resource('/arqueo', 'ArqueoController')->middleware(['auth', 'notActive']);
+Route::put('arqueo/{arqueo}', 'ArqueoController@update')->name('arqueo.update');
 
 Auth::routes(["register" => false]);
 

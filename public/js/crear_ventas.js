@@ -485,7 +485,7 @@ $('#nuevoMetodoPago').change(function(){
         '<div class="input-group-append">'+
             '<div class="input-group-text">'+
                 '<span class="fas fa-cash-register"></span></div></div>'+
-            '<input type="number" class="form-control nuevoEfectivo" name="nuevoEfectivo" id="nuevoEfectivo" value="" min="0" step="any" autocomplete="nuevoEfectivo" autofocus placeholder="Efectivo" required>'+
+            '<input type="number" class="form-control nuevoEfectivo" name="nuevoEfectivo" id="nuevoEfectivo" min="0" step="any" autocomplete="nuevoEfectivo" autofocus placeholder="Efectivo" required>'+
             '<div class="input-group-append">'+
                 '<div class="input-group-text">'+
                     '<span class="fas fa-hand-holding-usd"></span></div></div>'+

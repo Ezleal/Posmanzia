@@ -66,6 +66,6 @@ class Kernel extends HttpKernel
         'isAdmin' => \App\Http\Middleware\isAdmin::class,
         'roles' => \App\Http\Middleware\CheckRoles::class,
         'notActive' => \App\Http\Middleware\notActive::class,
-
+        'isCashOpen' => \App\Http\Middleware\isCashOpen::class,
     ];
 }
