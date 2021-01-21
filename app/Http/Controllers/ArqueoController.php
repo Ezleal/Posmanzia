@@ -38,17 +38,15 @@ class ArqueoController extends Controller
      */
     public function store(Request $request)
     {
-        // $rules = array(
-        //         'descripcion'    =>  ['required', 'string', 'max:255'],
-        //         'codigo'     =>  ['required', 'string', 'max:255','unique:productos,codigo'],
-        //         'id_categoria' => ['required','numeric', 'max:100'],
-        //         'stock'     =>  ['numeric', 'max:100000','min:0', 'digits_between:0,10'],
-        //         'imagen' => ['image','mimes:jpeg,jpg,png,gif','max:20000'],
-        //         'precio_compra'     =>  ['numeric','min:0'],
-        //         'precio_venta'     =>  ['numeric','min:0']
-        //     );
+        $rules = array(
+                'caja'    =>  ['required'],
+                'id_user'     =>  ['required', 'numeric'],
+                'fecha_inicio' => ['required'],
+                'hora_inicio'     =>  ['required'],
+                'monto_inicial'     =>  ['required','numeric']
+            );
 
-        // $error = Validator::make($request->all(), $rules);
+        $request->validate($rules);
 
         // if($error->fails())
         // {
@@ -129,14 +127,21 @@ class ArqueoController extends Controller
         // $arqueo->hora_inicio        = $request->input('hora_inicio');
         // $arqueo->monto_inicio        = $request->input('monto_inicial');
 
+        $rules = array(
+                'monto_cierre'    =>  ['required', 'numeric'],
+                'saldo_cierre'     =>  ['required', 'numeric'],
+                'cierre_caja' => ['required', 'numeric'],
+            );
+
+        $request->validate($rules);
+
         $arqueo->fecha_cierre = Carbon::now()->format('Y-m-d');;
         $arqueo->hora_cierre = Carbon::now()->toTimeString();
         $arqueo->monto_cierre = $request->input('monto_cierre');
         $arqueo->saldo_cierre = $request->input('saldo_cierre');
         $arqueo->cierre_caja = $request->input('cierre_caja');
         $arqueo->observaciones = $request->input('observaciones');
-        $arqueo->estado_caja = $request->input('estado_caja');
-        $arqueo->estado_caja = $request->input('estado_caja');
+        $arqueo->estado_caja = 0;
         $arqueo->total_ventas =  $cantidadVentasArqueo;
         $arqueo->save();
 

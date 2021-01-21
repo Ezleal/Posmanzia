@@ -26,7 +26,7 @@
 
           <!-- ./col -->
         <div class="col-lg-6 offset-lg-3 col-12">
-              
+             
               @foreach ($ultimoArqueo as $item)
               @if($item->estado_caja == 1 && $item->fecha_inicio == $fechaNow )
                   
@@ -34,6 +34,7 @@
                   Cierre de Caja {{ $ultimoArqueo[0]->id_caja }}
                   <i class="fas fa-cash-register nav-icon  pl-3"></i>
                 </button>
+          
               @else
                  <button type="button"  class="btn btn-dark btn-lg btn-block mb-4" data-toggle="modal" data-target="#aperturaCaja" name="create_caja" id="create_caja">
                   Apertura de Caja 
@@ -69,7 +70,7 @@
         <span id="form_result"></span>
         <div class="box-body">
           
-          <input type="hidden" name="id_arqueo" id="id_arqueo" value="21">
+          <input type="hidden" name="id_arqueo" id="id_arqueo" value="">
             {{-- Entrada para cambio Inicial de la caja --}}
        <div class="mb-3">
           <div class="input-group">
@@ -153,7 +154,9 @@
               <span class="fas fa-hand-holding-usd"></span>
               
             </div>
+             
           </div>
+        
           {{-- ---  Input Monto Final ------ --}}
            <input  type="number" class="form-control @error('monto_cierre') is-invalid @enderror" name="monto_cierre" id="monto_cierre" value="{{ $monFin }}"  autocomplete="monto_cierre" autofocus placeholder="Monto Final" readonly>
      
@@ -181,13 +184,18 @@
               
             </div>
           </div>
-          
+           
           {{-- ---  Saldo Cierre Caja REAL ------ --}}
            <input  type="number" class="form-control @error('cierre_caja') is-invalid @enderror" name="cierre_caja" id="cierre_caja" value=""  autocomplete="cierre_caja" autofocus placeholder="Monto Final" readonly>
-     
+          
              </div>
          <div>
-          <span  role="alert" id="cierre_cajaError"> </span>
+            @error('saldo_cierre')
+              <small class="text-danger" role="alert">*{{ $message }}</small>
+             @enderror
+             @error('cierre_caja')
+              <br><small class="text-danger" role="alert">*{{ $message }}</small>
+             @enderror
         </div>
         </div>
         <div class="mb-3">
@@ -248,8 +256,9 @@
 
         </div>
         <div>
-            <span  role="alert" id="cajaError">
-            </span>
+            @error('caja')
+              <small class="text-danger" role="alert">*{{ $message }}</small>
+             @enderror
         </div> 
       </div> 
        {{-- Entrada para el usuario --}}
@@ -264,8 +273,9 @@
           <input type="text" class="form-control @error('usuario_caja') is-invalid @enderror" name="usuario_caja" value="{{ Auth::user()->name }}"  id="usuario_caja" autocomplete="usuario_caja" autofocus placeholder="Vendedor" readonly>
         </div>
         <div>
-            <span id="usuario_cajaError" role="alert">
-            </span>
+             @error('usuario_caja')
+              <small class="text-danger" role="alert">*{{ $message }}</small>
+             @enderror
         </div>   
       </div> 
             
@@ -321,6 +331,9 @@
           {{-- <input  type="number" class="form-control @error('monto_final') is-invalid @enderror" name="monto_final" id="monto_final" value="{{ old('monto_final') }}"  autocomplete="monto_final" autofocus placeholder="Monto Final"> --}}
      
              </div>
+          @error('monto_inicial')
+              <small class="text-danger" role="alert">*{{ $message }}</small>
+          @enderror
          {{-- <div>
           <span  role="alert" id="monto_finalError"> </span>
         </div> --}}
@@ -412,17 +425,22 @@ if($('#action_button').val() == "Apertura")
 {
     let editarCaja = document.querySelector('#action_button');
     var cajaVal = document.getElementById('caja');
-    console.log(editarCaja.value);
+    var montoInicial = document.getElementById('monto_inicial');
+
+    console.log(montoInicial.value);
 
     editarCaja.onclick = function (evento) {
       
         if (cajaVal.value == 1 || cajaVal.value == 2  || cajaVal.value == 3 && editar_Caja.value != "Cerrar") {
-            editarCaja.submit()
-        } else {
-          evento.preventDefault()
-            swal ( "Debe Seleccionar un Numero de Caja" ,  "Caja no seleccionada" ,  "error" )
+          
+              editarCaja.submit()
 
-            
+
+        } 
+        else {
+          evento.preventDefault()
+            swal ( "Debe Seleccionar un Numero de Caja y Monto Inicial" ,  "Cargue ambos datos para continuar" ,  "error" )
+
         }
     }
   }
