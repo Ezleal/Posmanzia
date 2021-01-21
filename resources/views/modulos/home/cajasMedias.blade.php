@@ -177,7 +177,7 @@
               
             </div>
           </div>
-          <input  type="number" class="form-control @error('saldo_cierre') is-invalid @enderror" name="saldo_cierre" id="saldo_cierre" autocomplete="saldo_cierre" autofocus placeholder="Saldo en Caja" value="" required> 
+          <input  type="number" class="form-control @error('saldo_cierre') is-invalid @enderror" name="saldo_cierre" id="saldo_cierre" autocomplete="saldo_cierre" autofocus placeholder="Saldo en Caja" value="{{ old('saldo_cierre') }}" required> 
             <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-hand-holding-usd"></span>
@@ -200,7 +200,7 @@
         </div>
         <div class="mb-3">
         <label for="observaciones" class="form-label">Observaciones del Cierre de Caja</label>
-            <textarea class="form-control" name="observaciones" id="observaciones" rows="3"></textarea>
+            <textarea class="form-control" name="observaciones" id="observaciones" rows="3">{{ old('observaciones') }}</textarea>
         </div>
   
         <input type="hidden" name="estado_caja" id="estado_caja" value="0" />
@@ -321,7 +321,7 @@
               <span class="fas fa-dollar-sign"></span>
             </div>
           </div>
-          <input  type="number" class="form-control @error('monto_inicial') is-invalid @enderror" name="monto_inicial" id="monto_inicial" autocomplete="monto_inicial" autofocus placeholder="Monto Inicial" value=""> 
+          <input  type="number" class="form-control @error('monto_inicial') is-invalid @enderror" name="monto_inicial" id="monto_inicial" autocomplete="monto_inicial" autofocus placeholder="Monto Inicial" value="{{ old('monto_inicial') }}"> 
             {{-- <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-window-close"></span>
