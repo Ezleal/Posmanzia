@@ -51,13 +51,13 @@ class HomeController extends Controller
         $idArqueo = Arqueo::select("id")
         ->orderBy("id", "desc")
         ->first();
-        $cantidadVentasArqueo = count(Venta::where('fecha','like', $ultimoArqueo[0]->fecha_inicio.'%') 
+        $cantidadVentasArqueo = count(Venta::where('fecha','>', $ultimoArqueo[0]->created_at) 
         ->where('metodo_pago', '=', 'Efectivo')
         ->get());
         $fechaNow = Carbon::now()->format('Y-m-d');
 
         $sumVentas = round(DB::table('ventas')
-                ->where('fecha', 'like',$ultimoArqueo[0]->fecha_inicio.'%' )
+                ->where('fecha', '>',$ultimoArqueo[0]->created_at)
                 ->where('metodo_pago', '=', 'Efectivo')
                 ->sum('total'),2);
         $monFin = $sumVentas + $ultimoArqueo[0]->monto_inicio;

@@ -62,9 +62,9 @@ class ArqueoController extends Controller
         $idArqueo = Arqueo::select("id")
         ->orderBy("id", "desc")
         ->first();
-        $cantidadVentasArqueo = count(Venta::where('fecha','like', $ultimoArqueo[0]->fecha_inicio.'%') 
-        ->where('metodo_pago', '=', 'Efectivo')
-        ->get());
+        // $cantidadVentasArqueo = count(Venta::where('fecha','>', $ultimoArqueo[0]->created_at) 
+        // ->where('metodo_pago', '=', 'Efectivo')
+        // ->get());
 
         // FIN DE APERTURA DE ARQUEO
        
@@ -74,7 +74,7 @@ class ArqueoController extends Controller
         $newArqueo->fecha_inicio        = $request->input('fecha_inicio');
         $newArqueo->hora_inicio        = $request->input('hora_inicio');
         $newArqueo->monto_inicio        = $request->input('monto_inicial');
-        $newArqueo->total_ventas      = $cantidadVentasArqueo;
+        // $newArqueo->total_ventas      = $cantidadVentasArqueo;
         // $newArqueo->agregado = Carbon::now()->toDateString();
 
         $newArqueo->save();
@@ -115,7 +115,14 @@ class ArqueoController extends Controller
      */
     public function update(Request $request, Arqueo $arqueo)
     {
-        
+        // ACA TRAEMOS LA INFORMACIÓN DE LA ULTIMA APERTURA DE CAJA
+        $ultimoArqueo = Arqueo::select("*")
+                    ->orderBy("id", "desc")
+                    ->take(1)->get();
+
+        $cantidadVentasArqueo = count(Venta::where('fecha','>', $ultimoArqueo[0]->created_at) 
+        ->where('metodo_pago', '=', 'Efectivo')
+        ->get());
         // $arqueo->id_caja         = $request->input('caja');
         // $arqueo->id_user        = $request->input('id_user');
         // $arqueo->fecha_inicio        = $request->input('fecha_inicio');
@@ -130,6 +137,7 @@ class ArqueoController extends Controller
         $arqueo->observaciones = $request->input('observaciones');
         $arqueo->estado_caja = $request->input('estado_caja');
         $arqueo->estado_caja = $request->input('estado_caja');
+        $arqueo->total_ventas =  $cantidadVentasArqueo;
         $arqueo->save();
 
         return redirect()->route('home')->with('cierre','Cierre de caja'); 

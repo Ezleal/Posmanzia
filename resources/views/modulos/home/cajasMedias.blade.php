@@ -19,7 +19,6 @@
             <a href="{{route('ventas.create')}}">
             <button type="button" class="btn btn-dark btn-lg btn-block mb-4">Cargar Nueva Venta
             
-          
           <i class="fas fa-arrow-circle-right pl-2"></i>
           </button>
           </a>
