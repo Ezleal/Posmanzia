@@ -66,8 +66,8 @@ Route::get('/reportesExcel/{inicio}/{fin}', 'VentasController@fechasExcel')->nam
 
 /* RUTAS DE VENTAS */
 // Route::post('/arqueos/store', 'ArqueoController@store')->middleware(['auth', 'notActive']);
-Route::resource('/arqueo', 'ArqueoController')->middleware(['auth', 'notActive']);
-Route::put('arqueo/{arqueo}', 'ArqueoController@update')->name('arqueo.update');
+Route::resource('/arqueo', 'ArqueoController')->middleware(['auth', 'notActive'])->middleware(['auth', 'notActive']);
+Route::put('arqueo/{arqueo}', 'ArqueoController@update')->name('arqueo.update')->middleware(['auth', 'notActive']);
 
 Auth::routes(["register" => false]);
 

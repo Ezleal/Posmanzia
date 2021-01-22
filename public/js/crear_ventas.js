@@ -518,7 +518,7 @@ $(".formularioVenta").on("change", "input#nuevoEfectivo", function () {
 
     nuevoCambioEfectivo.val(cambio); 
     formatearMoneda('#nuevoCambio');
-    formatearValor('.nuevoEfectivo');
+    // formatearValor('.nuevoEfectivo');
 
 })
 
