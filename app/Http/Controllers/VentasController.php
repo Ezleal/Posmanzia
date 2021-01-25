@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 use App\Exports\ReportesExcel;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\CompraMailable;
+use Illuminate\Support\Facades\Mail;
+use PDF;
+
 
 
 
@@ -157,6 +161,7 @@ class VentasController extends Controller
      */
  public function store(Request $request)
     {
+        $numCod = $request->input('codigo');
         //         /********************* 
         //             VALIDAR VENTA
         //         **********************/
@@ -243,8 +248,34 @@ class VentasController extends Controller
       
         $newVenta->save();
 
+
+
+        // ENVIO DE CORREO DE VENTA
+        $venta = Venta::select("*")->where('codigo', 'LIKE', $numCod)->first();
+        //DECODIFICAMOS LA LISTA DE PRODUCTOS JSON DE LA BASE DE DATOS
+        $productos = json_decode($venta['productos'], true);
+        // CONCATENAMOS TEXTO PARA EL GUARDAR COMO...
+        $cod = 'Factura_Nro_'.$venta->codigo;
+        //CONTADOR DE FACTURA PDF
+        $contador = 1;
+        // Datos del Correo
+
+        $cliente = Cliente::findOrFail($request->input('id_cliente'));
+
+        
+        $pdf = \PDF::loadView('/reportes/reportePDF', compact('venta', 'productos','contador'));
+        
+              Mail::send('emails.compra', compact('cliente','venta'), function($message) use($pdf, $venta){
+
+             $message->to('Compras@Posmanzia.com', $venta->vendedor->name)->subject('Compra N° '.$venta->codigo);
+
+             $message->from($venta->cliente->email, $venta->cliente->name);
+
+             $message->attachData($pdf->output(), 'Factura_Nro_'.$venta->codigo.'.pdf');
+
+           });
+
         return redirect()->route('ventas.create')->with('info','Venta creada con exito'); 
-        // return response()->json(['success' => 'Data Added successfully.']);
     }
 
     /**

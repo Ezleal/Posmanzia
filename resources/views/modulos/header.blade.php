@@ -17,21 +17,21 @@
          
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">5 Notifications</span>
+          <span class="dropdown-item dropdown-header">Accesos Rapidos</span>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
+          <a href="{{ route('ventas.create') }}" class="dropdown-item">
+            <i class="fas fa-shopping-basket mr-2"></i> Nueva Venta
+            <span class="float-right text-muted text-sm"></span>
           </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
+          <a href="{{ route('clientes.index') }}" class="dropdown-item">
+            <i class="fas fa-users mr-2"></i> Clientes
+            <span class="float-right text-muted text-sm"></span>
           </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
+          <a href="{{ route('productos.index') }}" class="dropdown-item">
+            <i class="fas fa-shopping-cart mr-2"></i> Productos
+            <span class="float-right text-muted text-sm"></span>
           </a>
           <div class="dropdown-divider"></div>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
