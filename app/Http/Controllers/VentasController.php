@@ -27,7 +27,7 @@ class VentasController extends Controller
        public function __construct()
     {
         $this->middleware('isCashOpen', ['except' => [
-            'index', 'edit', 'update','destroy', 'reportes'
+            'index', 'edit', 'update','destroy', 'reportes', 'fechasExcel', 'reportesFechas'
         ]]);
     
     }
